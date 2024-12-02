@@ -106,6 +106,13 @@ export class Search extends BaseComponent {
       );
 
       this.searchResult = await this.pagefind.search(query);
+
+      document.dispatchEvent(
+        new CustomEvent("tabs-displaySearchNav", {
+          detail: { message: this.searchResult.results.length.toString() },
+        })
+      );
+
       this.loadedResults = 0;
 
       const initialResults = await Promise.all(this.searchResult.results.slice(0, this.resulPerLoad).map((r: any) => r.data()));

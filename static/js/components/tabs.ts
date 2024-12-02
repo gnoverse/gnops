@@ -1,4 +1,6 @@
 import { BaseComponent } from "./base";
+import { barba } from "../barba";
+
 import gsap from "gsap";
 
 export class Tabs extends BaseComponent {
@@ -17,6 +19,9 @@ export class Tabs extends BaseComponent {
     this.initializeDOM({
       tabsMenuItem: "[data-component-item]",
       navbar: "[data-component-navbar]",
+      tabsBar: "[data-component-nav='tabs']",
+      searchBar: "[data-component-nav='search']",
+      searchCounter: "[data-component-nav-searchcount]",
     });
 
     if (this.DOM.tabsMenuItem) {
@@ -31,6 +36,11 @@ export class Tabs extends BaseComponent {
         type: "click",
         handler: this.onTabClick.bind(this),
       },
+      {
+        target: document,
+        type: "tabs-displaySearchNav",
+        handler: this.onDisplaySearchBar.bind(this),
+      },
     ];
   }
 
@@ -39,6 +49,22 @@ export class Tabs extends BaseComponent {
     if (target.dataset.componentItem) {
       this.updateTab(target);
     }
+  }
+
+  private onDisplaySearchBar(e: Event) {
+    const customEvent = e as CustomEvent<{ message: string }>;
+    this.displaySearchBar(customEvent.detail.message);
+  }
+
+  displaySearchBar(counter: string) {
+    this.DOM.searchBar.classList.replace("hidden", "flex");
+    this.DOM.tabsBar.classList.replace("block", "hidden");
+    this.DOM.searchCounter.textContent = counter;
+  }
+
+  displayTabshBar() {
+    this.DOM.searchBar.classList.replace("flex", "hidden");
+    this.DOM.tabsBar.classList.replace("hidden", "block");
   }
 
   updateTab(el: HTMLElement, instant = false) {

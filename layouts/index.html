@@ -21,22 +21,34 @@
         </label>
     </form>
 
-    <nav class="mt-10" data-component="tabs">
-      <ul class="flex gap-6 text-gray-500">
-        <li>
-            <input type="radio" id="all" name="tab" value="all" class="hidden peer" checked />
-            <label data-component-item="all" for="all" class="ease duration-300 cursor-pointer hover:text-gray-50 peer-checked:text-gray-50">All</label>
-        </li>
-        {{- range .Site.Menus.main -}} 
-            {{- if eq .Params.list true -}}
+    <nav class="mt-10 w-full max-w-2xl" data-component="tabs">
+        <div data-component-nav="tabs" class="block">
+            <ul class="flex justify-center gap-6 text-gray-500">
                 <li>
-                    <input type="radio" id="{{ .Name }}" name="tab" value="{{ .Name }}" class="hidden peer" />
-                    <label data-component-item="{{ .Name }}" for="{{ .Name }}" class="ease duration-300 cursor-pointer hover:text-gray-50 peer-checked:text-gray-50">{{ .Identifier }}</label>
-                        </li>
-            {{- end -}}
-        {{- end -}} 
-      </ul>
-      <div data-component-navbar class="h-0.5 w-full bg-gray-50 rounded-full mt-1.5"></div>
+                    <input type="radio" id="all" name="tab" value="all" class="hidden peer" checked />
+                    <label data-component-item="all" for="all" class="ease duration-300 cursor-pointer hover:text-gray-50 peer-checked:text-gray-50">All</label>
+                </li>
+                {{- range .Site.Menus.main -}} 
+                    {{- if eq .Params.list true -}}
+                        <li>
+                            <input type="radio" id="{{ .Name }}" name="tab" value="{{ .Name }}" class="hidden peer" />
+                            <label data-component-item="{{ .Name }}" for="{{ .Name }}" class="ease duration-300 cursor-pointer hover:text-gray-50 peer-checked:text-gray-50">{{ .Identifier }}</label>
+                                </li>
+                    {{- end -}}
+                {{- end -}} 
+            </ul>
+            <div data-component-navbar class="h-0.5 w-full bg-gray-50 rounded-full mt-1.5"></div>
+        </div>
+        <div data-component-nav="search" class="hidden relative justify-center items-center text-gray-500">
+            <a
+                href="/"
+                class="absolute left-0 flex items-center gap-2 after:absolute text-gray-500 after:block after:h-full after:w-px after:right-0 after:rounded-full after:top-1/2 after:-translate-y-1/2 after:bg-light after:text-600"
+                >
+                <span class="w-6 h-6">{{ partial "icons/ico-arrow-left" }}</span>
+                {{ T "Back" }}
+            </a>
+            <span class=""><span data-component-nav-searchcount>3</span> {{ T "ItemsFound" }}</span>
+        </div>
     </nav>
   </div>
 

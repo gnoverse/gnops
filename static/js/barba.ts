@@ -30,4 +30,4 @@ const init = function (): void {
   });
 };
 
-export { init };
+export { init, barba };

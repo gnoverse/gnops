@@ -74,3 +74,6 @@ other = "Discover More"
 
 [CheckRepo]
  other = "Check on repo"
+
+[ItemsFound]
+ other = "item found"
