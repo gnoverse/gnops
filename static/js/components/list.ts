@@ -18,6 +18,7 @@ export class List extends BaseComponent {
     this.initializeDOM({
       lists: "[data-collection]",
       loadBtns: "[data-component-loadbtn]",
+      searchMoreBtn: "[data-component-searchbtn]",
     });
   }
 
@@ -29,6 +30,11 @@ export class List extends BaseComponent {
         handler: this.onLoadList.bind(this),
       },
       {
+        target: this.DOM.searchMoreBtn as HTMLElement,
+        type: "click",
+        handler: this.onSearchClick.bind(this),
+      },
+      {
         target: document,
         type: "list-displayList",
         handler: this.onDisplayList.bind(this),
@@ -37,6 +43,11 @@ export class List extends BaseComponent {
         target: document,
         type: "list-updateList",
         handler: this.onUpdateList.bind(this),
+      },
+      {
+        target: document,
+        type: "list-voidList",
+        handler: this.onVoidList.bind(this),
       },
     ];
   }
@@ -54,17 +65,58 @@ export class List extends BaseComponent {
     this.displayList(customEvent.detail.message);
   }
 
+  private onVoidList(e: Event) {
+    const customEvent = e as CustomEvent<{ message: string }>;
+    this.voidList(customEvent.detail.message);
+  }
+
   private onUpdateList(e: Event) {
     const customEvent = e as CustomEvent<{ message: any }>;
     const { listName, data, loadMoreUrl } = customEvent.detail.message;
     this.updateList(listName, data, loadMoreUrl);
   }
 
+  private onSearchClick(e: Event) {
+    document.dispatchEvent(new CustomEvent("search-loadmore"));
+  }
+
+  private createArticleHTML({ url = "", genre = "", title = "", description = "", author = "" }: { url: string; genre: string; title: string; description: string; author: string }): HTMLElement {
+    const template = document.createElement("template");
+    template.innerHTML = `
+      <article class="listArticle">
+        <a href="${url}">
+          <span class="listArticle__illu">
+            <span class="relative">
+              <span class="listArticle__label">${genre}</span>
+            </span>
+          </span>
+          <h2>${title}</h2>
+          <p>${description}</p>
+          <ul>
+            <li>
+              <span>By</span> <span class="listArticle__author">${author}</span>
+            </li>
+          </ul>
+        </a>
+      </article>
+    `.trim();
+
+    return template.content.firstElementChild as HTMLElement;
+  }
+
   displayList(item: string) {
     if (!Array.isArray(this.DOM.lists)) return;
+
     this.DOM.lists.forEach((list) => {
-      list.classList[list.dataset.collection === item ? "remove" : "add"]("hidden");
+      const isList = list.dataset.collection === item;
+      list.classList[isList ? "remove" : "add"]("hidden");
     });
+  }
+
+  voidList(listName: string) {
+    const listToVoid = this.DOM.lists.find((list: HTMLElement) => list.dataset.collection === listName);
+    const art = listToVoid?.querySelector("[data-component-articles]");
+    if (art) art.innerHTML = "";
   }
 
   loadList(loadbtn: HTMLLinkElement) {
@@ -104,44 +156,24 @@ export class List extends BaseComponent {
       });
   }
 
-  private createArticleHTML({ url = "", genre = "", title = "", description = "", author = "" }: { url: string; genre: string; title: string; description: string; author: string }): HTMLElement {
-    const template = document.createElement("template");
-    template.innerHTML = `
-      <article class="listArticle">
-        <a href="${url}">
-          <span class="listArticle__illu">
-            <span class="relative">
-              <span class="listArticle__label">${genre}</span>
-            </span>
-          </span>
-          <h2>${title}</h2>
-          <p>${description}</p>
-          <ul>
-            <li>
-              <span>By</span> <span class="listArticle__author">${author}</span>
-            </li>
-          </ul>
-        </a>
-      </article>
-    `.trim();
-
-    return template.content.firstElementChild as HTMLElement;
-  }
-
-  updateList(listName: string | undefined, data: any, loadMoreUrl: string | undefined) {
+  updateList(listName: string | undefined, data: any, loadMoreUrl: string | boolean | undefined) {
     const listToUpdate = this.DOM.lists?.find((list: HTMLElement) => list.dataset.collection === listName);
     const listArticles = listToUpdate?.querySelector("[data-component-articles]");
 
-    if (this.loadBtn && loadMoreUrl) {
-      this.loadBtn.href = loadMoreUrl;
-    } else if (this.loadBtn && !loadMoreUrl) {
-      this.loadBtn.classList.add("hidden");
+    let btn = typeof loadMoreUrl !== "boolean" ? this.loadBtn : this.DOM.searchMoreBtn;
+
+    if (btn && loadMoreUrl) {
+      if (btn instanceof HTMLAnchorElement && typeof loadMoreUrl !== "boolean") {
+        btn.href = loadMoreUrl;
+      }
+      btn.classList.remove("hidden");
+    } else if (!loadMoreUrl) {
+      btn.classList.add("hidden");
     }
 
     if (listArticles) {
       const fragment = document.createDocumentFragment();
 
-      console.log(data);
       if (Array.isArray(data)) {
         Array.from(data).forEach((res) => {
           const articleContent = { url: res.url, genre: res.meta.section, title: res.meta.title, description: res.meta.summary, author: res.meta.author };

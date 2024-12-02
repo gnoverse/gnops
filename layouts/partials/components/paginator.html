@@ -7,7 +7,13 @@
   </div>
 
   <div class="max-w-2xl w-full flex justify-center gap-x-2 text-lg font-bold">
-    {{ if $paginator.HasPrev }}<a href="{{ $paginator.Prev.URL | absLangURL }}" id="loadPrev" class="block px-5 py-4 mx-auto bg-gray-800 text-gray-500 rounded-full my-6">{{ T "Prev" }}</a>{{end}} {{
-    if $paginator.HasNext }}<a href="{{ $paginator.Next.URL | absLangURL }}" id="loadNext" class="block px-5 py-4 mx-auto bg-gray-800 text-gray-500 rounded-full my-6">{{ T "Next" }}</a>{{end}}
+    {{ if $paginator.HasPrev }}<a
+      href="{{ $paginator.Prev.URL | absLangURL }}"
+      id="loadPrev"
+      data-component-loadbtn="search"
+      class="block px-5 py-4 mx-auto bg-gray-800 text-gray-500 rounded-full my-6"
+      >{{ T "Prev" }}</a
+    >{{end}} {{ if $paginator.HasNext }}<a href="{{ $paginator.Next.URL | absLangURL }}" id="loadNext" class="block px-5 py-4 mx-auto bg-gray-800 text-gray-500 rounded-full my-6">{{ T "Next" }}</a
+    >{{end}}
   </div>
 </div>
