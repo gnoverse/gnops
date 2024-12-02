@@ -55,10 +55,11 @@ export class Tabs extends BaseComponent {
 
   updateList(listName: string) {
     if (listName === "") return;
-    const event = new CustomEvent("updateList", {
-      detail: { message: listName },
-    });
-    document.dispatchEvent(event);
+    document.dispatchEvent(
+      new CustomEvent("list-displayList", {
+        detail: { message: listName },
+      })
+    );
   }
 
   destroy(): void {

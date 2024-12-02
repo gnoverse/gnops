@@ -45,6 +45,31 @@
   }
 }
 
+@layer components {
+  .listArticle a {
+    @apply flex flex-col justify-end gap-x-4 items-start p-5 bg-gray-800 rounded-2xl h-full duration-200 ease-in-out transition-colors text-gray-500 hover:bg-gray-700;
+  }
+  .listArticle h2 {
+    @apply text-gray-50 font-bold pb-2 text-300 mt-12;
+  }
+  .listArticle .listArticle__label {
+    @apply block px-4 py-2 bg-light rounded-full text-100 text-gray-50;
+  }
+  .listArticle .listArticle__illu {
+    @apply flex flex-col items-start h-full;
+  }
+  .listArticle p {
+    @apply text-200 line-clamp-2 h-full pb-1;
+  }
+
+  .listArticle ul {
+    @apply flex items-center gap-x-5 gap-y-1 flex-wrap mt-auto;
+  }
+  .listArticle .listArticle__author {
+    @apply inline-block text-gray-50 mt-6;
+  }
+}
+
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;

@@ -30,7 +30,12 @@ export class List extends BaseComponent {
       },
       {
         target: document,
-        type: "updateList",
+        type: "list-displayList",
+        handler: this.onDisplayList.bind(this),
+      },
+      {
+        target: document,
+        type: "list-updateList",
         handler: this.onUpdateList.bind(this),
       },
     ];
@@ -44,9 +49,15 @@ export class List extends BaseComponent {
     }
   }
 
-  private onUpdateList(e: Event) {
+  private onDisplayList(e: Event) {
     const customEvent = e as CustomEvent<{ message: string }>;
     this.displayList(customEvent.detail.message);
+  }
+
+  private onUpdateList(e: Event) {
+    const customEvent = e as CustomEvent<{ message: any }>;
+    const { listName, data, loadMoreUrl } = customEvent.detail.message;
+    this.updateList(listName, data, loadMoreUrl);
   }
 
   displayList(item: string) {
@@ -93,8 +104,31 @@ export class List extends BaseComponent {
       });
   }
 
-  updateList(listName: string | undefined, data: Element, loadMoreUrl: string | undefined) {
-    this.DOM.lists;
+  private createArticleHTML({ url = "", genre = "", title = "", description = "", author = "" }: { url: string; genre: string; title: string; description: string; author: string }): HTMLElement {
+    const template = document.createElement("template");
+    template.innerHTML = `
+      <article class="listArticle">
+        <a href="${url}">
+          <span class="listArticle__illu">
+            <span class="relative">
+              <span class="listArticle__label">${genre}</span>
+            </span>
+          </span>
+          <h2>${title}</h2>
+          <p>${description}</p>
+          <ul>
+            <li>
+              <span>By</span> <span class="listArticle__author">${author}</span>
+            </li>
+          </ul>
+        </a>
+      </article>
+    `.trim();
+
+    return template.content.firstElementChild as HTMLElement;
+  }
+
+  updateList(listName: string | undefined, data: any, loadMoreUrl: string | undefined) {
     const listToUpdate = this.DOM.lists?.find((list: HTMLElement) => list.dataset.collection === listName);
     const listArticles = listToUpdate?.querySelector("[data-component-articles]");
 
@@ -106,9 +140,19 @@ export class List extends BaseComponent {
 
     if (listArticles) {
       const fragment = document.createDocumentFragment();
-      data.childNodes.forEach((child) => {
-        fragment.appendChild(child.cloneNode(true));
-      });
+
+      console.log(data);
+      if (Array.isArray(data)) {
+        Array.from(data).forEach((res) => {
+          const articleContent = { url: res.url, genre: res.meta.section, title: res.meta.title, description: res.meta.summary, author: res.meta.author };
+          fragment.appendChild(this.createArticleHTML(articleContent));
+        });
+      } else {
+        Array.from(data.childNodes).forEach((child) => {
+          const clonedNode = (child as Node).cloneNode(true);
+          fragment.appendChild(clonedNode);
+        });
+      }
       listArticles.appendChild(fragment);
     }
   }

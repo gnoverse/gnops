@@ -16,9 +16,9 @@ export class Search extends BaseComponent {
 
   private async initPagefind() {
     try {
+      // @ts-ignore
       this.pagefind = await import("/pagefind/pagefind.js");
       this.pagefind.init();
-      console.log("Pagefind initialized", this.pagefind);
     } catch (error) {
       console.error("Failed to load Pagefind:", error);
     }
@@ -45,7 +45,6 @@ export class Search extends BaseComponent {
 
   private async search(e: Event) {
     e.preventDefault();
-    console.log("Search triggered");
 
     const query = this.DOM.searchInput?.value ?? "";
     if (!query || !this.pagefind) {
@@ -54,15 +53,32 @@ export class Search extends BaseComponent {
     }
 
     try {
+      document.dispatchEvent(
+        new CustomEvent("list-displayList", {
+          detail: { message: "search" },
+        })
+      );
+
       const results = await this.pagefind.search(query);
-      if (results.results.length > 0) {
-        const firstResult = await results.results[0].data();
-        console.log("First result data:", firstResult);
+      const fiveResults = await Promise.all(results.results.slice(0, 6).map((r: any) => r.data()));
+
+      if (fiveResults.length > 0) {
+        document.dispatchEvent(
+          new CustomEvent("list-updateList", {
+            detail: {
+              message: {
+                listName: "search",
+                data: fiveResults,
+                loadMoreUrl: undefined,
+              },
+            },
+          })
+        );
       } else {
         console.log("No results found for query:", query);
       }
     } catch (error) {
-      console.error("Search error:", error);
+      console.warn("Search error:", error);
     }
   }
 

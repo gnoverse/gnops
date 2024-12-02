@@ -1,8 +1,8 @@
 {{ define "main" }}
-<section class="relative grid grid-cols-12 gap-8 mt-20">
+<section class="relative grid grid-cols-12 gap-8 mt-20" data-pagefind-body>
   <div class="col-span-8 col-start-3">
     <div class="flex justify-center gap-2 mb-10 text-gray-500">
-      <span>{{ .CurrentSection.Name }}</span> |
+      <span data-pagefind-meta="section">{{ .CurrentSection.Name }}</span> |
       <time
         datetime="{{ .PublishDate }}"
         class="block relative after:absolute after:block after:h-full after:w-px after:right-0 after:rounded-full after:top-1/2 after:-translate-y-1/2 after:bg-light after:text-600"
@@ -22,7 +22,7 @@
         </a>
         <span class="relative p-5 after:absolute after:block after:h-full after:w-px after:right-0 after:rounded-full after:top-1/2 after:-translate-y-1/2 after:bg-light after:text-600">
           <span class="text-gray-500">{{ T "Author" }}:</span>
-          {{ .Params.author }}
+          <span data-pagefind-meta="author">{{ .Params.author }}</span>
         </span>
         <span class="relative p-5 after:absolute after:block after:h-full after:w-px after:right-0 after:rounded-full after:top-1/2 after:-translate-y-1/2 after:bg-light after:text-600">
           {{ T "TimeToRead" .ReadingTime }}
@@ -38,7 +38,7 @@
     "height" $height "page" $page) }} */}} {{- with .Summary -}}
     <p class="my-12 leading-8 font-regular text-300">
       <span class="font-bold" aria-hidden="true">{{ T "Summary" }} —</span>
-      <span class="text-gray-600">{{ . }}</span>
+      <span class="text-gray-600" data-pagefind-meta="summary">{{ . }}</span>
     </p>
     {{- end -}}
 
