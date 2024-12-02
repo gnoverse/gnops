@@ -1,0 +1,107 @@
+/**
+   FONT FAMILY GROUPS
+*/
+@import url("syntax.css");
+@import url("@fontsource-variable/inter");
+@import url("@fontsource/inter/latin.css");
+
+/**
+   TAILWIND
+*/
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply font-interNormal overflow-x-hidden font-normal leading-tight;
+    font-feature-settings:
+      "kern" on,
+      "liga" on,
+      "calt" on,
+      "zero" on;
+    -webkit-font-feature-settings:
+      "kern" on,
+      "liga" on,
+      "calt" on,
+      "zero" on;
+    text-size-adjust: 100%;
+    -moz-osx-font-smoothing: grayscale;
+    font-smoothing: antialiased;
+    font-variant-ligatures: contextual common-ligatures;
+    font-kerning: normal;
+    text-rendering: optimizeLegibility;
+  }
+
+  @supports (font-variation-settings: normal) {
+    html {
+      @apply font-interVar;
+    }
+  }
+
+  .prose code {
+    @apply text-gray-800;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .triangle::before {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: 0.3rem solid transparent;
+    border-bottom: 0.3rem solid transparent;
+    border-left: 0.5rem solid currentColor;
+  }
+}
+
+/**
+   CUSTOM
+*/
+
+#TableOfContents {
+  @apply relative pl-1 before:absolute before:w-px before:h-full before:bg-gray-200 before:-left-4;
+}
+
+#TableOfContents ul {
+  list-style-type: none;
+  @apply ml-6 pt-3;
+}
+
+#TableOfContents > ul {
+  @apply ml-0 pt-0;
+}
+#TableOfContents li:not(:last-child) {
+  @apply list-none pb-3;
+}
+
+#TableOfContents li::before {
+  @apply inline-block text-gray-700 font-bold mr-2;
+}
+
+#TableOfContents a {
+  @apply duration-200;
+}
+
+#TableOfContents a:before {
+  content: "";
+  @apply absolute block w-px h-5 bg-green-100 -left-4 opacity-0 duration-200;
+}
+
+#TableOfContents a:hover {
+  @apply text-green-100;
+}
+
+#TableOfContents a:hover::before {
+  @apply opacity-100;
+}

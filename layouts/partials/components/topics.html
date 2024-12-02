@@ -1,0 +1,10 @@
+{{- /* TODO: Remove this component? */ -}}
+<ul class="flex gap-8">
+  {{ $tags := .Site.Taxonomies.tags }}
+  {{ $sortedTags := sort $tags ".Count" "desc" }}
+  {{ range first 10 $sortedTags }}
+    <li class="text-xl font-bold text-gray-700">
+      <a href="{{ .Page.Permalink }}" class="underline">{{ .Page.Title }}</a>
+    </li>
+  {{ end }}
+</ul>

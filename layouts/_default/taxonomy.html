@@ -1,0 +1,8 @@
+{{ define "main" }}
+<header class="mb-8">
+  {{ partial "components/headings" (dict "title" .Title "h" 1 "counter" .Title "ctx" . ) }} {{- with .Content }}
+  <p>{{ . }}</p>
+  {{- end }}
+</header>
+
+{{ partial "components/paginator" (dict "grid" 2 "type" "tutorial" "ctx" . "rangeLimit" 6) }} {{ end }}

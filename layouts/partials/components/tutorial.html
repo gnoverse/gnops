@@ -1,0 +1,31 @@
+<article>
+  {{ $datetime := .Date.Format "2006-01-02" }}
+  {{ $ctx := .ctx }}
+
+  <a href="{{ (partial "utility/get-source-url" .ctx)  | absLangURL }}" class="flex flex-row-reverse justify-end gap-x-4 items-start p-5 bg-gray-800 rounded-2xl h-full duration-200 ease transition-colors text-gray-500 hover:bg-gray-700">
+    <span class="flex flex-col items-start h-full">
+        <span class="relative">
+            <span class="{{ if eq .image true }}absolute top-2 left-2 {{end}} block px-4 py-2 bg-light rounded-full text-100 text-gray-50">{{.ctx.CurrentSection.Name}}</span>
+            {{ if eq .image true }}
+                {{ $page := $ctx }}
+                {{ $formats := slice "webp" "png" }}
+                {{ $altText := $ctx.Title }}
+                {{ $class := "aspect-[4/3] w-full bg-gray-200 rounded-lg" }}
+                {{ $quality := 90 | int }}
+                {{ $width := 768 }}
+                {{ $height := 560 }}
+                {{ partial "components/picture.html" (dict "url" .ctx.Params.cover "formats" $formats "alt" $altText "class" $class "quality" $quality "width" $width "height" $height  "page" $page) }}
+            {{ end }}
+        </span>
+      <h2 class="text-gray-50 font-bold pb-2 text-300 {{ if eq .image true }}mt-8{{else}}mt-12{{end}}">
+        {{ $ctx.Title }}
+      </h2>
+      <p class="text-200 line-clamp-2 mb-6">{{ .ctx.Summary }}</p>
+      <ul class="flex items-center gap-x-5 gap-y-1 flex-wrap mt-auto">
+        <li>
+         <span>{{ T "By"  }}</span> <span class="text-gray-50">{{$ctx.Params.author}}</span></li>
+        </li>
+      </ul>
+    </span>
+  </a>
+</article>

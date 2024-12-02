@@ -1,0 +1,30 @@
+<nav class="w-full gap-x-3">
+  <ul role="menubar" class="w-full flex items-center justify-start">
+    {{ $isHome := .IsHome }}
+    <li role="presentation" class="text-700 md:text-900 font-extrabold leading-tight">
+      <a
+        href="{{ "/" | relLangURL | absURL }}"
+        aria-label="{{ .Site.Title }}"
+        role="menuitem"
+        {{ if $isHome }}aria-current="page"{{ end }}
+        ><span class="block">{{ partial "logos/logo-gnome" . }}</span></a
+      >
+    </li>
+    <li role="presentation" class="ml-auto">
+      <ul role="menu" class="flex gap-2 md:gap-8 text-200 md:text-300 font-light">
+        {{- range .Site.Menus.ressource -}}
+          <li role="presentation">
+            {{ $isMenuCurrent := (eq (lower $.Section) (lower .Name)) }}
+            <a
+              href="{{ .URL | absLangURL }}"
+              role="menuitem"
+              class="text-gray-50 hover:text-black duration-200"
+              {{ if $isMenuCurrent }}aria-current="page"{{ end }}
+              >{{ .Name }}</a
+            >
+          </li>
+        {{- end -}}
+      </ul>
+    </li>
+  </ul>
+</nav>

@@ -1,0 +1,9 @@
+<ul class="flex gap-8 mb-10 text-gray-700">
+  {{ $tags := .ctx.Site.Taxonomies.level }}
+  {{ $sortedTags := sort $tags ".Count" "desc" }}
+  {{ range first 10 $sortedTags }}
+    <li class="text-xl font-bold">
+      {{ partial "components/button" (dict "Size" "Small" "Variant" "Outlined" "Name" (T .Page.Title)  "URL" .Page.Permalink  ) }}
+    </li>
+  {{ end }}
+</ul>

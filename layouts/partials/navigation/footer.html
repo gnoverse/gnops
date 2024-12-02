@@ -1,0 +1,30 @@
+<div class="grid md:grid-cols-2 relative p-8 text-gray-500">
+  <div class="flex flex-col text-100">
+    <span>Gnops is a community project.</span>
+    <span>Check out Github Repo.</span>
+  </div>
+
+  {{/*
+  <nav class="flex flex-col sm:flex-row row-span-2 gap-12 justify-between"></nav>
+  */}}
+
+  <nav class="flex justify-end gap-8 z-50 text-100">
+    <span
+      >Learn more about Gno.land and<br />
+      be part of the conversation:</span
+    >
+
+    <div class="flex gap-8 z-50 text-100">
+      <ul role="menu" class="flex gap-4 items-center">
+        {{- range .Site.Menus.social -}}
+        <li role="presentation">
+          {{ $isMenuCurrent := (eq (lower $.Section) (lower .Name)) }}
+          <a href="{{ .URL | absLangURL }}" role="menuitem" class="hover:text-black flex items-center w-6 h-6" {{ if $isMenuCurrent }}aria-current="page" {{ end }}>
+            {{ $icon_template := printf "icons/ico-%s.html" (lower .Name) }} {{ partial $icon_template . }}
+          </a>
+        </li>
+        {{- end -}}
+      </ul>
+    </div>
+  </nav>
+</div>

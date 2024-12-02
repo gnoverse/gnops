@@ -1,0 +1,47 @@
+<div class="flex flex-col md:flex-row gap-16 items-start">
+  {{ $isArticles := gt (len (where .Site.RegularPages "Section" "articles")) 0 }}
+  {{- if $isArticles -}}
+    <div class="w-full">
+      {{ partial "components/list" (dict "section" "articles" "grid" 1 "ctx" . "type" "articles" "rangeLimit" 6) }}
+    </div>
+  {{- end -}}
+
+  {{ $social := .Site.Data.social.feed }}
+  {{- if $social -}}
+    <div
+      class="relative {{ if $isArticles }}
+        w-full lg:w-2/5 before:absolute before:block before:-left-8 before:w-0.5 before:h-full
+        before:bg-slate-100
+      {{ else }}
+        grid lg:grid-cols-4 md:grid-cols-2 gap-x-8 w-full
+      {{ end }}">
+      <h3 class="font-bold text-2xl mb-8">{{ T "socialfeed" }}</h3>
+      <ul>
+        {{- range first 4 $social -}}
+          {{ $datetime := .date.Format "2006-01-02" }}
+          <li class="flex gap-x-5 items-start pb-8 flex-1">
+            <span class="w-8 h-8 text-gray-700 mt-1 flex-shrink-0 block">
+              {{ partial (printf "icons/ico-%s.html" .social) }}
+            </span>
+
+            <span class="group flex flex-col">
+              <a class="font-bold underline text-lg pb-1.5 leading-tight" href="{{ .url }}">
+                {{ .title }}
+              </a>
+
+              {{- with .content -}}<span class="text-sm pb-1.5">{{ . }}</span>{{- end -}}
+              <span class="text-gray-700">
+                {{- with .author -}}<span class="text-xs italic pb-1.5">{{ . }}</span>{{- end -}}
+                {{- with .date -}}
+                  <time datetime="{{ $datetime }}" class="text-xs italic pb-1.5">
+                    {{ . | time.Format ":date_long" }}
+                  </time>
+                {{- end -}}
+              </span>
+            </span>
+          </li>
+        {{- end -}}
+      </ul>
+    </div>
+  {{- end -}}
+</div>

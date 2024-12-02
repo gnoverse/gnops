@@ -1,0 +1,64 @@
+{{ define "meta" }} {{ partial "head/schema" (dict "context" . "content" "head/schema/schema-website.html") }} {{ end }} {{ define "prefix" }}
+
+{{end}} {{ define "main" }} 
+
+{{ $ctx := . }} {{- $data := index .Site.Data .Site.Language.Lang -}}
+
+<div class="mt-16 pb-10 w-full flex flex-col items-center">
+    <h1 class="inline-block font-bold text-800 mb-10 m-auto">{{ .Title }}</h1>
+    {{- if isset .Params "subtitle" -}}
+    <p class="pb-2 text-500 text-gray-700 font-light">
+      {{ .Params.subtitle }} {{ if and .Params.cta .Params.ctalink }}
+      <a href="{{ .Params.ctalink | absLangURL }}" class="underline">{{ .Params.cta }}</a>
+      {{ end }}
+    </p>
+    {{- end -}}
+  
+    <form data-component="search" class="w-full flex justify-center">
+    <input data-component-input placeholder="Search" class="rounded-full w-full max-w-96 bg-gray-800 p-4 pl-10 outline-none" />
+    </form>
+
+    <nav class="mt-10" data-component="tabs">
+      <ul class="flex gap-6 text-gray-500">
+        <li>
+            <input type="radio" id="all" name="tab" value="all" class="hidden peer" checked />
+            <label data-component-item="all" for="all" class="ease duration-300 cursor-pointer hover:text-gray-50 peer-checked:text-gray-50">All</label>
+        </li>
+        {{- range .Site.Menus.main -}} 
+            {{- if eq .Params.list true -}}
+                <li>
+                    <input type="radio" id="{{ .Name }}" name="tab" value="{{ .Name }}" class="hidden peer" />
+                    <label data-component-item="{{ .Name }}" for="{{ .Name }}" class="ease duration-300 cursor-pointer hover:text-gray-50 peer-checked:text-gray-50">{{ .Identifier }}</label>
+                        </li>
+            {{- end -}}
+        {{- end -}} 
+      </ul>
+      <div data-component-navbar class="h-0.5 w-full bg-gray-50 rounded-full mt-1.5"></div>
+    </nav>
+  </div>
+
+<section data-component="list" class="mb-24">
+  {{ $maxDisplayed := 6 }}
+
+  <div data-collection="all">
+    {{ $articles := .Site.RegularPages }}
+    {{ partial "components/list" (dict "list" $articles "ctx" $ctx "rangeLimit" $maxDisplayed "sectionLink" true) }} 
+    {{ if gt (len $articles) $maxDisplayed }} 
+        <a href="{{ "/articles/page/2/" | absLangURL }}" data-component-loadbtn="all" class="prevent-barba block w-fit px-5 py-4 mx-auto bg-gray-800 text-gray-500 rounded-full my-6 duration-200 ease transition-colors hover:bg-gray-700 hover:text-gray-50">{{ T "LoadMore" }}</a>
+    {{ end }}
+  </div>
+  
+  {{- range .Site.Menus.main -}} 
+    {{- if eq .Params.list true -}} 
+    {{ $subject := site.GetPage (printf "articles/%s" .Name) }}
+    {{ $articles := $subject.RegularPagesRecursive }}
+    <div data-collection="{{lower .Name}}" class="hidden">
+        {{ partial "components/list" (dict "list" $articles "ctx" $ctx "rangeLimit" $maxDisplayed "sectionLink" true) }} 
+        {{ if gt (len $articles) $maxDisplayed }} 
+            <a href="{{ printf "/articles/%s/page/2/" .Name | absLangURL }}" data-component-loadbtn="{{lower .Name}}" class="prevent-barba block w-fit px-5 py-4 mx-auto bg-gray-800 text-gray-500 rounded-full my-6">{{ T "LoadMore" }}</a>
+        {{ end }}
+    </div>
+    {{- end -}} 
+  {{- end -}}
+</section>
+{{ end }}
