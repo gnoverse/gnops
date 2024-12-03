@@ -7,7 +7,7 @@ GNOPS is a project designed to be a Community-run hub for the Gno DevOps family.
 To contribute to the project's content, please focus on the following directories:
 
 - **`content/`**: Contains the main content of the site.
-  - **`english/`**: English language content files, classified per article kind (showcase, guides, effective-gno).
+- **`english/`**: English language content files, classified per article kind (showcase, guides, effective-gno).
 - **`i18n/`**: Internationalization files for supporting multiple languages.
 
 When adding or modifying content, ensure that your contributions align with the project's/front-matter structure and standards.
@@ -46,7 +46,6 @@ When adding or modifying content, ensure that your contributions align with the 
 ### Preview (for deploy previews)
 
 - **Preview Build**: Build and serve the site for preview.
-
   `pnpm preview`
 
 - **Hugo Preview Only**: Build the Hugo site in preview mode.
@@ -58,13 +57,10 @@ When adding or modifying content, ensure that your contributions align with the 
 
 ## Website Dependencies
 
-- **@barba/core**: Page transitions.
-- **@fontsource/inter & @fontsource-variable/inter**: Fonts.
+- **hugo**: SSG website builder made in go
+- **barba**: Page transitions.
 - **gsap**: Animations.
-- **@tailwindcss/typography**: Typography plugin for Tailwind CSS.
-- **autoprefixer**: Vendor prefixing for CSS.
-- **npm-run-all**: Run multiple npm scripts in parallel or sequence.
-- **prettier & plugins**: Code formatting.
+- **tailwindcss**: Atomic CSS system - Tailwind.
 - **typescript**: Type-safe JavaScript.
 - **vite**: Development and build tool.
 
