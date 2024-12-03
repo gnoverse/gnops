@@ -12,8 +12,9 @@
     "preview:hugo": "hugo -e default",
     "preview": "rm -rf build/* && rm -rf dist/* && run-s preview:hugo build:vite",
     "build:hugo": "hugo -e production",
+    "build:search": "npx pagefind --site dist",
     "build:vite": "tsc && vite build",
-    "build": "rm -rf build/* && rm -rf dist/* && run-s build:hugo build:vite"
+    "build": "rm -rf build/* && rm -rf dist/* && run-s build:hugo build:search build:vite"
   },
   "keywords": [],
   "author": "",

@@ -5,6 +5,23 @@
 @import url("@fontsource-variable/inter");
 @import url("@fontsource/inter/latin.css");
 
+/* Proxima Nova */
+@font-face {
+  font-family: "Proxima";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/proxima/proximanova_regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Proxima";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/proxima/proximanova_bold.woff2") format("woff2");
+}
+
 /**
    TAILWIND
 */

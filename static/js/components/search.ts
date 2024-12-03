@@ -40,6 +40,10 @@ export class Search extends BaseComponent {
     this.loadMore();
   }
 
+  private onVoidInput(e: Event) {
+    this.VoidInput();
+  }
+
   protected setupEvents(): void {
     this.eventBindings = [
       {
@@ -52,6 +56,7 @@ export class Search extends BaseComponent {
         type: "search-loadmore",
         handler: this.onLoadMore.bind(this),
       },
+      { target: document, type: "search-voidInput", handler: this.onVoidInput.bind(this) },
     ];
   }
 
@@ -81,6 +86,10 @@ export class Search extends BaseComponent {
         },
       })
     );
+  }
+
+  private VoidInput() {
+    this.DOM.searchInput.value = "";
   }
 
   private async search(e: Event) {

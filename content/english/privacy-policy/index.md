@@ -10,12 +10,12 @@ We are committed to protecting the privacy of our users. This Privacy Policy exp
 
 ## 2. Scope and Updates to this Privacy Policy
 
-This Privacy Policy applies to personal information processed by us in connection with Gno.me. By accessing or using Gno.me, you signify that you have read, understood, and agree to the Terms and Conditions and this Privacy Policy. We may revise this Privacy Policy from time to time in our sole discretion. Material changes will be notified as required by applicable law. Continuing to use Gno.me after updates means you accept the new policy.
+This Privacy Policy applies to personal information processed by us in connection with gnops. By accessing or using gnops, you signify that you have read, understood, and agree to the Terms and Conditions and this Privacy Policy. We may revise this Privacy Policy from time to time in our sole discretion. Material changes will be notified as required by applicable law. Continuing to use gnops after updates means you accept the new policy.
 
 ## 3. Data Collection
 
-- **Personal Information:** Includes identifiers such as your name, email address, username, profile picture, phone number, or address when you register to use Gno.me.
-- **Geolocation:** Information about where you live or use Gno.me.
+- **Personal Information:** Includes identifiers such as your name, email address, username, profile picture, phone number, or address when you register to use gnops.
+- **Geolocation:** Information about where you live or use gnops.
 - **Communications:** Any personal information you provide in communications with us.
 - **Automatically Collected Information:** Includes your IP address, user settings, cookie identifiers, mobile carrier, browser or device information, Internet service provider, pages visited, links clicked, content interacted with, and usage details.
 
@@ -53,7 +53,7 @@ We retain your personal data as long as necessary to provide services, fulfill t
 
 ## 7. Data Security
 
-We implement appropriate technical and organizational measures to protect your data against unauthorized access, alteration, disclosure, or destruction. These measures include encryption, secure servers, and access controls. However, no system is completely secure, and we cannot guarantee absolute security. We may communicate with you electronically regarding security, privacy, and administrative issues relating to your use of Gno.me.
+We implement appropriate technical and organizational measures to protect your data against unauthorized access, alteration, disclosure, or destruction. These measures include encryption, secure servers, and access controls. However, no system is completely secure, and we cannot guarantee absolute security. We may communicate with you electronically regarding security, privacy, and administrative issues relating to your use of gnops.
 
 ## 8. User Rights
 
@@ -66,7 +66,7 @@ You have the right to:
 - Withdraw consent where our processing is based on your consent.
 - Data portability.
 
-To exercise these rights, contact us at privacy@gno.me.
+To exercise these rights, contact us at privacy@gnops.
 
 ## 9. Cookies and Tracking
 
@@ -118,4 +118,4 @@ We may update our Privacy Policy from time to time. We will notify you of any ch
 
 ## 21. Contact Information
 
-For any questions about this Privacy Policy, please contact us at privacy@gno.me.
+For any questions about this Privacy Policy, please contact us at privacy@gnops.

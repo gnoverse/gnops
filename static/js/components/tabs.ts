@@ -22,6 +22,7 @@ export class Tabs extends BaseComponent {
       tabsBar: "[data-component-nav='tabs']",
       searchBar: "[data-component-nav='search']",
       searchCounter: "[data-component-nav-searchcount]",
+      searchTabBack: "[data-component-tabback]",
     });
 
     if (this.DOM.tabsMenuItem) {
@@ -37,6 +38,11 @@ export class Tabs extends BaseComponent {
         handler: this.onTabClick.bind(this),
       },
       {
+        target: this.DOM.searchTabBack,
+        type: "click",
+        handler: this.onTabBack.bind(this),
+      },
+      {
         target: document,
         type: "tabs-displaySearchNav",
         handler: this.onDisplaySearchBar.bind(this),
@@ -49,6 +55,11 @@ export class Tabs extends BaseComponent {
     if (target.dataset.componentItem) {
       this.updateTab(target);
     }
+  }
+
+  private onTabBack(e: Event) {
+    this.displayTabshBar();
+    document.dispatchEvent(new CustomEvent("search-voidInput"));
   }
 
   private onDisplaySearchBar(e: Event) {

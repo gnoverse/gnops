@@ -60,6 +60,7 @@ module.exports = {
       current: "currentColor",
     },
     fontFamily: {
+      proxima: ["Proxima", defaultTheme.fontFamily.sans],
       interVar: ['"Inter var"', defaultTheme.fontFamily.sans],
       interNormal: ["Inter", defaultTheme.fontFamily.sans],
     },
