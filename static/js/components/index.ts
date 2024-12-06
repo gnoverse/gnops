@@ -1,6 +1,7 @@
 import { Tabs } from "./tabs";
 import { Search } from "./search";
 import { List } from "./list";
+import { ArticleContent } from "./articlecontent";
 
 interface Component {
   destroy: () => void;
@@ -10,6 +11,7 @@ const componentRegistry: Record<string, new (element: HTMLElement) => Component>
   tabs: Tabs,
   search: Search,
   list: List,
+  article: ArticleContent,
 };
 
 let activeInstances: Component[] = [];

@@ -114,7 +114,6 @@ export class List extends BaseComponent {
   }
 
   voidList(listName: string) {
-    console.log("voidList");
     const listToVoid = this.DOM.lists.find((list: HTMLElement) => list.dataset.collection === listName);
     const art = listToVoid?.querySelector("[data-component-articles]");
     if (art) art.innerHTML = "";

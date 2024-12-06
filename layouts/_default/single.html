@@ -42,7 +42,7 @@
     </p>
     {{- end -}}
 
-    <article class="prose max-w-none" {{ with .Params.contentLang }}lang="{{ . }}" {{ end }}>{{ .Content }}</article>
+    <article data-component="article" class="prose max-w-none" {{ with .Params.contentLang }}lang="{{ . }}" {{ end }}>{{ .Content }}</article>
 
     <aside class="my-28">
       <div class="flex justify-between mb-6">

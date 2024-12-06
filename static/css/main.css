@@ -147,3 +147,11 @@
 #TableOfContents a:hover::before {
   @apply opacity-100;
 }
+
+.highlight {
+  @apply relative;
+}
+
+.highlight button {
+  @apply absolute right-1 top-1 bg-gray-700 px-1.5 py-px text-50 rounded;
+}
