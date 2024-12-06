@@ -60,6 +60,17 @@ export class Tabs extends BaseComponent {
   private onTabBack(e: Event) {
     this.displayTabshBar();
     document.dispatchEvent(new CustomEvent("search-voidInput"));
+    document.dispatchEvent(
+      new CustomEvent("list-displayList", {
+        detail: { message: "all" },
+      })
+    );
+    document.dispatchEvent(
+      new CustomEvent("list-voidList", {
+        detail: { message: "search" },
+      })
+    );
+    this.updateTab(this.DOM.tabsMenuItem[0], true);
   }
 
   private onDisplaySearchBar(e: Event) {

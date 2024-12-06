@@ -16,7 +16,6 @@ const BaseComponent = class {
   protected eventBindings: EventBinding[] = [];
 
   constructor(el: HTMLElement) {
-    console.log("BaseComponent initialized");
     this.DOM.el = el;
   }
 

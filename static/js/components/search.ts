@@ -48,7 +48,7 @@ export class Search extends BaseComponent {
     this.eventBindings = [
       {
         target: this.DOM.el,
-        type: "submit",
+        type: "input",
         handler: this.search.bind(this),
       },
       {
@@ -108,13 +108,7 @@ export class Search extends BaseComponent {
         })
       );
 
-      document.dispatchEvent(
-        new CustomEvent("list-voidList", {
-          detail: { message: "search" },
-        })
-      );
-
-      this.searchResult = await this.pagefind.search(query);
+      this.searchResult = await this.pagefind.debouncedSearch(query, {}, 200);
 
       document.dispatchEvent(
         new CustomEvent("tabs-displaySearchNav", {
@@ -127,8 +121,13 @@ export class Search extends BaseComponent {
       const initialResults = await Promise.all(this.searchResult.results.slice(0, this.resulPerLoad).map((r: any) => r.data()));
 
       this.loadedResults = initialResults.length;
-
       const hasMoreResults = this.loadedResults < this.searchResult.results.length;
+
+      document.dispatchEvent(
+        new CustomEvent("list-voidList", {
+          detail: { message: "search" },
+        })
+      );
 
       if (initialResults.length > 0) {
         document.dispatchEvent(
