@@ -26,34 +26,28 @@
             leveled = true
 
 [[ressource]]
-    identifier = "Contribute to Gnops"
-    name = "gnops"
-    url = "https://gno.land/"
-    weight = 1
-
-[[ressource]]
     identifier = "gno.land"
     name = "gno.land"
     url = "https://gno.land/"
-    weight = 2
+    weight = 1
 
 [[ressource]]
     identifier = "gno.docs"
     name = "gno.docs"
     url = "https://docs.gno.land/"
-    weight = 3
+    weight = 2
 
 [[ressource]]
     identifier = "gno-by-example"
     name = "gno-by-example"
     url = "https://gno-by-example.com/"
-    weight = 4
+    weight = 3
 
 [[ressource]]
     identifier = "play.gno.land"
     name = "play.gno.land"
     url = "https://play.gno.land/"
-    weight = 5
+    weight = 4
 
 
 

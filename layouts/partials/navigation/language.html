@@ -1,5 +1,5 @@
 {{ $translations := .AllTranslations }} {{- if gt (len $translations) 1 -}}
-<nav class="relative flex items-center ml-8">
+<nav class="relative items-center ml-8 hidden">
   <label class="cursor-pointer flex gap-1 font-light items-center" for="navigation-lang-selector">
     {{ partial "icons/ico-globe" . }}
     <span class="leading-none hidden sm:block">{{ .Language.LanguageName }}</span>

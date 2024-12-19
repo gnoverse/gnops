@@ -1,5 +1,5 @@
 <nav class="w-full gap-x-3">
-  <ul role="menubar" class="w-full flex items-center justify-start">
+  <ul role="menubar" class="w-full flex items-center md:justify-start justify-center">
     {{ $isHome := .IsHome }}
     <li role="presentation" class="text-700 md:text-900 font-extrabold leading-tight">
       <a
@@ -10,8 +10,8 @@
         ><span class="block">{{ partial "logos/logo-gnoland" . }}</span></a
       >
     </li>
-    <li role="presentation" class="ml-auto">
-      <ul role="menu" class="flex gap-2 md:gap-8 text-200 md:text-300 font-light">
+    <li role="presentation" class="ml-auto hidden md:block">
+      <ul role="menu" class="flex gap-6 lg:gap-8 text-200 md:text-300 font-light">
         {{- range .Site.Menus.ressource -}}
           <li role="presentation">
             {{ $isMenuCurrent := (eq (lower $.Section) (lower .Name)) }}

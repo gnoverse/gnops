@@ -1,5 +1,5 @@
-<div class="grid md:grid-cols-2 relative p-8 text-gray-500">
-  <div class="flex flex-col text-100">
+<div class="grid md:grid-cols-2 gap-2 relative pb-8 md:py-8 text-gray-500 text-200 md:text-100 text-center md:text-left">
+  <div class="flex flex-col">
     <span>Gnops is a community project.</span>
     <span>Check out Github Repo.</span>
   </div>
@@ -8,13 +8,13 @@
   <nav class="flex flex-col sm:flex-row row-span-2 gap-12 justify-between"></nav>
   */}}
 
-  <nav class="flex justify-end gap-8 z-50 text-100">
+  <nav class="flex flex-col md:flex-row justify-end gap-8 z-50">
     <span
       >Learn more about Gno.land and<br />
       be part of the conversation:</span
     >
 
-    <div class="flex gap-8 z-50 text-100">
+    <div class="flex gap-8 z-50 text-100 justify-center md:justify-end">
       <ul role="menu" class="flex gap-4 items-center">
         {{- range .Site.Menus.social -}}
         <li role="presentation">
