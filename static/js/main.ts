@@ -18,7 +18,7 @@ const website: any = {};
   \\/_____/   \\/_/ \\/_/   \\/_____/   \\/_/     \\/_____/                                                       
 `);
 
-    console.log(`If you look the the perfect adventure take a look at our carrer page on gno.land`);
+    console.log(`If you look the the perfect adventure take a look at our career page on gno.land`);
     init();
   };
 })(website);
