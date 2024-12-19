@@ -69,7 +69,7 @@ When adding or modifying content, ensure that your contributions align with the 
 - **`content/`**: Contains site content files.
 - **`i18n/`**: Contains translations for internationalization.
 - **`assets/images/`**: Media files used on the site.
-- **`dist/`**: Output for built files (used by Hugo and Vite).
+- **`temp/`**: Output for built files (used by Hugo and Vite).
 - **`build/`**: Final build directory for production.
 
 ## License

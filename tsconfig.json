@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/js",
+    "outDir": "./temp/js",
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",

@@ -7,7 +7,7 @@ import fs from "fs";
 /**
  * Read all HTML Files
  */
-const buildDir = "dist";
+const buildDir = "temp";
 
 /**
  * Common function to process files in a directory
