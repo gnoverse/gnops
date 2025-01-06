@@ -18,8 +18,9 @@ const componentRegistry: Record<string, new (element: HTMLElement) => Component>
 
 let activeInstances: Component[] = [];
 
-function initComponents(): void {
-  const elements = document.querySelectorAll<HTMLElement>("[data-component]");
+function initComponents(scope: HTMLElement = document.body): void {
+  const elements = scope.querySelectorAll<HTMLElement>("[data-component]");
+
   elements.forEach((element) => {
     const componentName = element.dataset.component;
 

@@ -1,8 +1,16 @@
 import barba from "@barba/core";
 import { initComponents, destroyComponents } from "./components/index";
+import { Overlay } from "./overlay.js";
 
 const init = function (): void {
   initComponents();
+
+  const overlayEl = document.querySelector(".overlay") as HTMLElement;
+
+  const overlay = new Overlay(overlayEl, {
+    rows: 9,
+    columns: 17,
+  });
 
   barba.init({
     prevent: ({ el }) => el.classList && el.classList.contains("prevent-barba"),
@@ -10,20 +18,40 @@ const init = function (): void {
       {
         name: "default",
         async leave(data) {
-          console.log("Leaving page:", data.current.url);
+          const animation = overlay.show({
+            duration: 0.25,
+            ease: "power1.in",
+            stagger: {
+              grid: [overlay.options.rows, overlay.options.columns],
+              from: "center",
+              each: 0.025,
+            },
+          });
 
-          destroyComponents();
+          return animation;
         },
         async enter(data) {
-          window.scrollTo(0, 0);
-          console.log("Entering page:", data.next.url);
+          destroyComponents();
+          initComponents(data.next.container);
 
-          console.log(data.current.namespace);
+          window.scrollTo(0, 0);
 
           const page = data.next.container.dataset.page;
           document.body.dataset.page = page || "";
+        },
 
-          initComponents();
+        after(data) {
+          const animation = overlay.hide({
+            duration: 0.25,
+            ease: "power1",
+            stagger: {
+              grid: [overlay.options.rows, overlay.options.columns],
+              from: "center",
+              each: 0.025,
+            },
+          });
+
+          return animation;
         },
       },
     ],

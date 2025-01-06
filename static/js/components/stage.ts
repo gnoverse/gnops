@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
@@ -9,19 +8,18 @@ export class Stage extends BaseComponent {
   private scene: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
   private renderer!: THREE.WebGLRenderer;
-  private controls!: OrbitControls;
   private sizes: { width: number; height: number };
-  private clock: THREE.Clock;
+  private mouse: { x: number; y: number } = { x: 0, y: 0 };
+  private model!: THREE.Object3D;
 
   constructor(el: HTMLElement) {
     super(el);
 
     this.scene = new THREE.Scene();
-    this.clock = new THREE.Clock();
 
     this.sizes = {
       width: window.innerWidth,
-      height: window.innerHeight / 3,
+      height: window.innerHeight,
     };
 
     this.init();
@@ -32,7 +30,6 @@ export class Stage extends BaseComponent {
   private init(): void {
     this.setupRenderer();
     this.setupCamera();
-    this.setupControls();
     this.loadModels();
     this.setupLights();
     this.animate();
@@ -53,15 +50,8 @@ export class Stage extends BaseComponent {
 
   private setupCamera(): void {
     this.camera = new THREE.PerspectiveCamera(75, this.sizes.width / this.sizes.height, 0.1, 100);
-    this.camera.position.set(0.5, 0.5, 0.5);
+    this.camera.position.set(0, 0.2, 1.2);
     this.scene.add(this.camera);
-  }
-
-  private setupControls(): void {
-    const { el } = this.DOM;
-    this.controls = new OrbitControls(this.camera, el);
-    this.controls.target.set(0, 0.75, 0);
-    this.controls.enableDamping = true;
   }
 
   private loadModels(): void {
@@ -73,8 +63,9 @@ export class Stage extends BaseComponent {
 
     gltfLoader.load("/models/gnome.gltf", (gltf) => {
       gltf.scene.scale.set(0.025, 0.025, 0.025);
-      gltf.scene.rotateY(0.75);
+      gltf.scene.position.set(0, 0, 0);
       this.scene.add(gltf.scene);
+      this.model = gltf.scene;
     });
   }
 
@@ -94,6 +85,22 @@ export class Stage extends BaseComponent {
     this.scene.add(directionalLight);
   }
 
+  private animate(): void {
+    const tick = () => {
+      // Update camera position based on mouse movement
+      //   this.camera.position.x = Math.sin(this.mouse.x * Math.PI * 2) * 2;
+      //   this.camera.position.z = Math.cos(this.mouse.x * Math.PI * 2) * 2;
+      //   this.camera.position.y = this.mouse.y * 1;
+      //   this.camera.lookAt(this.scene.position);
+
+      this.renderer.render(this.scene, this.camera);
+
+      window.requestAnimationFrame(tick);
+    };
+
+    tick();
+  }
+
   protected setupEvents(): void {
     this.eventBindings = [
       {
@@ -101,12 +108,17 @@ export class Stage extends BaseComponent {
         type: "resize",
         handler: this.onResize.bind(this),
       },
+      {
+        target: window,
+        type: "mousemove",
+        handler: this.onMouseMove.bind(this),
+      },
     ];
   }
 
   private onResize(): void {
     this.sizes.width = window.innerWidth;
-    this.sizes.height = window.innerHeight / 3;
+    this.sizes.height = window.innerHeight;
 
     if (this.camera && this.renderer) {
       this.camera.aspect = this.sizes.width / this.sizes.height;
@@ -117,15 +129,9 @@ export class Stage extends BaseComponent {
     }
   }
 
-  private animate(): void {
-    const tick = () => {
-      this.controls.update();
-      this.renderer.render(this.scene, this.camera);
-
-      window.requestAnimationFrame(tick);
-    };
-
-    tick();
+  private onMouseMove(evt: MouseEvent): void {
+    this.mouse.x = -evt.clientX / this.sizes.width - 0.5;
+    this.mouse.y = evt.clientY / this.sizes.height - 0.5;
   }
 
   destroy(): void {

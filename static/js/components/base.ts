@@ -5,7 +5,7 @@ interface Component {
 interface EventBinding {
   target: EventTarget | null;
   type: string;
-  handler: EventListener;
+  handler: any;
 }
 
 const BaseComponent = class {

@@ -5,6 +5,7 @@
   </head>
 
   <body class="flex flex-col min-h-screen" data-page="home" data-barba="wrapper">
+    <div class="overlay"></div>
     {{ block "header" . }}{{ partial "layout/header.html" . }}{{ end }}
     <div class="max-w-screen-xl mx-auto w-full px-4">
       {{ block "prefix" . }}{{ end }}
