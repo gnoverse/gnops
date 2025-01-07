@@ -85,6 +85,27 @@
   .listArticle .listArticle__author {
     @apply inline-block text-gray-50 mt-6;
   }
+
+  .wrapper-perspective {
+    perspective: 1000px;
+  }
+  .overlay {
+    grid-area: 1 / 1 / -1 / -1;
+    display: grid;
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    z-index: 999;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+    --columns: 20;
+    grid-template-columns: repeat(var(--columns), 1fr);
+  }
+
+  .overlay div {
+    @apply bg-gray-800;
+  }
 }
 
 @layer utilities {

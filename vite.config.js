@@ -9,7 +9,10 @@ import fs from "fs";
  */
 const buildDir = "temp";
 
-const directoriesToCopy = [{ source: "pagefind", target: "pagefind" }];
+const directoriesToCopy = [
+  { source: "pagefind", target: "pagefind" },
+  { source: "models", target: "models" },
+];
 
 /**
  * Common function to process files in a directory

@@ -4,8 +4,9 @@
 
 {{ $ctx := . }} {{- $data := index .Site.Data .Site.Language.Lang -}}
 
-<div class="mt-8 md:mt-16 pb-10 w-full flex flex-col items-center">
-    <h1 class="font-proxima inline-block font-bold text-800 text-green-200 mb-10 m-auto">{{ .Title }}</h1>
+<div class="pb-10 w-full flex flex-col items-center">
+    <canvas class="absolute pointer-events-none z-max" data-component="stage"></canvas>
+    <h1 class="mt-96 font-proxima inline-block font-bold text-800 text-green-200 mb-10 m-auto">{{ .Title }}</h1>
     {{- if isset .Params "subtitle" -}}
     <p class="pb-2 text-500 text-gray-700 font-light">
       {{ .Params.subtitle }} {{ if and .Params.cta .Params.ctalink }}
@@ -22,22 +23,22 @@
     </form>
 
     <nav class="mt-10 w-full max-w-2xl" data-component="tabs">
-        <div data-component-nav="tabs" class="block">
-            <ul class="flex justify-center gap-6 text-gray-500">
+        <div data-component-nav="tabs" class="block w-fit m-auto">
+            <ul class="flex justify-center gap-6 text-gray-500 ">
                 <li>
                     <input type="radio" id="all" name="tab" value="all" class="hidden peer" checked />
                     <label data-component-item="all" for="all" class="ease duration-300 cursor-pointer hover:text-gray-50 peer-checked:text-gray-50">All</label>
                 </li>
                 {{- range .Site.Menus.main -}} 
                     {{- if eq .Params.list true -}}
-                        <li>
+                        <li class="min-w-fit">
                             <input type="radio" id="{{ .Name }}" name="tab" value="{{ .Name }}" class="hidden peer" />
                             <label data-component-item="{{ .Name }}" for="{{ .Name }}" class="ease duration-300 cursor-pointer hover:text-gray-50 peer-checked:text-gray-50">{{ .Identifier }}</label>
                                 </li>
                     {{- end -}}
                 {{- end -}} 
             </ul>
-            <div data-component-navbar class="h-0.5 w-full bg-gray-50 rounded-full mt-1.5"></div>
+            <div data-component-navbar class="h-0.5 w-[18px] bg-gray-50 rounded-full mt-1.5"></div>
         </div>
         <div data-component-nav="search" class="hidden relative justify-center items-center text-gray-500">
             <button
