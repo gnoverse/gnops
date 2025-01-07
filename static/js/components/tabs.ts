@@ -23,10 +23,6 @@ export class Tabs extends BaseComponent {
       searchCounter: "[data-component-nav-searchcount]",
       searchTabBack: "[data-component-tabback]",
     });
-
-    if (this.DOM.tabsMenuItem) {
-      this.updateTab(this.DOM.tabsMenuItem[0], true);
-    }
   }
 
   protected setupEvents(): void {
@@ -89,10 +85,20 @@ export class Tabs extends BaseComponent {
   }
 
   updateTab(el: HTMLElement, instant = false) {
+    const parent = el.closest("ul");
+    if (!parent) return;
+
     const barInfo = el.getBoundingClientRect();
-    gsap.to(this.DOM.navbar, {
+    const parentInfo = parent.getBoundingClientRect();
+
+    const relativeBarInfo = {
       width: barInfo.width,
-      x: barInfo.x - (this.DOM.el?.offsetLeft ?? 0),
+      x: barInfo.x - parentInfo.x,
+    };
+
+    gsap.to(this.DOM.navbar, {
+      width: relativeBarInfo.width,
+      x: relativeBarInfo.x,
       duration: instant ? 0 : 0.4,
     });
 
