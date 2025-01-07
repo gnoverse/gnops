@@ -1,7 +1,9 @@
+import gsap from "gsap";
 import { BaseComponent } from "./base";
 
 export class List extends BaseComponent {
   private loadBtn: HTMLLinkElement | null = null;
+  private lastActiveList: string = "all";
 
   constructor(el: HTMLElement) {
     super(el);
@@ -107,10 +109,42 @@ export class List extends BaseComponent {
   displayList(item: string) {
     if (!Array.isArray(this.DOM.lists)) return;
 
-    this.DOM.lists.forEach((list) => {
-      const isList = list.dataset.collection === item;
-      list.classList[isList ? "remove" : "add"]("hidden");
-    });
+    let activeList: HTMLElement | null = null;
+
+    activeList = this.DOM.lists.find((list: HTMLElement) => list.dataset.collection === item) || null;
+    const lastActiveList = this.DOM.lists.find((list: HTMLElement) => list.dataset.collection === this.lastActiveList) || null;
+
+    if (!activeList || !lastActiveList) return;
+
+    const lastArticles = Array.from(lastActiveList.querySelectorAll("article")).slice(0, 6);
+    const newArticles = Array.from(activeList.querySelectorAll("article")).slice(0, 6);
+
+    const tl = gsap.timeline();
+    tl.to(lastArticles, {
+      opacity: 0,
+      y: -20,
+      duration: 0.3,
+      stagger: 0.1,
+      ease: "power2.in",
+      onComplete: () => {
+        lastActiveList.classList.add("hidden");
+        activeList.classList.remove("hidden");
+        this.lastActiveList = activeList.dataset.collection || "all";
+      },
+    }).fromTo(
+      newArticles,
+      {
+        opacity: 0,
+        y: 20,
+      },
+      {
+        duration: 0.5,
+        stagger: 0.1,
+        opacity: 1,
+        y: 0,
+        ease: "power2.out",
+      }
+    );
   }
 
   voidList(listName: string) {
@@ -173,19 +207,32 @@ export class List extends BaseComponent {
 
     if (listArticles) {
       const fragment = document.createDocumentFragment();
+      const newArticles: HTMLElement[] = [];
 
       if (Array.isArray(data)) {
         Array.from(data).forEach((res) => {
           const articleContent = { url: res.url, genre: res.meta.section, title: res.meta.title, description: res.meta.summary, author: res.meta.author };
-          fragment.appendChild(this.createArticleHTML(articleContent));
+          const articleElement = this.createArticleHTML(articleContent);
+          fragment.appendChild(articleElement);
+          newArticles.push(articleElement);
         });
       } else {
         Array.from(data.childNodes).forEach((child) => {
-          const clonedNode = (child as Node).cloneNode(true);
+          const clonedNode = (child as Node).cloneNode(true) as HTMLElement;
           fragment.appendChild(clonedNode);
+          newArticles.push(clonedNode);
         });
       }
+
       listArticles.appendChild(fragment);
+
+      gsap.from(newArticles, {
+        opacity: 0,
+        y: 20,
+        duration: 0.5,
+        stagger: 0.1,
+        ease: "power2.out",
+      });
     }
   }
 
