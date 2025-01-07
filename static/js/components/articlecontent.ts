@@ -17,9 +17,11 @@ export class ArticleContent extends BaseComponent {
       codeblocks: ".highlight",
     });
 
-    this.DOM.codeblocks.forEach((codeBlock: HTMLElement) => {
-      this.createCopyBtn(codeBlock);
-    });
+    if (this.DOM.codeblocks) {
+      this.DOM.codeblocks.forEach((codeBlock: HTMLElement) => {
+        this.createCopyBtn(codeBlock);
+      });
+    }
   }
 
   protected setupEvents(): void {

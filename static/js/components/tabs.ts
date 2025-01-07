@@ -1,5 +1,4 @@
 import { BaseComponent } from "./base";
-import { barba } from "../barba";
 
 import gsap from "gsap";
 
