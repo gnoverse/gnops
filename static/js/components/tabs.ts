@@ -55,17 +55,7 @@ export class Tabs extends BaseComponent {
   private onTabBack(e: Event) {
     this.displayTabshBar();
     document.dispatchEvent(new CustomEvent("search-voidInput"));
-    document.dispatchEvent(
-      new CustomEvent("list-displayList", {
-        detail: { message: "all" },
-      })
-    );
-    document.dispatchEvent(
-      new CustomEvent("list-voidList", {
-        detail: { message: "search" },
-      })
-    );
-    this.updateTab(this.DOM.tabsMenuItem[0], true);
+    this.updateTab(this.DOM.tabsMenuItem[0], true, true);
   }
 
   private onDisplaySearchBar(e: Event) {
@@ -84,7 +74,7 @@ export class Tabs extends BaseComponent {
     this.DOM.tabsBar.classList.replace("hidden", "block");
   }
 
-  updateTab(el: HTMLElement, instant = false) {
+  updateTab(el: HTMLElement, instant = false, refresh = false) {
     const parent = el.closest("ul");
     if (!parent) return;
 
@@ -103,14 +93,19 @@ export class Tabs extends BaseComponent {
     });
 
     const tabName = el.dataset.componentItem ?? "";
-    this.updateList(tabName);
+    this.updateList(tabName, refresh);
   }
 
-  updateList(listName: string) {
+  updateList(listName: string, refresh = false) {
     if (listName === "") return;
     document.dispatchEvent(
       new CustomEvent("list-displayList", {
-        detail: { message: listName },
+        detail: {
+          message: {
+            listName,
+            refresh,
+          },
+        },
       })
     );
   }

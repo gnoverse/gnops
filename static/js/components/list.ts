@@ -63,19 +63,20 @@ export class List extends BaseComponent {
   }
 
   private onDisplayList(e: Event) {
-    const customEvent = e as CustomEvent<{ message: string }>;
-    this.displayList(customEvent.detail.message);
+    const customEvent = e as CustomEvent<{ message: any }>;
+    const { listName, refresh } = customEvent.detail.message;
+    this.displayList(listName, refresh);
   }
 
   private onVoidList(e: Event) {
-    const customEvent = e as CustomEvent<{ message: string }>;
+    const customEvent = e as CustomEvent<{ message: any }>;
     this.voidList(customEvent.detail.message);
   }
 
   private onUpdateList(e: Event) {
     const customEvent = e as CustomEvent<{ message: any }>;
-    const { listName, data, loadMoreUrl } = customEvent.detail.message;
-    this.updateList(listName, data, loadMoreUrl);
+    const { listName, data, loadMoreUrl, refresh } = customEvent.detail.message;
+    this.updateList(listName, data, loadMoreUrl, refresh);
   }
 
   private onSearchClick(e: Event) {
@@ -106,8 +107,9 @@ export class List extends BaseComponent {
     return template.content.firstElementChild as HTMLElement;
   }
 
-  displayList(item: string) {
+  displayList(item: string, refresh = false) {
     if (!Array.isArray(this.DOM.lists)) return;
+    if (this.lastActiveList === item) return;
 
     let activeList: HTMLElement | null = null;
 
@@ -116,8 +118,8 @@ export class List extends BaseComponent {
 
     if (!activeList || !lastActiveList) return;
 
-    const lastArticles = Array.from(lastActiveList.querySelectorAll("article")).slice(0, 6);
-    const newArticles = Array.from(activeList.querySelectorAll("article")).slice(0, 6);
+    const lastArticles = Array.from(lastActiveList.querySelectorAll("article")).slice(0, 8);
+    const newArticles = Array.from(activeList.querySelectorAll("article")).slice(0, 8);
 
     const tl = gsap.timeline();
     tl.to(lastArticles, {
@@ -127,24 +129,30 @@ export class List extends BaseComponent {
       stagger: 0.1,
       ease: "power2.in",
       onComplete: () => {
+        refresh && (lastActiveList.querySelector("[data-component-articles]").innerHTML = "");
+
         lastActiveList.classList.add("hidden");
         activeList.classList.remove("hidden");
         this.lastActiveList = activeList.dataset.collection || "all";
       },
-    }).fromTo(
-      newArticles,
-      {
-        opacity: 0,
-        y: 20,
-      },
-      {
-        duration: 0.5,
-        stagger: 0.1,
-        opacity: 1,
-        y: 0,
-        ease: "power2.out",
-      }
-    );
+    });
+
+    if (newArticles.length > 0) {
+      tl.fromTo(
+        newArticles,
+        {
+          opacity: 0,
+          y: 20,
+        },
+        {
+          duration: 0.5,
+          stagger: 0.1,
+          opacity: 1,
+          y: 0,
+          ease: "power2.out",
+        }
+      );
+    }
   }
 
   voidList(listName: string) {
@@ -190,7 +198,7 @@ export class List extends BaseComponent {
       });
   }
 
-  updateList(listName: string | undefined, data: any, loadMoreUrl: string | boolean | undefined) {
+  async updateList(listName: string | undefined, data: any, loadMoreUrl: string | boolean | undefined, refresh = false) {
     const listToUpdate = this.DOM.lists?.find((list: HTMLElement) => list.dataset.collection === listName);
     const listArticles = listToUpdate?.querySelector("[data-component-articles]");
 
@@ -203,6 +211,22 @@ export class List extends BaseComponent {
       btn.classList.remove("hidden");
     } else if (!loadMoreUrl) {
       btn.classList.add("hidden");
+    }
+
+    if (refresh) {
+      const oldArticles = listArticles.querySelectorAll("article");
+      if (oldArticles.length > 0) {
+        await gsap.to(oldArticles, {
+          opacity: 0,
+          y: 20,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: "power2.out",
+          onComplete: () => {
+            if (listArticles) listArticles.innerHTML = "";
+          },
+        });
+      }
     }
 
     if (listArticles) {
@@ -226,13 +250,20 @@ export class List extends BaseComponent {
 
       listArticles.appendChild(fragment);
 
-      gsap.from(newArticles, {
-        opacity: 0,
-        y: 20,
-        duration: 0.5,
-        stagger: 0.1,
-        ease: "power2.out",
-      });
+      gsap.fromTo(
+        newArticles,
+        {
+          opacity: 0,
+          y: 20,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: "power2.out",
+        }
+      );
     }
   }
 

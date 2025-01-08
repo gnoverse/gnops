@@ -1,10 +1,12 @@
 import { BaseComponent } from "./base";
+import { debounce } from "../utils";
 
 export class Search extends BaseComponent {
   private pagefind: any | null = null;
   private searchResult: any | null = null;
   private resulPerLoad = 6;
   private loadedResults = 0;
+  private isSearchDisplayed = false;
 
   constructor(el: HTMLElement) {
     super(el);
@@ -42,6 +44,7 @@ export class Search extends BaseComponent {
 
   private onVoidInput(e: Event) {
     this.VoidInput();
+    this.isSearchDisplayed = false;
   }
 
   protected setupEvents(): void {
@@ -92,58 +95,66 @@ export class Search extends BaseComponent {
     this.DOM.searchInput.value = "";
   }
 
-  private async search(e: Event) {
-    e.preventDefault();
-
+  private debounceSearch = debounce(async () => {
     const query = this.DOM.searchInput?.value ?? "";
     if (!query || !this.pagefind) {
       console.warn("Query is empty or Pagefind is not initialized");
       return;
     }
 
+    document.dispatchEvent(
+      new CustomEvent("list-displayList", {
+        detail: {
+          message: {
+            listName: "search",
+            refresh: false,
+          },
+        },
+      })
+    );
+    const minDelay = new Promise<void>((resolve) => setTimeout(resolve, this.isSearchDisplayed ? 0 : 900));
+    this.isSearchDisplayed = true;
+
+    const searchPromise = this.pagefind.search(query);
+
+    this.searchResult = await Promise.all([searchPromise, minDelay]).then(([searchResult]) => searchResult);
+
+    document.dispatchEvent(
+      new CustomEvent("tabs-displaySearchNav", {
+        detail: { message: this.searchResult.results.length.toString() },
+      })
+    );
+
+    this.loadedResults = 0;
+
+    const initialResults = await Promise.all(this.searchResult.results.slice(0, this.resulPerLoad).map((r: any) => r.data()));
+
+    this.loadedResults = initialResults.length;
+    const hasMoreResults = this.loadedResults < this.searchResult.results.length;
+
+    document.dispatchEvent(
+      new CustomEvent("list-updateList", {
+        detail: {
+          message: {
+            listName: "search",
+            data: initialResults,
+            loadMoreUrl: hasMoreResults,
+            refresh: true,
+          },
+        },
+      })
+    );
+    if (initialResults.length <= 0) {
+      console.warn("No results found for query:", query);
+    }
+  }, 400);
+
+  private async search(e: InputEvent) {
+    e.preventDefault();
+
     try {
-      document.dispatchEvent(
-        new CustomEvent("list-displayList", {
-          detail: { message: "search" },
-        })
-      );
-
-      this.searchResult = await this.pagefind.debouncedSearch(query, {}, 200);
-
-      document.dispatchEvent(
-        new CustomEvent("tabs-displaySearchNav", {
-          detail: { message: this.searchResult.results.length.toString() },
-        })
-      );
-
-      this.loadedResults = 0;
-
-      const initialResults = await Promise.all(this.searchResult.results.slice(0, this.resulPerLoad).map((r: any) => r.data()));
-
-      this.loadedResults = initialResults.length;
-      const hasMoreResults = this.loadedResults < this.searchResult.results.length;
-
-      document.dispatchEvent(
-        new CustomEvent("list-voidList", {
-          detail: { message: "search" },
-        })
-      );
-
-      if (initialResults.length > 0) {
-        document.dispatchEvent(
-          new CustomEvent("list-updateList", {
-            detail: {
-              message: {
-                listName: "search",
-                data: initialResults,
-                loadMoreUrl: hasMoreResults,
-              },
-            },
-          })
-        );
-      } else {
-        console.warn("No results found for query:", query);
-      }
+      this.pagefind.preload((e.target as HTMLInputElement).value);
+      this.debounceSearch();
     } catch (error) {
       console.warn("Search error:", error);
     }
