@@ -32,7 +32,7 @@
 
 @layer base {
   html {
-    @apply font-interNormal overflow-x-hidden font-normal leading-tight;
+    @apply font-interNormal overflow-x-hidden font-normal leading-tight bg-light;
     font-feature-settings:
       "kern" on,
       "liga" on,
@@ -67,7 +67,7 @@
     @apply flex flex-col justify-end gap-x-4 items-start p-5 bg-gray-800 rounded-2xl h-full duration-200 ease-in-out transition-colors text-gray-500 hover:bg-gray-700;
   }
   .listArticle h2 {
-    @apply text-gray-50 font-bold pb-2 text-300 mt-12;
+    @apply text-gray-50 font-semibold pb-2 text-300 mt-12;
   }
   .listArticle .listArticle__label {
     @apply block px-4 py-2 bg-light rounded-full text-100 text-gray-50;

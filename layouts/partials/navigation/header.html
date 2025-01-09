@@ -11,7 +11,7 @@
       >
     </li>
     <li role="presentation" class="ml-auto hidden md:block">
-      <ul role="menu" class="flex gap-6 lg:gap-8 text-200 md:text-300 font-light">
+      <ul role="menu" class="flex gap-4 lg:gap-8 text-200 md:text-200 font-light">
         {{- range .Site.Menus.ressource -}}
           <li role="presentation">
             {{ $isMenuCurrent := (eq (lower $.Section) (lower .Name)) }}
