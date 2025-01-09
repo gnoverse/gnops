@@ -6,12 +6,16 @@ import gsap from "gsap";
 import { BaseComponent } from "./base";
 import { barba } from "../barba";
 
+import { lerp } from "../utils";
+
 export class Stage extends BaseComponent {
   private scene: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
   private renderer!: THREE.WebGLRenderer;
   private sizes: { width: number; height: number };
   private mouse: { x: number; y: number } = { x: 0, y: 0 };
+  private lerpedMouse: { x: number; y: number } = { x: 0, y: 0 };
+  private lerpFactor = 0.1;
   private model!: THREE.Object3D;
 
   constructor(el: HTMLElement) {
@@ -104,8 +108,11 @@ export class Stage extends BaseComponent {
   private animate(): void {
     const tick = () => {
       if (this.model?.children[0].children[0]) {
-        this.model.children[0].rotation.y = (this.mouse.x * Math.PI) / 2;
-        this.model.children[0].rotation.x = (this.mouse.y * Math.PI) / 4;
+        this.lerpedMouse.x = lerp(this.lerpedMouse.x, this.mouse.x, this.lerpFactor);
+        this.lerpedMouse.y = lerp(this.lerpedMouse.y, this.mouse.y, this.lerpFactor);
+
+        this.model.children[0].rotation.y = (this.lerpedMouse.x * Math.PI) / 2;
+        this.model.children[0].rotation.x = (this.lerpedMouse.y * Math.PI) / 4;
       }
 
       this.renderer.render(this.scene, this.camera);
@@ -189,7 +196,6 @@ export class Stage extends BaseComponent {
         y: 1,
         z: 1,
         duration: 1.6,
-        delay: 0.1,
         ease: "power2.inOut",
       }
     );

@@ -10,3 +10,7 @@ export function debounce<T extends (...args: any[]) => void>(func: T, delay: num
     }, delay);
   };
 }
+
+export function lerp(start: number, end: number, factor: number): number {
+  return start + (end - start) * factor;
+}

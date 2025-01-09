@@ -90,7 +90,6 @@ const leaveAnimation = async (content: ISchemaPage) => {
 };
 
 const enterAnimation = async (content: ISchemaPage) => {
-  console.log(content.namespace);
   if (content.namespace === "home") {
     document.dispatchEvent(
       new CustomEvent("stage-animateModel", {
