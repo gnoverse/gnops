@@ -41,12 +41,12 @@
       | int }} {{ $width := 1428 }} {{ $height := 800 }} {{ partial "components/picture.html" (dict "url" .Params.cover "formats" $formats "alt" $altText "class" $class "quality" $quality "width"
       $width "height" $height "page" $page) }} */}} {{- with .Summary -}}
       <p class="my-12 pb-12 leading-8 font-regular text-400 border-b border-gray-500">
-        <span class="font-bold" aria-hidden="true">{{ T "Summary" }} —</span>
-        <span class="text-400 text-gray-300 italic" data-pagefind-meta="summary">{{ . }}</span>
+        <span class="font-bold dark:text-light" aria-hidden="true">{{ T "Summary" }} —</span>
+        <span class="text-400 text-gray-300 dark:text-gray-600 italic" data-pagefind-meta="summary">{{ . }}</span>
       </p>
       {{- end -}}
 
-      <article data-component="article" class="prose max-w-none" {{ with .Params.contentLang }}lang="{{ . }}" {{ end }}>{{ .Content }}</article>
+      <article data-component="article" class="prose dark:prose-invert max-w-none" {{ with .Params.contentLang }}lang="{{ . }}" {{ end }}>{{ .Content }}</article>
 
       <aside class="my-28">
         <div class="flex flex-col sm:flex-row gap-4 justify-between items-center mb-6">

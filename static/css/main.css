@@ -174,5 +174,5 @@
 }
 
 .highlight button {
-  @apply absolute right-1 top-1 bg-gray-700 px-1.5 py-px text-50 rounded;
+  @apply absolute right-1 top-1 bg-gray-700 dark:bg-gray-200 px-1.5 py-px text-50 rounded;
 }
