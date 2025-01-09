@@ -32,7 +32,7 @@
 
 @layer base {
   html {
-    @apply font-interNormal overflow-x-hidden font-normal leading-tight bg-light;
+    @apply font-interNormal overflow-x-hidden font-normal leading-tight bg-light dark:bg-gray-50;
     font-feature-settings:
       "kern" on,
       "liga" on,
@@ -64,26 +64,26 @@
 
 @layer components {
   .listArticle a {
-    @apply flex flex-col justify-end gap-x-4 items-start p-5 bg-gray-800 rounded-2xl h-full duration-200 ease-in-out transition-colors text-gray-500 hover:bg-gray-700;
+    @apply flex flex-col justify-end gap-x-4 items-start p-5 bg-gray-800 dark:bg-gray-100 rounded-2xl h-full duration-200 ease-in-out transition-colors text-gray-500 dark:text-gray-400 hover:bg-gray-700 dark:hover:bg-gray-200;
   }
   .listArticle h2 {
-    @apply text-gray-50 font-semibold pb-2 text-300 mt-12;
+    @apply text-gray-50 dark:text-light font-semibold pb-2 text-300 mt-12;
   }
   .listArticle .listArticle__label {
-    @apply block px-4 py-2 bg-light rounded-full text-100 text-gray-50;
+    @apply block px-4 py-2 bg-light dark:bg-gray-50 rounded-full text-100 text-gray-50 dark:text-gray-400;
   }
   .listArticle .listArticle__illu {
     @apply flex flex-col items-start h-full;
   }
   .listArticle p {
-    @apply text-200 line-clamp-2 h-full pb-1;
+    @apply text-200  line-clamp-2 h-full pb-1;
   }
 
   .listArticle ul {
     @apply flex items-center gap-x-5 gap-y-1 flex-wrap mt-auto;
   }
   .listArticle .listArticle__author {
-    @apply inline-block text-gray-50 mt-6;
+    @apply inline-block text-gray-50 dark:text-light mt-6;
   }
 
   .wrapper-perspective {
@@ -104,7 +104,7 @@
   }
 
   .overlay div {
-    @apply bg-gray-800;
+    @apply bg-gray-800 dark:bg-gray-100;
   }
 }
 
@@ -174,5 +174,5 @@
 }
 
 .highlight button {
-  @apply absolute right-1 top-1 bg-gray-700 px-1.5 py-px text-50 rounded;
+  @apply absolute right-1 top-1 bg-gray-700 dark:bg-gray-200 px-1.5 py-px text-50 rounded;
 }

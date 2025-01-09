@@ -1,11 +1,21 @@
 <!doctype html>
 <html lang="{{ or .Site.Language.LanguageCode .Site.Language.Lang }}" dir="{{ or .Site.Language.LanguageDirection `ltr` }}">
   <head>
+    <style>
+      #loader {
+        background: white;
+      }
+      @media (prefers-color-scheme: dark) {
+        #loader {
+          background: #1a1a1a;
+        }
+      }
+    </style>
     {{ partial "head/head.html" . }} {{ block "meta" . }}{{ end }}
   </head>
 
   <body class="flex flex-col min-h-screen" data-page="home" data-barba="wrapper">
-    <div id="loader" style="position: fixed; width: 100vw; height: 100vh; background: white; top: 0; left: 0; z-index: 9998"></div>
+    <div id="loader" style="position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: 9998"></div>
     <canvas class="absolute top-56 left-0 pointer-events-none z-[9997] w-screen -translate-y-[calc(40%+20vh)]" data-component="stage"></canvas>
     <div class="overlay z-max"></div>
     <div class="wrapper-perspective">

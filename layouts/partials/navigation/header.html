@@ -18,7 +18,7 @@
             <a
               href="{{ .URL | absLangURL }}"
               role="menuitem"
-              class="text-gray-50 font-normal hover:text-black duration-200 after:content-['↗'] after:text-grey-500 after:text-200 after:relative after:pl-1 after:inline-block after:-top-0.5 after:duration-150 hover:after:translate-x-0.5 hover:after:-translate-y-0.5"
+              class="text-gray-50 dark:text-light font-normal hover:text-black dark:hover:text-gray-500 duration-200 after:content-['↗'] after:text-grey-500 after:text-200 after:relative after:pl-1 after:inline-block after:-top-0.5 after:duration-150 hover:after:translate-x-0.5 hover:after:-translate-y-0.5"
               {{ if $isMenuCurrent }}aria-current="page"{{ end }}
               >{{ .Name }}</a
             >
