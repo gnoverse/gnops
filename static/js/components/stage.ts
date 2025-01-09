@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import gsap from "gsap";
+// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import { BaseComponent } from "./base";
 
@@ -11,6 +13,7 @@ export class Stage extends BaseComponent {
   private sizes: { width: number; height: number };
   private mouse: { x: number; y: number } = { x: 0, y: 0 };
   private model!: THREE.Object3D;
+  //   private controls: OrbitControls | null = null;
 
   constructor(el: HTMLElement) {
     super(el);
@@ -41,17 +44,26 @@ export class Stage extends BaseComponent {
     this.renderer = new THREE.WebGLRenderer({
       canvas: el as HTMLCanvasElement,
       alpha: true,
+      antialias: true,
     });
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.setSize(this.sizes.width, this.sizes.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   }
 
   private setupCamera(): void {
     this.camera = new THREE.PerspectiveCamera(75, this.sizes.width / this.sizes.height, 0.1, 100);
-    this.camera.position.set(0, 0.2, 1.2);
+    this.camera.position.set(0, 0.5, 3);
     this.scene.add(this.camera);
+
+    // Controls
+    // this.controls = new OrbitControls(this.camera, this.DOM.el);
+    // this.controls.target.set(0, 0.75, 0);
+    // this.controls.enableDamping = true;
   }
 
   private loadModels(): void {
@@ -63,35 +75,48 @@ export class Stage extends BaseComponent {
 
     gltfLoader.load("/models/gnome.gltf", (gltf) => {
       gltf.scene.scale.set(0.025, 0.025, 0.025);
-      gltf.scene.position.set(0, 0, 0);
-      this.scene.add(gltf.scene);
-      this.model = gltf.scene;
+      gltf.scene.children[0].castShadow = true;
+      gltf.scene.children[0].receiveShadow = true;
+
+      const group = new THREE.Group();
+      this.scene.add(group);
+      group.add(gltf.scene);
+      this.model = group;
+
+      const boundingBox = new THREE.Box3().setFromObject(this.model);
+      const point = new THREE.Vector3();
+      this.model.children[0].position.set(-boundingBox.getCenter(point).x, -boundingBox.getCenter(point).y, -boundingBox.getCenter(point).z);
+
+      this.animateModelAppear();
     });
   }
 
   private setupLights(): void {
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2);
     this.scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.8);
-    directionalLight.castShadow = true;
-    directionalLight.shadow.mapSize.set(1024, 1024);
-    directionalLight.shadow.camera.far = 15;
-    directionalLight.shadow.camera.left = -7;
-    directionalLight.shadow.camera.top = 7;
-    directionalLight.shadow.camera.right = 7;
-    directionalLight.shadow.camera.bottom = -7;
-    directionalLight.position.set(-5, 5, 0);
-    this.scene.add(directionalLight);
+    const pointLight = new THREE.PointLight(0xffffff, 2, 0, 2);
+    pointLight.castShadow = true;
+    pointLight.shadow.mapSize.width = 1024;
+    pointLight.shadow.mapSize.height = 1024;
+    pointLight.shadow.camera.near = 0.2;
+    pointLight.shadow.camera.far = 6;
+    pointLight.position.set(-0.4, 0.4, 0.2);
+    this.scene.add(pointLight);
+
+    // const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.2);
+    // this.scene.add(pointLightHelper);
   }
 
   private animate(): void {
     const tick = () => {
-      // Update camera position based on mouse movement
-      //   this.camera.position.x = Math.sin(this.mouse.x * Math.PI * 2) * 2;
-      //   this.camera.position.z = Math.cos(this.mouse.x * Math.PI * 2) * 2;
-      //   this.camera.position.y = this.mouse.y * 1;
-      //   this.camera.lookAt(this.scene.position);
+      if (this.model?.children[0].children[0]) {
+        this.model.children[0].rotation.y = (this.mouse.x * Math.PI) / 2;
+        this.model.children[0].rotation.x = (this.mouse.y * Math.PI) / 4;
+      }
+
+      // Update controls
+      //this.controls?.update();
 
       this.renderer.render(this.scene, this.camera);
 
@@ -130,11 +155,48 @@ export class Stage extends BaseComponent {
   }
 
   private onMouseMove(evt: MouseEvent): void {
-    this.mouse.x = -evt.clientX / this.sizes.width - 0.5;
+    this.mouse.x = evt.clientX / this.sizes.width - 0.5;
     this.mouse.y = evt.clientY / this.sizes.height - 0.5;
   }
 
+  animateModelAppear() {
+    gsap.to(this.model.rotation, {
+      y: Math.PI * 2,
+      duration: 2,
+      ease: "power2.inOut",
+    });
+    gsap.fromTo(
+      this.model.scale,
+      { x: 0, y: 0, z: 0 },
+      {
+        x: 1,
+        y: 1,
+        z: 1,
+        duration: 1.6,
+        ease: "power2.inOut",
+      }
+    );
+    // gsap.from(this.DOM.el, { autoAlpha: 0, duration: 2 });
+  }
+
+  animateModelDisappear() {
+    gsap.to(this.model.rotation, {
+      y: -Math.PI * 2,
+      duration: 1,
+      ease: "power2.inOut",
+    });
+    gsap.to(this.model.scale, {
+      x: 0,
+      y: 0,
+      z: 0,
+      duration: 1,
+      ease: "power2.inOut",
+    });
+    // gsap.to(this.DOM.el, { autoAlpha: 0, duration: 2 });
+  }
+
   destroy(): void {
+    console.log("destroy");
     super.destroy();
     this.eventBindings.forEach(({ target, type, handler }) => {
       target?.removeEventListener(type, handler);

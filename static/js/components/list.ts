@@ -11,6 +11,7 @@ export class List extends BaseComponent {
     this.init();
     this.setupEvents();
     this.bindEvents();
+    console.log("list init");
   }
 
   private init() {
@@ -269,5 +270,6 @@ export class List extends BaseComponent {
 
   destroy(): void {
     super.destroy();
+    console.log("list destroy");
   }
 }

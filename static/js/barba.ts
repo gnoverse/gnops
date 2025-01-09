@@ -73,7 +73,7 @@ const enterAnimation = async (container: HTMLElement) => {
 };
 
 const udpateComponents = (data: ITransitionData) => {
-  destroyComponents();
+  destroyComponents(data.current.container);
   initComponents(data.next.container);
   window.scrollTo(0, 0);
 

@@ -3,10 +3,9 @@
 {{end}} {{ define "main" }} 
 
 {{ $ctx := . }} {{- $data := index .Site.Data .Site.Language.Lang -}}
-
+<main data-barba="container" data-barba-namespace="home">
 <div class="pb-10 w-full flex flex-col items-center">
-    <canvas class="absolute pointer-events-none z-max" data-component="stage"></canvas>
-    <h1 class="mt-96 font-proxima inline-block font-bold text-800 text-green-200 mb-10 m-auto">{{ .Title }}</h1>
+    <h1 class="mt-16 font-proxima inline-block font-bold text-900 text-green-200 mb-10 m-auto">{{ .Title }}</h1>
     {{- if isset .Params "subtitle" -}}
     <p class="pb-2 text-500 text-gray-700 font-light">
       {{ .Params.subtitle }} {{ if and .Params.cta .Params.ctalink }}
@@ -84,4 +83,6 @@
     {{- end -}} 
   {{- end -}}
 </section>
+</main>
 {{ end }}
+

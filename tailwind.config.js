@@ -74,7 +74,7 @@ module.exports = {
       600: `${pxToRem(28)}rem`,
       700: `${pxToRem(48)}rem`,
       800: `${pxToRem(64)}rem`,
-      900: `${pxToRem(80)}rem`,
+      900: `${pxToRem(94)}rem`,
     },
   },
   plugins: [require("@tailwindcss/typography")],

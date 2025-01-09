@@ -63,8 +63,8 @@
   "images": [
     {
       "mimeType": "image/png",
-      "name": "File 50.vox",
-      "uri": "File%2050_vox.png"
+      "name": "texture.vox",
+      "uri": "texture.png"
     }
   ],
   "accessors": [
