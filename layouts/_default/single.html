@@ -5,11 +5,7 @@
     <div class="md:col-span-10 lg:col-span-8 md:col-start-2 lg:col-start-3">
       <div class="flex justify-center gap-2 mb-5 md:mb-10 text-gray-500">
         <span data-pagefind-meta="section">{{ .CurrentSection.Name }}</span> |
-        <time
-          datetime="{{ .PublishDate }}"
-          class="block relative after:absolute after:block after:h-full after:w-px after:right-0 after:rounded-full after:top-1/2 after:-translate-y-1/2 after:bg-light after:text-600"
-          >{{ (.PublishDate | time.Format ":date_long") }}</time
-        >
+        <time datetime="{{ .PublishDate }}" class="block relative">{{ (.PublishDate | time.Format ":date_long") }}</time>
       </div>
       <h1 class="text-700 md:text-800 font-proxima font-semibold text-center pb-14 leading-none dark:text-light">{{ .Title }}</h1>
 
