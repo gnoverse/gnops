@@ -2,9 +2,9 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import gsap from "gsap";
-// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import { BaseComponent } from "./base";
+import { barba } from "../barba";
 
 export class Stage extends BaseComponent {
   private scene: THREE.Scene;
@@ -13,7 +13,6 @@ export class Stage extends BaseComponent {
   private sizes: { width: number; height: number };
   private mouse: { x: number; y: number } = { x: 0, y: 0 };
   private model!: THREE.Object3D;
-  //   private controls: OrbitControls | null = null;
 
   constructor(el: HTMLElement) {
     super(el);
@@ -31,6 +30,7 @@ export class Stage extends BaseComponent {
   }
 
   private init(): void {
+    this.setupEvents();
     this.setupRenderer();
     this.setupCamera();
     this.loadModels();
@@ -59,11 +59,6 @@ export class Stage extends BaseComponent {
     this.camera = new THREE.PerspectiveCamera(75, this.sizes.width / this.sizes.height, 0.1, 100);
     this.camera.position.set(0, 0.5, 3);
     this.scene.add(this.camera);
-
-    // Controls
-    // this.controls = new OrbitControls(this.camera, this.DOM.el);
-    // this.controls.target.set(0, 0.75, 0);
-    // this.controls.enableDamping = true;
   }
 
   private loadModels(): void {
@@ -86,8 +81,9 @@ export class Stage extends BaseComponent {
       const boundingBox = new THREE.Box3().setFromObject(this.model);
       const point = new THREE.Vector3();
       this.model.children[0].position.set(-boundingBox.getCenter(point).x, -boundingBox.getCenter(point).y, -boundingBox.getCenter(point).z);
+      this.model.scale.set(0, 0, 0);
 
-      this.animateModelAppear();
+      barba.data.current.namespace === "home" && this.animateModelAppear();
     });
   }
 
@@ -103,9 +99,6 @@ export class Stage extends BaseComponent {
     pointLight.shadow.camera.far = 6;
     pointLight.position.set(-0.4, 0.4, 0.2);
     this.scene.add(pointLight);
-
-    // const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.2);
-    // this.scene.add(pointLightHelper);
   }
 
   private animate(): void {
@@ -114,9 +107,6 @@ export class Stage extends BaseComponent {
         this.model.children[0].rotation.y = (this.mouse.x * Math.PI) / 2;
         this.model.children[0].rotation.x = (this.mouse.y * Math.PI) / 4;
       }
-
-      // Update controls
-      //this.controls?.update();
 
       this.renderer.render(this.scene, this.camera);
 
@@ -138,7 +128,27 @@ export class Stage extends BaseComponent {
         type: "mousemove",
         handler: this.onMouseMove.bind(this),
       },
+
+      {
+        target: document,
+        type: "stage-animateModel",
+        handler: this.onAnimateModelAppear.bind(this),
+      },
     ];
+  }
+
+  private onAnimateModelAppear(e: Event) {
+    const customEvent = e as CustomEvent<{ message: any }>;
+    const { animation } = customEvent.detail.message;
+    switch (animation) {
+      case "show":
+        this.animateModelAppear();
+        break;
+
+      case "hide":
+        this.animateModelDisappear();
+        break;
+    }
   }
 
   private onResize(): void {
@@ -160,11 +170,17 @@ export class Stage extends BaseComponent {
   }
 
   animateModelAppear() {
-    gsap.to(this.model.rotation, {
-      y: Math.PI * 2,
-      duration: 2,
-      ease: "power2.inOut",
-    });
+    gsap.fromTo(
+      this.model.rotation,
+      {
+        y: 0,
+      },
+      {
+        y: Math.PI * 8,
+        duration: 2,
+        ease: "power2.out",
+      }
+    );
     gsap.fromTo(
       this.model.scale,
       { x: 0, y: 0, z: 0 },
@@ -173,18 +189,22 @@ export class Stage extends BaseComponent {
         y: 1,
         z: 1,
         duration: 1.6,
+        delay: 0.1,
         ease: "power2.inOut",
       }
     );
-    // gsap.from(this.DOM.el, { autoAlpha: 0, duration: 2 });
   }
 
   animateModelDisappear() {
-    gsap.to(this.model.rotation, {
-      y: -Math.PI * 2,
-      duration: 1,
-      ease: "power2.inOut",
-    });
+    gsap.fromTo(
+      this.model.rotation,
+      { y: Math.PI * 8 },
+      {
+        y: Math.PI * 6,
+        duration: 1,
+        ease: "power2.inOut",
+      }
+    );
     gsap.to(this.model.scale, {
       x: 0,
       y: 0,
@@ -192,11 +212,10 @@ export class Stage extends BaseComponent {
       duration: 1,
       ease: "power2.inOut",
     });
-    // gsap.to(this.DOM.el, { autoAlpha: 0, duration: 2 });
   }
 
   destroy(): void {
-    console.log("destroy");
+    console.log("Stage destroy");
     super.destroy();
     this.eventBindings.forEach(({ target, type, handler }) => {
       target?.removeEventListener(type, handler);

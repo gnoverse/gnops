@@ -1,7 +1,7 @@
 import barba from "@barba/core";
 import { initComponents, destroyComponents } from "./components/index";
 import { Overlay } from "./overlay.js";
-import { ITransitionData } from "@barba/core/dist/core/src/src/defs";
+import { ITransitionData, ISchemaPage } from "@barba/core/dist/core/src/src/defs";
 import gsap from "gsap";
 
 type OverlayAnimationType = "show" | "hide";
@@ -52,10 +52,36 @@ const wrapperPerspective: HTMLElement | null = document.querySelector(".wrapper-
 
 const overlay = initializeOverlay(overlayEl);
 
-const leaveAnimation = async (container: HTMLElement) => {
+const loaderAnimation = async () => {
+  const loader = document.querySelector("#loader");
+  await createOverlayAnimation(overlay, {
+    type: "show",
+    ease: "power1.in",
+  });
+  gsap.set(loader, { autoAlpha: 0 });
+  gsap.set(wrapperPerspective, { perspectiveOrigin: updateTransformOrigin() });
+  gsap.fromTo(wrapper, { translateZ: "-100px" }, { translateZ: "0px", duration: 1 });
+
+  await createOverlayAnimation(overlay, {
+    type: "hide",
+  });
+};
+
+const leaveAnimation = async (content: ISchemaPage) => {
+  if (content.namespace === "home") {
+    document.dispatchEvent(
+      new CustomEvent("stage-animateModel", {
+        detail: {
+          message: {
+            animation: "hide",
+          },
+        },
+      })
+    );
+  }
   gsap.set(wrapperPerspective, { perspectiveOrigin: updateTransformOrigin() });
   gsap.to(wrapper, { translateZ: "-100px", duration: 1 });
-  gsap.to(container, { autoAlpha: 0 });
+  gsap.to(content.container, { autoAlpha: 0 });
 
   await createOverlayAnimation(overlay, {
     type: "show",
@@ -63,10 +89,22 @@ const leaveAnimation = async (container: HTMLElement) => {
   });
 };
 
-const enterAnimation = async (container: HTMLElement) => {
+const enterAnimation = async (content: ISchemaPage) => {
+  console.log(content.namespace);
+  if (content.namespace === "home") {
+    document.dispatchEvent(
+      new CustomEvent("stage-animateModel", {
+        detail: {
+          message: {
+            animation: "show",
+          },
+        },
+      })
+    );
+  }
   gsap.set(wrapperPerspective, { perspectiveOrigin: updateTransformOrigin() });
   gsap.fromTo(wrapper, { translateZ: "100px" }, { translateZ: "0px", duration: 1 });
-  gsap.from(container, { autoAlpha: 0 });
+  gsap.from(content.container, { autoAlpha: 0 });
   await createOverlayAnimation(overlay, {
     type: "hide",
   });
@@ -90,17 +128,19 @@ const init = () => {
       {
         name: "default",
         async leave({ current }) {
-          return leaveAnimation(current.container);
+          return leaveAnimation(current);
         },
         async enter(data) {
           udpateComponents(data);
         },
         async after({ next }) {
-          return enterAnimation(next.container);
+          return enterAnimation(next);
         },
       },
     ],
   });
+
+  loaderAnimation();
 };
 
 export { init, barba };
