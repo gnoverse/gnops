@@ -66,14 +66,15 @@ export class Tabs extends BaseComponent {
   }
 
   displaySearchBar(counter: string) {
-    this.DOM.searchBar.classList.replace("hidden", "flex");
-    this.DOM.tabsBar.classList.replace("block", "hidden");
     this.DOM.searchCounter.textContent = counter;
+
+    gsap.to(this.DOM.searchBar, { autoAlpha: 1, duration: 0.4 });
+    gsap.to(this.DOM.tabsBar, { autoAlpha: 0, duration: 0.4 });
   }
 
   displayTabshBar() {
-    this.DOM.searchBar.classList.replace("flex", "hidden");
-    this.DOM.tabsBar.classList.replace("hidden", "block");
+    gsap.to(this.DOM.searchBar, { autoAlpha: 0, duration: 0.4 });
+    gsap.to(this.DOM.tabsBar, { autoAlpha: 1, duration: 0.4 });
   }
 
   updateTab(el: HTMLElement, instant = false, refresh = false) {
