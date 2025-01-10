@@ -209,9 +209,9 @@ export class List extends BaseComponent {
       if (btn instanceof HTMLAnchorElement && typeof loadMoreUrl !== "boolean") {
         btn.href = loadMoreUrl;
       }
-      btn.classList.remove("hidden");
+      btn.classList.replace("hidden", "block");
     } else if (!loadMoreUrl) {
-      btn.classList.add("hidden");
+      btn.classList.replace("block", "hidden");
     }
 
     if (refresh) {
