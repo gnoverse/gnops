@@ -6,7 +6,7 @@
         [main.params]
             list = true
             leveled = true
-            
+
 [[main]]
     identifier = "Guides"
     name = "guides"
@@ -25,19 +25,19 @@
             list = true
             leveled = true
 
-[[ressource]]
+[[resource]]
     identifier = "gno.land"
     name = "gno.land"
     url = "https://gno.land/"
     weight = 1
 
-[[ressource]]
+[[resource]]
     identifier = "gnops"
     name = "contribute"
     url = "https://github.com/gnoverse/gnops"
     weight = 2
 
-[[ressource]]
+[[resource]]
     identifier = "play.gno.land"
     name = "play.gno.land"
     url = "https://play.gno.land/"
