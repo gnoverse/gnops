@@ -11,7 +11,6 @@ export class Search extends BaseComponent {
   constructor(el: HTMLElement) {
     super(el);
     this.DOM.el = el;
-    console.log("search init");
 
     this.init();
     this.setupEvents();
@@ -162,7 +161,6 @@ export class Search extends BaseComponent {
   }
 
   destroy(): void {
-    console.log("search destroy");
     if (this.pagefind) {
       this.pagefind.destroy();
     }

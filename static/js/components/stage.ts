@@ -221,7 +221,6 @@ export class Stage extends BaseComponent {
   }
 
   destroy(): void {
-    console.log("Stage destroy");
     super.destroy();
     this.eventBindings.forEach(({ target, type, handler }) => {
       target?.removeEventListener(type, handler);

@@ -4,8 +4,6 @@ export class ArticleContent extends BaseComponent {
   constructor(el: HTMLElement) {
     super(el);
 
-    console.log("articleContent init");
-
     this.init();
     this.setupEvents();
     this.bindEvents();
@@ -80,6 +78,5 @@ export class ArticleContent extends BaseComponent {
 
   destroy(): void {
     super.destroy();
-    console.log("articleContent destroy");
   }
 }

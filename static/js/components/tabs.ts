@@ -6,8 +6,6 @@ export class Tabs extends BaseComponent {
   constructor(el: HTMLElement) {
     super(el);
 
-    console.log("tabs init");
-
     this.init();
     this.setupEvents();
     this.bindEvents();
@@ -115,6 +113,5 @@ export class Tabs extends BaseComponent {
 
   destroy(): void {
     super.destroy();
-    console.log("tabs destroy");
   }
 }
