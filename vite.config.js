@@ -12,6 +12,7 @@ const buildDir = "temp";
 const directoriesToCopy = [
   { source: "pagefind", target: "pagefind" },
   { source: "models", target: "models" },
+  { source: "img", target: "img" },
 ];
 
 /**
