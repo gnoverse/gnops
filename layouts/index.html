@@ -65,9 +65,7 @@
 
   <div data-collection="search" class="hidden">
     {{ partial "components/list" (dict "list" slice "ctx" $ctx "rangeLimit" $maxDisplayed "sectionLink" true) }} 
-    {{ if gt (len $articles) $maxDisplayed }} 
-        <button data-component-searchbtn="search" class="prevent-barba hidden w-fit px-5 py-4 mx-auto bg-gray-800 text-gray-500 rounded-full my-6 duration-200 ease transition-colors hover:bg-gray-700 dark:bg-gray-100 hover:text-gray-50">{{ T "LoadMore" }}</button>
-    {{ end }}
+    <button data-component-searchbtn="search" class="prevent-barba hidden w-fit px-5 py-4 mx-auto bg-gray-800 text-gray-500 rounded-full my-6 duration-200 ease transition-colors hover:bg-gray-700 dark:bg-gray-100 hover:text-gray-50">{{ T "LoadMore" }}</button>
   </div>
   
   {{- range .Site.Menus.main -}} 
