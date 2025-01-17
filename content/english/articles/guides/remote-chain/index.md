@@ -1,8 +1,8 @@
 ---
 title: Connecting to a remote Gno chain (from scratch)
 publishDate: 2025-01-20T08:00:00-01:00
-translationkey: "remote-chain"
-tags: [ "gnoland", "gno", "node", "remote" ]
+translationKey: "remote-chain"
+tags: ["gnoland", "gno", "node", "remote"]
 level: Intermediate
 author: zivkovicmilos
 summary: This guide covers how to start a local Gno node and connect to an existing chain (like a testnet).

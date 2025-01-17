@@ -1,8 +1,8 @@
 ---
 title: Setting up a local Gno chain (from scratch)
 publishDate: 2025-01-20T08:00:00-01:00
-translationkey: "local-chain"
-tags: [ "gnoland", "gno", "node", "local" ]
+translationKey: "local-chain"
+tags: ["gnoland", "gno", "node", "local"]
 level: Intermediate
 author: zivkovicmilos
 summary: This guide covers how to start a local Gno node (and chain!). Additionally, it goes over the different options you can use to make your Gno instance unique.
@@ -207,9 +207,7 @@ The resulting `genesis.json` is empty:
       "TimeIotaMS": "100"
     },
     "Validator": {
-      "PubKeyTypeURLs": [
-        "/tm.PubKeyEd25519"
-      ]
+      "PubKeyTypeURLs": ["/tm.PubKeyEd25519"]
     }
   },
   "app_hash": null
@@ -297,9 +295,7 @@ We can verify that the new validator was indeed added to the validator set:
       "TimeIotaMS": "100"
     },
     "Validator": {
-      "PubKeyTypeURLs": [
-        "/tm.PubKeyEd25519"
-      ]
+      "PubKeyTypeURLs": ["/tm.PubKeyEd25519"]
     }
   },
   "validators": [

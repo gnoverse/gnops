@@ -1,5 +1,5 @@
 ---
-Title: Effective gnops
-meta_title: Effective gnops
+title: Effective gnops
+metaTitle: Effective gnops
 translationKey: effective-gnops
 ---
