@@ -1,5 +1,5 @@
 ---
-Title: Articles
-meta_title: Gnops Articles
+title: Articles
+metaTitle: Gnops Articles
 translationKey: articles
 ---

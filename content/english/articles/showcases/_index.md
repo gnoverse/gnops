@@ -1,5 +1,5 @@
 ---
-Title: Showcases
-meta_title: Gno Showcases
+title: Showcases
+metaTitle: Gno Showcases
 translationKey: showcases
 ---

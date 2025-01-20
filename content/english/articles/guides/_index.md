@@ -1,6 +1,6 @@
 ---
-Title: Guides
-meta_title: Gno Guides
+title: Guides
+metaTitle: Gno Guides
 translationKey: guides
 layout: list
 ---

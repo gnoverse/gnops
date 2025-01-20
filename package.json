@@ -5,13 +5,13 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev:hugo": "hugo --watch --gc -e default --printUnusedTemplates --printI18nWarnings",
+    "dev:hugo": "hugo --watch --gc -e default --buildFuture --printUnusedTemplates --printI18nWarnings",
     "dev:search": "npx pagefind --site temp",
     "dev:vite": "vite --host",
     "dev": "rm -rf temp/* && run-p dev:hugo dev:search dev:vite",
-    "preview:hugo": "hugo -e default",
+    "preview:hugo": "hugo -e default --buildFuture",
     "preview": "rm -rf build/* && rm -rf temp/* && run-s preview:hugo build:vite",
-    "build:hugo": "hugo -e production",
+    "build:hugo": "hugo -e production --buildFuture",
     "build:search": "npx pagefind --site temp",
     "build:vite": "tsc && vite build",
     "build": "rm -rf build/* && rm -rf temp/* && run-s build:hugo build:search build:vite"
