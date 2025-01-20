@@ -14,7 +14,7 @@ summary: This explainer covers the subtle differences between bootnodes and pers
 crucial for achieving a healthy and well-connected network, they differ in how they
 facilitate peer discovery and ongoing connectivity.
 
-## Bootnodes
+## Bootnodes (seed nodes)
 
 Bootnodes function primarily as initial points of contact for new or restarting nodes.
 
@@ -23,6 +23,26 @@ in the network. Bootnodes thus serve as “introducers,” allowing your node to
 connections with bootnodes are often ephemeral: once your node has obtained enough information to locate and connect to
 other peers in the network, it may not need to stay connected to the bootnodes. Their key value lies in ensuring that
 any new node can quickly bootstrap itself into the broader network, through the discovery process.
+
+Bootnodes can be set using the `gnoland config` command suite, for example:
+
+```bash
+gnoland config set p2p.seeds g1s0x78pl3c2xv2n7hp33lh4jkyqvhg5hlx6huh7@gnocore-sentry-svc-01:26656,g1jeta40dllwtrh293498hq0dh0cr3u4gw77h5rc@gnocore-sentry-svc-02:26656
+```
+
+The `p2p.seeds` should contain the external peer addresses of peers, along with the peer ID (called the p2p
+address).
+
+### External Address
+
+In TM2 networks, external addresses refer to the public-facing IP address and port combination through
+which a node can be reached by other peers in the network. These addresses enable direct connections
+between nodes, especially in environments where network configurations like NAT or
+firewalls may obscure the node's actual network presence.
+
+When a node advertises its external address, it allows other peers to initiate communication by connecting to this
+publicly known endpoint. This is particularly important for nodes acting as validators, persistent peers, or bootnodes,
+as they must be easily reachable to maintain the network's stability and connectivity.
 
 ### Peer Discovery
 
@@ -55,6 +75,15 @@ drops due to network issues or a node restart, your node will make repeated atte
 leads to a stable mesh of interconnected nodes that remain well-linked and reliably exchange data over time.
 Persistent peers are therefore essential for establishing a core layer of consistent connectivity, often used to keep
 critical infrastructure (sentry nodes) or validator nodes in sync.
+
+Persistent peers can be set using the `gnoland config` command suite, for example:
+
+```bash
+gnoland config set p2p.persistent_peers g1s0x78pl3c2xv2n7hp33lh4jkyqvhg5hlx6huh7@gnocore-sentry-svc-01:26656
+```
+
+The `p2p.persistent_peers` should contain the external peer addresses of peers, along with the peer ID (called the p2p
+address).
 
 ## Summary
 
