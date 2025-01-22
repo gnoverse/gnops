@@ -7,5 +7,5 @@
         description = "Gnops.io is the DevOps hub for Gno.land, offering setup guides, CI/CD tools, and automation to quickly deploy your blockchain and run a validator easily"
         siteTitle = "The DevOps Hub for gno.land | Guides, Tools & Automation"
         siteDescription = "Gnops.io is the DevOps hub for Gno.land, offering setup guides, CI/CD tools, and automation to quickly deploy your blockchain and run a validator easily"
-        twitter = "https://twitter.com/gnome"
-        github = "https://github.com/gnome"
+        twitter = "https://x.com/_gnoland"
+        github = "https://github.com/gnoverse/gnops"
