@@ -43,6 +43,15 @@ export class Search extends BaseComponent {
   }
 
   private onVoidInput(e: Event) {
+    document.dispatchEvent(
+      new CustomEvent("stage-animateModel", {
+        detail: {
+          message: {
+            animation: "stopSearching",
+          },
+        },
+      })
+    );
     this.VoidInput();
     this.isSearchDisplayed = false;
   }
@@ -145,9 +154,29 @@ export class Search extends BaseComponent {
       })
     );
     if (initialResults.length <= 0) {
+      document.dispatchEvent(
+        new CustomEvent("stage-animateModel", {
+          detail: {
+            message: {
+              animation: "startSearching",
+            },
+          },
+        })
+      );
+
       console.warn("No results found for query:", query);
+    } else {
+      document.dispatchEvent(
+        new CustomEvent("stage-animateModel", {
+          detail: {
+            message: {
+              animation: "stopSearching",
+            },
+          },
+        })
+      );
     }
-  }, 400);
+  }, 350);
 
   private async search(e: InputEvent) {
     e.preventDefault();

@@ -17,6 +17,8 @@ export class Stage extends BaseComponent {
   private lerpedMouse: { x: number; y: number } = { x: 0, y: 0 };
   private lerpFactor = 0.1;
   private model!: THREE.Object3D;
+  private onMouseMoveHandler = this.onMouseMove.bind(this);
+  private searchTimeline: gsap.core.Timeline | null = null;
 
   constructor(el: HTMLElement) {
     super(el);
@@ -133,18 +135,25 @@ export class Stage extends BaseComponent {
       {
         target: window,
         type: "mousemove",
-        handler: this.onMouseMove.bind(this),
+        handler: this.onMouseMoveHandler,
       },
-
       {
         target: document,
         type: "stage-animateModel",
-        handler: this.onAnimateModelAppear.bind(this),
+        handler: this.onAnimateModel.bind(this),
       },
     ];
   }
 
-  private onAnimateModelAppear(e: Event) {
+  private stopMouseMoveListener(): void {
+    this.removeEvent({ target: window, type: "mousemove", handler: this.onMouseMoveHandler });
+  }
+
+  private startMouseMoveListener(): void {
+    this.addEvent({ target: window, type: "mousemove", handler: this.onMouseMoveHandler });
+  }
+
+  private onAnimateModel(e: Event) {
     const customEvent = e as CustomEvent<{ message: any }>;
     const { animation } = customEvent.detail.message;
     switch (animation) {
@@ -154,6 +163,17 @@ export class Stage extends BaseComponent {
 
       case "hide":
         this.animateModelDisappear();
+        break;
+
+      case "startSearching":
+        this.stopMouseMoveListener();
+        this.mouse.x = 0;
+        this.mouse.y = 0;
+        this.animateModelSearching();
+        break;
+
+      case "stopSearching":
+        this.cancelModelSearching();
         break;
     }
   }
@@ -185,7 +205,7 @@ export class Stage extends BaseComponent {
       {
         y: Math.PI * 8,
         duration: 2,
-        ease: "power2.out",
+        ease: "back.out(0.8)",
       }
     );
     gsap.fromTo(
@@ -218,6 +238,41 @@ export class Stage extends BaseComponent {
       duration: 1,
       ease: "power2.inOut",
     });
+  }
+
+  animateModelSearching() {
+    this.searchTimeline = gsap.timeline();
+    this.searchTimeline
+      .to(this.model.rotation, {
+        x: Math.PI / 4,
+        y: Math.PI * 6 - Math.PI / 8,
+        duration: 1,
+        ease: "back.out(1.4)",
+      })
+      .to(this.model.rotation, {
+        y: Math.PI * 6 - -Math.PI / 8,
+        duration: 1,
+        ease: "power4.inOut",
+        repeat: -1,
+        yoyo: true,
+        repeatDelay: 0.7,
+      });
+  }
+
+  cancelModelSearching() {
+    if (this.searchTimeline) {
+      this.searchTimeline.kill();
+      this.searchTimeline = null;
+
+      gsap.to(this.model.rotation, {
+        x: 0,
+        y: Math.PI * 8,
+        z: 0,
+        duration: 0.8,
+        ease: "power2.inOut",
+      });
+      this.startMouseMoveListener();
+    }
   }
 
   destroy(): void {
