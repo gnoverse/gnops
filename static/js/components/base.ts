@@ -51,7 +51,7 @@ const BaseComponent = class {
 
   protected removeEvent(event: { target: EventTarget; type: string; handler: any }): void {
     event.target.removeEventListener(event.type, event.handler);
-    this.eventBindings = this.eventBindings.filter((e) => e.target !== event.target || e.type !== event.type || e.handler !== event.handler);
+    this.eventBindings = this.eventBindings.filter((e) => e.target !== event.target && e.type !== event.type && e.handler !== event.handler);
   }
 
   protected setupEvents(): void {}
