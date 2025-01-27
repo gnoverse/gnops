@@ -23,6 +23,11 @@ export class Search extends BaseComponent {
     try {
       // @ts-ignore
       this.pagefind = await import("/pagefind/pagefind.js");
+      await this.pagefind.options({
+        ranking: {
+          termSimilarity: 10.0,
+        },
+      });
       this.pagefind.init();
     } catch (error) {
       console.error("Failed to load Pagefind:", error);
@@ -124,9 +129,16 @@ export class Search extends BaseComponent {
     const minDelay = new Promise<void>((resolve) => setTimeout(resolve, this.isSearchDisplayed ? 0 : 900));
     this.isSearchDisplayed = true;
 
+    // Search Query
     const searchPromise = this.pagefind.search(query);
 
+    // Load results
+    this.searchResult = null;
     this.searchResult = await Promise.all([searchPromise, minDelay]).then(([searchResult]) => searchResult);
+
+    // Filter results
+    this.loadedResults = 0;
+    this.searchResult.results = this.searchResult.results.filter((r: any) => r.score > 0.01);
 
     document.dispatchEvent(
       new CustomEvent("tabs-displaySearchNav", {
@@ -134,8 +146,7 @@ export class Search extends BaseComponent {
       })
     );
 
-    this.loadedResults = 0;
-
+    // paginate & diplay results
     const initialResults = await Promise.all(this.searchResult.results.slice(0, this.resulPerLoad).map((r: any) => r.data()));
 
     this.loadedResults = initialResults.length;
@@ -153,6 +164,7 @@ export class Search extends BaseComponent {
         },
       })
     );
+
     if (initialResults.length <= 0) {
       document.dispatchEvent(
         new CustomEvent("stage-animateModel", {

@@ -17,6 +17,7 @@ export class Stage extends BaseComponent {
   private lerpedMouse: { x: number; y: number } = { x: 0, y: 0 };
   private lerpFactor = 0.1;
   private model!: THREE.Object3D;
+  private modelState: "searching" | "cursor" | "hidden" = "hidden";
   private onMouseMoveHandler = this.onMouseMove.bind(this);
   private searchTimeline: gsap.core.Timeline | null = null;
 
@@ -89,7 +90,13 @@ export class Stage extends BaseComponent {
       this.model.children[0].position.set(-boundingBox.getCenter(point).x, -boundingBox.getCenter(point).y, -boundingBox.getCenter(point).z);
       this.model.scale.set(0, 0, 0);
 
-      barba.data.current.namespace === "home" && this.animateModelAppear();
+      if (barba.data.current.namespace === "home") {
+        document.dispatchEvent(
+          new CustomEvent("stage-animateModel", {
+            detail: { message: { animation: "show" } },
+          })
+        );
+      }
     });
   }
 
@@ -153,27 +160,36 @@ export class Stage extends BaseComponent {
     this.addEvent({ target: window, type: "mousemove", handler: this.onMouseMoveHandler });
   }
 
+  private updateModelState(newState: "searching" | "cursor" | "hidden", action: () => void) {
+    if (this.modelState === newState) return;
+    this.modelState = newState;
+    action();
+  }
+
   private onAnimateModel(e: Event) {
     const customEvent = e as CustomEvent<{ message: any }>;
     const { animation } = customEvent.detail.message;
+
     switch (animation) {
       case "show":
-        this.animateModelAppear();
+        this.updateModelState("cursor", () => this.animateModelAppear());
         break;
 
       case "hide":
-        this.animateModelDisappear();
+        this.updateModelState("hidden", () => this.animateModelDisappear());
         break;
 
       case "startSearching":
-        this.stopMouseMoveListener();
-        this.mouse.x = 0;
-        this.mouse.y = 0;
-        this.animateModelSearching();
+        this.updateModelState("searching", () => {
+          this.stopMouseMoveListener();
+          this.mouse.x = 0;
+          this.mouse.y = 0;
+          this.animateModelSearching();
+        });
         break;
 
       case "stopSearching":
-        this.cancelModelSearching();
+        this.updateModelState("cursor", () => this.cancelModelSearching());
         break;
     }
   }
