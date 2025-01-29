@@ -157,4 +157,4 @@ const init = () => {
   loaderAnimation();
 };
 
-export { init, barba };
+export { init, barba, reduceMotion };
