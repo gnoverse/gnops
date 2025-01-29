@@ -44,10 +44,13 @@
         <span class="font-bold dark:text-light" aria-hidden="true">{{ T "Summary" }} —</span>
         <span class="text-400 text-gray-300 dark:text-gray-600 italic" data-pagefind-meta="summary">{{ . }}</span>
       </p>
-      {{- end -}}
+      {{- end -}} {{ $related := .Site.RegularPages.Related . }}
 
-      <article data-component="article" class="prose dark:prose-invert max-w-none" {{ with .Params.contentLang }}lang="{{ . }}" {{ end }}>{{ .Content }}</article>
+      <article data-component="article" class="prose dark:prose-invert max-w-none  {{with $related}}mb-0{{else}}mb-28{{end}}" {{ with .Params.contentLang }}lang="{{ . }}" {{ end }}>
+        {{ .Content }}
+      </article>
 
+      {{ with $related }}
       <aside class="my-28" data-pagefind-ignore>
         <div class="flex flex-col sm:flex-row gap-4 justify-between items-center mb-6">
           <h3 class="block text-500 text-center font-bold dark:text-light">{{ T "DiscoverMore" }}</h3>
@@ -62,6 +65,7 @@
         </div>
         {{ partial "components/related" . }}
       </aside>
+      {{ end }}
     </div>
   </section>
 </main>
