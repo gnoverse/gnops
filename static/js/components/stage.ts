@@ -4,7 +4,7 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import gsap from "gsap";
 
 import { BaseComponent } from "./base";
-import { barba } from "../barba";
+import { barba, reduceMotion } from "../barba";
 
 import { lerp } from "../utils";
 
@@ -93,7 +93,7 @@ export class Stage extends BaseComponent {
       if (barba.data.current.namespace === "home") {
         document.dispatchEvent(
           new CustomEvent("stage-animateModel", {
-            detail: { message: { animation: "show" } },
+            detail: { message: { animation: "show", reduceMotion } },
           })
         );
       }
@@ -212,7 +212,7 @@ export class Stage extends BaseComponent {
     this.mouse.y = evt.clientY / this.sizes.height - 0.5;
   }
 
-  animateModelAppear(reduceMotion: boolean) {
+  animateModelAppear(reduceMotion = false) {
     gsap.fromTo(
       this.model.rotation,
       {
@@ -237,7 +237,7 @@ export class Stage extends BaseComponent {
     );
   }
 
-  animateModelDisappear(reduceMotion: boolean) {
+  animateModelDisappear(reduceMotion = false) {
     gsap.fromTo(
       this.model.rotation,
       { y: Math.PI * 8 },
@@ -256,18 +256,18 @@ export class Stage extends BaseComponent {
     });
   }
 
-  animateModelSearching() {
+  animateModelSearching(reduceMotion = false) {
     this.searchTimeline = gsap.timeline();
     this.searchTimeline
       .to(this.model.rotation, {
         x: Math.PI / 4,
         y: Math.PI * 6 - Math.PI / 8,
-        duration: 1,
+        duration: reduceMotion ? 0 : 1,
         ease: "back.out(1.4)",
       })
       .to(this.model.rotation, {
         y: Math.PI * 6 - -Math.PI / 8,
-        duration: 1,
+        duration: reduceMotion ? 0 : 1,
         ease: "power4.inOut",
         repeat: -1,
         yoyo: true,
@@ -275,7 +275,7 @@ export class Stage extends BaseComponent {
       });
   }
 
-  cancelModelSearching() {
+  cancelModelSearching(reduceMotion = false) {
     if (this.searchTimeline) {
       this.searchTimeline.kill();
       this.searchTimeline = null;
@@ -284,7 +284,7 @@ export class Stage extends BaseComponent {
         x: 0,
         y: Math.PI * 8,
         z: 0,
-        duration: 0.8,
+        duration: reduceMotion ? 0 : 0.8,
         ease: "power2.inOut",
       });
       this.startMouseMoveListener();
