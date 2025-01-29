@@ -1,11 +1,12 @@
 ---
 title: Opentelemetry - stepping into Gnoland's observability tools
-publishDate: 2025-01-300T08:00:00-01:00
+publishDate: 2025-01-30T08:00:00-01:00
 translationKey: "open-telemetry"
 tags: ["Gnoland", "devops", "observability", "opentelemetry"]
 level: Intermediate
 author: sw360cab
 summary: This showcase is about the Gnoland approach to Open Telemtry and to its own observability stack.
+
 ---
 
 ## What is OTel
@@ -164,7 +165,9 @@ docker compose up -d
 
 ### Instrumenting applications
 
-When using the Gnoland binary, instrumenting the application is just one step to the side. As said before it is important to just enable telemetry from config, the `telemetry.enabled` entry, and to provide a meaningful name to define which is the current ref service , and an identifier for the current running  service. 
+When using the Gnoland binary, instrumenting the application is just one step to the side. As said before it is important to just enable telemetry from config, the `telemetry.enabled` entry, providing an endpoint to the collector, `telemetry.exporter_endpoint`.
+Then to identify a current set of application, like a validator set, a generic service name can be added via `telemetry.service_name`, together with a peculiar name representing the specific instance providing metrics, using  `telemetry.service_instance_id`.
+These last two parameters will be included as labels in each metric emitted by the instrumented application.
 
 The validator node will generate secrets, adjust config to enable telemetry and produce labeled metrics and it will also generate a genesis file having the validator itself entry within the validator set.
 
@@ -331,4 +334,27 @@ spec:
 - `Grafana`: what is needed in a common Grafana configuration provided with a Prometheus datasource, is the addition of the dedicated dashboard into the list of available ones. The dashboard is not far from what was configured in the Docker Compose version.
 As long as the Prometheus datasource is available, the same dashboard configuration will display the UI panels the same way.
 
-- `Gnoland binary`: of course it is an already existing component so what is needed is just a valid configuration enabling OTel and pointing to the right endpoint of the OTel collector
+- `Gnoland binary`: of course it is an already existing component so what is needed is just a valid configuration enabling OTel and pointing to the right endpoint of the OTel collector.
+This configuration in Kubernetas should be provided at boot time, in Kubernetes this is possible by employing an `initContainer`.
+In particular it is important to point the right Kubernetes service representing the OTel collector. In order to follow the above configuration the endpoint will look like: `otel-svc.svc.cluster.local:4317`.
+
+```yaml
+...
+initContainers:
+- name: init-config
+  image: ghcr.io/gnolang/gno/gnoland:{{ .Values.global.binaryVersion }}
+  command:
+  - sh
+  - -c
+  - |
+    gnoland config set telemetry.enabled true
+    gnoland config set telemetry.service_instance_id val-01
+    gnoland config set telemetry.exporter_endpoint otel-svc.svc.cluster.local:4317
+...
+```
+
+## Conclusion
+
+We have seen here why and how Open Telemetry was adopted in Gnoland. Moreover we have been able to introduce OTel into the observability stack,
+first in a simple Docker Compose and then in Kubernetes.
+Finally OpenTelemetry became part of the observability stack in Gnoland!
