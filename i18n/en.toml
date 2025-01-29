@@ -6,7 +6,7 @@ other = "Discover More"
 
 [TimeToRead]
   one = '{{ . } min to read'
-  other = '{{ . }}min to read'
+  other = '{{ . }} min to read'
 
 [TimeToReadLong]
   other = 'Takes approximately {{ . }} min to read'

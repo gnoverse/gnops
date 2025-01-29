@@ -63,6 +63,9 @@
 }
 
 @layer components {
+  .listArticle {
+    @apply w-full;
+  }
   .listArticle a {
     @apply flex flex-col justify-end gap-x-4 items-start p-5 bg-gray-800 dark:bg-gray-100 rounded-2xl h-full duration-200 ease-in-out transition-colors text-gray-500 dark:text-gray-400 hover:bg-gray-700 dark:hover:bg-gray-200;
   }
@@ -76,7 +79,7 @@
     @apply flex flex-col items-start h-full;
   }
   .listArticle p {
-    @apply text-200  line-clamp-2 h-full pb-1;
+    @apply text-200  line-clamp-2 h-full pb-1 leading-snug;
   }
 
   .listArticle ul {
