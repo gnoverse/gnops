@@ -76,7 +76,7 @@
     @apply flex flex-col items-start h-full;
   }
   .listArticle p {
-    @apply text-200  line-clamp-2 h-full pb-1;
+    @apply text-200  line-clamp-2 h-full pb-1 leading-snug;
   }
 
   .listArticle ul {
