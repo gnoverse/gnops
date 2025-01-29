@@ -53,7 +53,7 @@ export class Tabs extends BaseComponent {
     this.isClickable = false;
     setTimeout(() => {
       this.isClickable = true;
-    }, 600);
+    }, 500);
 
     const target = e.target as HTMLElement;
     if (target.dataset.componentItem) {
