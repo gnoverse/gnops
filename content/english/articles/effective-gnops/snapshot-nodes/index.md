@@ -87,7 +87,7 @@ docker compose up -d
 ```shell
 $ gnoland config init
 
-$ gnoland secret init
+$ gnoland secrets init
 ```
 
 ### Step 2: Download and extract snapshots data
