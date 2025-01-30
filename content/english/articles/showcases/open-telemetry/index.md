@@ -2,10 +2,10 @@
 title: OpenTelemetry - stepping into Gnoland's observability tools
 publishDate: 2025-01-30T08:00:00-01:00
 translationKey: "open-telemetry"
-tags: ["Gnoland", "devops", "observability", "opentelemetry"]
+tags: ["Gnoland", "devops", "observability", "OpenTelemetry", "metrics", "otel"]
 level: Intermediate
 author: sw360cab
-summary: This showcase is about the Gnoland approach to OpenTelemetry and to its own observability stack.
+summary: This showcase is about the gno.land approach to OpenTelemetry and to its own observability stack.
 ---
 
 ## What is OTel
@@ -32,12 +32,12 @@ All this data facilitates the analysis of the performances of a specific instrum
 
 ## Why OTel
 
-OpenTelemetry is a free and open source technology and it is not prone to any other system, service or technology, in this way we can maximize the possibilities of integration with other services and technologies and minimize or totally forget the vendor locking.
+OpenTelemetry is a free and open source technology and it does not depend on any other system, service or technology, in this way we can maximize the possibilities of integration with other services and technologies and minimize or totally avoid the vendor lock-in.
 
 ## OTel in Gnoland
 
-First of all, the current version of Gnoland will focus on OpenTelemetry metrics, traces may come next in a short time. For logs we have no plans at the moment.
-all the gnoland code has been actively instrumented to collect a predefined set of metrics, mainly `counters` and `histograms` and some `gauges`. the code has been explicitly instrumented using the official [Go SDK](https://opentelemetry.io/docs/languages/go/).
+First of all, the current version of Gnoland will focus on OpenTelemetry metrics, traces may come next in a short time.
+All the gno.land code has been actively instrumented to collect a predefined set of metrics, mainly `counters` and `histograms` and some `gauges`. the code has been explicitly instrumented using the official [Go SDK](https://opentelemetry.io/docs/languages/go/).
 
 The reference file setting up OpenTelemetry in the official [Gno repository](https://github.com/gnolang/gno) is at [tm2/pkg/telemetry/metrics/metrics.go](https://github.com/gnolang/gno/blob/master/tm2/pkg/telemetry/metrics/metrics.go).
 This holds an init method which is in charge of creating the metric provider, which in turn will be collecting the instrumented metrics and exporting them periodically to either an http or a grpc endpoint.
@@ -86,7 +86,7 @@ func Init(config config.Config) error {
   // instrument OTel SDK
   OTel.SetMeterProvider(provider)
   meter := provider.Meter(config.MeterName)
-  ...
+  //...
 }
 ```
 
@@ -116,7 +116,6 @@ if !telemetry.MetricsEnabled() {
 
 // Log the total number of mempool transactions
 metrics.NumMempoolTxs.Record(context.Background(), int64(mem.txs.Len()))
-...
 }
 ```
 
@@ -136,7 +135,7 @@ The following configuration items are available in Gno setup:
 
 All the previous name references will be included in each metric emitted by the Gnoland application.
 
-## OpenTelemetry in action: Orchestrating multiple services in Docker compose
+## OpenTelemetry in action: Orchestrating multiple services in Docker
 
 In order to see OpenTelemetry in action we need
 
@@ -151,15 +150,16 @@ To the first group belong:
 
 For the application part we will use:
 
-- a Gno validator that start producing blocks
+- a Gno validator that starts producing blocks
 - [Supernova](https://github.com/gnolang/supernova), the stress-testing Gno networks tool, to generate some traffic as transactions created (package deployment)
 - an RPC node, used as handy communication tier between the Gno validator and Supernova
 
 The complete docker compose file for the orchestrated services can be found in the `misc/telemetry` [directory on GitHub](https://github.com/gnolang/gno/tree/master/misc/telemetry).
 
-You can launch the services using:
+You can launch the services using from the Gno repository folder:
 
 ```bash
+cd misc/telemetry
 docker compose up -d
 ```
 
