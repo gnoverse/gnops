@@ -78,6 +78,20 @@ tar cvf - -C ${DAEMON_HOME} wal db | lz4 > $FILE
 docker compose up -d
 ```
 
+## Setup a new node from a snapshots
+
+### Step 1: Init a new gnoland node
+
+```shell
+$ gnoland config init
+```
+
+### Step 2: Download and extract snapshots data
+
+```shell
+$ curl -o - -L $SNAPSHOTS_URL | lz4 -c -d - | tar -x -C ./gnoland-data
+```
+
 ## Storing and Sharing Snapshots
 
 To make snapshots accessible, you can use a simple file browser. Here's how to set it up using [filebrowser](https://github.com/filebrowser/filebrowser):
