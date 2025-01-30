@@ -166,7 +166,7 @@ docker compose up -d
 ### Instrumenting applications
 
 When using the Gnoland binary, instrumenting the application is just one step to the side. As said before it is important to just enable telemetry from config, the `telemetry.enabled` entry, providing an endpoint to the collector, `telemetry.exporter_endpoint`.
-Then to identify a current set of applications, like a validator set, a generic service name can be added via `telemetry.service_name`, together with a peculiar name representing the specific instance providing metrics, using `telemetry.service_instance_id`.
+Then to identify a current set of applications, like a validator set, a generic service name can be added via `telemetry.service_name`, together with the unique name given the specific instance providing metrics, using `telemetry.service_instance_id`.
 These last two parameters will be included as labels in each metric emitted by the instrumented application.
 
 The validator node will generate secrets, adjust config to enable telemetry and produce labeled metrics and it will also generate a genesis file having the validator itself within the validator set entries.
