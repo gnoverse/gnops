@@ -1,13 +1,13 @@
 ---
 title: "Showcase: tx-indexer"
 publishDate: 2025-01-29T21:46:00-01:00
-metaTitle: "tx-indexer"
 translationKey: "tx-indexer"
 tags: ["gnoland", "gno", "graphql", "jsonrpc"]
 level: Intermediate
 author: wyhaines
 summary: This highlights some of the unique and compelling features of the tx-indexer.
 ---
+
 # Showcase: tx-indexer
 
 ## Overview
