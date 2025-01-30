@@ -64,6 +64,8 @@ export LATEST_HEIGHT=$(curl -s localhost:26657/status | jq -r '.result.sync_info
 
 ### Step 4: Compress the data folder
 
+Here, we compress only the `wal` and `db` directory inside of the `gnoland-data` folder which contains blocks states.
+
 ```bash
 export CHAIN_ID="dev"
 export DAEMON_HOME="./gnoland-data"
@@ -84,6 +86,8 @@ docker compose up -d
 
 ```shell
 $ gnoland config init
+
+$ gnoland secret init
 ```
 
 ### Step 2: Download and extract snapshots data
