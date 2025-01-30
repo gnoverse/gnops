@@ -12,8 +12,10 @@ type AnimationOverlayOptions = {
   each?: number;
   duration?: number;
 };
+type AnimationStyle = "pixel" | "zoom";
 
-const reduceMotion = true; //window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let animationStyle: AnimationStyle = "zoom";
 
 const initializeOverlay = (overlayEl: HTMLElement | null) => {
   if (!overlayEl) {
@@ -58,17 +60,22 @@ const loaderAnimation = async () => {
   const loader = document.querySelector("#loader");
 
   if (!reduceMotion) {
-    await createOverlayAnimation(overlay, {
-      type: "show",
-      ease: "power1.in",
-    });
-    gsap.set(loader, { autoAlpha: 0 });
-    gsap.set(wrapperPerspective, { perspectiveOrigin: updateTransformOrigin() });
-    gsap.fromTo(wrapper, { translateZ: "-100px" }, { translateZ: "0px", duration: 1 });
+    if (animationStyle === "pixel") {
+      await createOverlayAnimation(overlay, {
+        type: "show",
+        ease: "power1.in",
+      });
+    }
 
-    await createOverlayAnimation(overlay, {
-      type: "hide",
-    });
+    gsap.set(wrapperPerspective, { perspectiveOrigin: updateTransformOrigin() });
+    gsap.to(loader, { autoAlpha: 0, duration: 0.4, delay: 0.4 });
+    gsap.fromTo(wrapper, { translateZ: "-75px" }, { translateZ: "0px", duration: 1 });
+
+    if (animationStyle === "pixel") {
+      await createOverlayAnimation(overlay, {
+        type: "hide",
+      });
+    }
   } else {
     gsap.set(loader, { autoAlpha: 0, delay: 0.2 });
   }
@@ -90,13 +97,22 @@ const leaveAnimation = async (content: ISchemaPage) => {
 
   if (!reduceMotion) {
     gsap.set(wrapperPerspective, { perspectiveOrigin: updateTransformOrigin() });
-    gsap.to(wrapper, { translateZ: "-100px", duration: 1 });
-    gsap.to(content.container, { autoAlpha: 0 });
 
-    await createOverlayAnimation(overlay, {
-      type: "show",
-      ease: "power1.in",
-    });
+    switch (animationStyle) {
+      case "pixel":
+        gsap.to(wrapper, { translateZ: "-100px" });
+        gsap.to(content.container, { autoAlpha: 0 });
+        await createOverlayAnimation(overlay, {
+          type: "show",
+          ease: "power1.in",
+        });
+        break;
+      case "zoom":
+      default:
+        gsap.to(wrapper, { translateZ: "-65px", duration: 0.2 });
+        await gsap.to(content.container, { autoAlpha: 0, duration: 0.2 });
+        break;
+    }
   }
 };
 
@@ -116,11 +132,19 @@ const enterAnimation = async (content: ISchemaPage) => {
 
   if (!reduceMotion) {
     gsap.set(wrapperPerspective, { perspectiveOrigin: updateTransformOrigin() });
-    gsap.fromTo(wrapper, { translateZ: "100px" }, { translateZ: "0px", duration: 1 });
-    gsap.from(content.container, { autoAlpha: 0 });
-    await createOverlayAnimation(overlay, {
-      type: "hide",
-    });
+    switch (animationStyle) {
+      case "pixel":
+        gsap.fromTo(wrapper, { translateZ: "100px" }, { translateZ: "0px", ease: "power4.out" });
+        gsap.from(content.container, { autoAlpha: 0, ease: "power4.out" });
+
+        await createOverlayAnimation(overlay, {
+          type: "hide",
+        });
+      case "zoom":
+      default:
+        gsap.fromTo(wrapper, { translateZ: "65px" }, { translateZ: "0px", duration: 0.6, ease: "power4.out" });
+        gsap.from(content.container, { autoAlpha: 0, duration: 0.6, ease: "power4.out" });
+    }
   }
 };
 
@@ -157,4 +181,4 @@ const init = () => {
   loaderAnimation();
 };
 
-export { init, barba, reduceMotion };
+export { init, barba, reduceMotion, animationStyle };
