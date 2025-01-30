@@ -8,8 +8,6 @@ author: wyhaines
 summary: This highlights some of the unique and compelling features of the tx-indexer.
 ---
 
-# Showcase: tx-indexer
-
 ## Overview
 
 **tx-indexer** is a tool from the Gno team that indexes Tendermint2 chain data and serves it via multiple protocols, including via a GraphQL endpoint. The tx-indexer will allow you to query or subscribe to your chain’s blocks, transactions, or custom message data in real time.
@@ -55,13 +53,13 @@ make build
 Then, run the **tx-indexer** and point it to your Gno chain:
 
 ```shell
-./build/tx-indexer start --remote https://rpc.gno.land --db-path indexer-db
+./build/tx-indexer start --remote https://rpc.test5.gno.land  -listen-address 0.0.0.0:8546 --db-path indexer-db
 ```
 
-This will index data from `https://rpc.test4.gno.land` and store it in `indexer-db`. The GraphQL endpoint (and JSON-RPC endpoint) will be available by default on port `8546` (configurable via the `--listen-address` flag).
+This will index data from `https://rpc.test5.gno.land` and store it in `indexer-db`. The GraphQL endpoint (and JSON-RPC endpoint) will be available by default on port `8546` (configurable via the `--listen-address` flag).
 
 > **Note**  
-> The WebSocket endpoint is always at `ws://<listen-address>/ws`. You’ll need the WS port if you plan on receiving subscription events over WebSocket.
+> The WebSocket endpoint is always at `ws://<listen-address>/ws` for local and insecure deployments, but will be `wss://<listen-address>/ws` with secure deployments utilizing an SSL certificate. You’ll need the WS port if you plan on receiving subscription events over WebSocket.
 
 ### 2. Access the GraphQL Playground
 
@@ -79,7 +77,7 @@ This launches the GraphQL Playground—an interactive interface where you can ru
 
 ### Real-Time Subscriptions with GraphQL
 
-An extensive review of the GraphQL queries that are possible with the tx-indexer is beyond the scope of this article. Future documentation delving into this in more detail may eventually be found in the gno.land documentation or tutorials, but as a simple example, consider an event-driven workflow such as updating a dashboard or sending alerts when new blocks appear. the GraphQL subscription feature can make this simple.
+An extensive review of the GraphQL queries that are possible with the tx-indexer is beyond the scope of this article. Future documentation delving into this in more detail may eventually be found in the gno.land documentation or tutorials, but as a simple example, consider an event-driven workflow such as updating a dashboard or sending alerts when new blocks appear. The GraphQL subscription feature can make this simple.
 
 ```graphql
 subscription {
@@ -93,7 +91,7 @@ subscription {
 }
 ```
 
-When you run the above subscription in the Playground, you’ll see real-time updates with each new block. You can imagine hooking this into:
+When you run the above subscription in the GraphQL Playground, you’ll see real-time updates with each new block. You can imagine hooking this into:
 
 - **Grafana**: A custom data source plugin or a small middleware that pushes these block updates to Grafana panels in real time.  
 - **Alerts**: A Slack or Discord bot that triggers a message whenever a new block has some interesting condition (e.g., block with a suspiciously large number of transactions).  
