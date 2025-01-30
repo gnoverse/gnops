@@ -3,6 +3,8 @@ import { BaseComponent } from "./base";
 import gsap from "gsap";
 
 export class Tabs extends BaseComponent {
+  private isClickable = true;
+
   constructor(el: HTMLElement) {
     super(el);
 
@@ -46,6 +48,13 @@ export class Tabs extends BaseComponent {
   }
 
   private onTabClick(e: Event) {
+    if (!this.isClickable) return;
+
+    this.isClickable = false;
+    setTimeout(() => {
+      this.isClickable = true;
+    }, 500);
+
     const target = e.target as HTMLElement;
     if (target.dataset.componentItem) {
       this.updateTab(target);
@@ -95,6 +104,10 @@ export class Tabs extends BaseComponent {
 
     const tabName = el.dataset.componentItem ?? "";
     this.updateList(tabName, refresh);
+
+    parent.querySelectorAll("[data-component-item]").forEach((tab) => tab.classList.remove("text-gray-50", "dark:text-light"));
+
+    el.classList.add("text-gray-50", "dark:text-light");
   }
 
   updateList(listName: string, refresh = false) {

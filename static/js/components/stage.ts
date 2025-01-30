@@ -4,7 +4,7 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import gsap from "gsap";
 
 import { BaseComponent } from "./base";
-import { barba } from "../barba";
+import { barba, reduceMotion } from "../barba";
 
 import { lerp } from "../utils";
 
@@ -93,7 +93,7 @@ export class Stage extends BaseComponent {
       if (barba.data.current.namespace === "home") {
         document.dispatchEvent(
           new CustomEvent("stage-animateModel", {
-            detail: { message: { animation: "show" } },
+            detail: { message: { animation: "show", reduceMotion } },
           })
         );
       }
@@ -168,15 +168,17 @@ export class Stage extends BaseComponent {
 
   private onAnimateModel(e: Event) {
     const customEvent = e as CustomEvent<{ message: any }>;
-    const { animation } = customEvent.detail.message;
+    const { animation, reduceMotion } = customEvent.detail.message;
+
+    gsap.killTweensOf([this.model, this.model.rotation, this.model.scale]);
 
     switch (animation) {
       case "show":
-        this.updateModelState("cursor", () => this.animateModelAppear());
+        this.updateModelState("cursor", () => this.animateModelAppear(reduceMotion));
         break;
 
       case "hide":
-        this.updateModelState("hidden", () => this.animateModelDisappear());
+        this.updateModelState("hidden", () => this.animateModelDisappear(reduceMotion));
         break;
 
       case "startSearching":
@@ -212,7 +214,7 @@ export class Stage extends BaseComponent {
     this.mouse.y = evt.clientY / this.sizes.height - 0.5;
   }
 
-  animateModelAppear() {
+  animateModelAppear(reduceMotion = false) {
     gsap.fromTo(
       this.model.rotation,
       {
@@ -220,7 +222,7 @@ export class Stage extends BaseComponent {
       },
       {
         y: Math.PI * 8,
-        duration: 2,
+        duration: reduceMotion ? 0 : 2,
         ease: "back.out(0.8)",
       }
     );
@@ -231,43 +233,35 @@ export class Stage extends BaseComponent {
         x: 1,
         y: 1,
         z: 1,
-        duration: 1.6,
+        duration: reduceMotion ? 0 : 1.4,
         ease: "power2.inOut",
       }
     );
   }
 
-  animateModelDisappear() {
-    gsap.fromTo(
-      this.model.rotation,
-      { y: Math.PI * 8 },
-      {
-        y: Math.PI * 6,
-        duration: 1,
-        ease: "power2.inOut",
-      }
-    );
+  animateModelDisappear(reduceMotion = false) {
     gsap.to(this.model.scale, {
       x: 0,
       y: 0,
       z: 0,
-      duration: 1,
+      duration: reduceMotion ? 0 : 0.2,
       ease: "power2.inOut",
     });
+    gsap.set(this.model.rotation, { y: Math.PI * 6 });
   }
 
-  animateModelSearching() {
+  animateModelSearching(reduceMotion = false) {
     this.searchTimeline = gsap.timeline();
     this.searchTimeline
       .to(this.model.rotation, {
         x: Math.PI / 4,
         y: Math.PI * 6 - Math.PI / 8,
-        duration: 1,
+        duration: reduceMotion ? 0 : 1,
         ease: "back.out(1.4)",
       })
       .to(this.model.rotation, {
         y: Math.PI * 6 - -Math.PI / 8,
-        duration: 1,
+        duration: reduceMotion ? 0 : 0.8,
         ease: "power4.inOut",
         repeat: -1,
         yoyo: true,
@@ -275,7 +269,7 @@ export class Stage extends BaseComponent {
       });
   }
 
-  cancelModelSearching() {
+  cancelModelSearching(reduceMotion = false) {
     if (this.searchTimeline) {
       this.searchTimeline.kill();
       this.searchTimeline = null;
@@ -284,7 +278,7 @@ export class Stage extends BaseComponent {
         x: 0,
         y: Math.PI * 8,
         z: 0,
-        duration: 0.8,
+        duration: reduceMotion ? 0 : 0.8,
         ease: "power2.inOut",
       });
       this.startMouseMoveListener();

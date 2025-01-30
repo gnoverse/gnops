@@ -5,7 +5,7 @@
 {{ $ctx := . }} {{- $data := index .Site.Data .Site.Language.Lang -}}
 <main data-barba="container" data-barba-namespace="home" class=" min-h-screen">
 <div class="pb-10 w-full flex flex-col items-center">
-    <h1 class="mt-16 font-proxima inline-block font-bold text-900 text-green-200 dark:text-green-100 mb-10 m-auto">{{ .Title }}</h1>
+    <h1 class="mt-16 font-proxima inline-block font-bold text-900 dark:text-light mb-10 m-auto">{{ .Title }}</h1>
     {{- if isset .Params "subtitle" -}}
     <p class="pb-2 text-500 text-gray-700 font-light">
       {{ .Params.subtitle }} {{ if and .Params.cta .Params.ctalink }}
@@ -14,25 +14,25 @@
     </p>
     {{- end -}}
   
-    <form data-component="search" class="max-w-96 w-full flex justify-center">
+    <div data-component="search" class="max-w-96 w-full flex justify-center">
         <label for="search-input" class="relative flex items-center bg-gray-800 rounded-full p-4 gap-2 w-full">
             <div class="">{{ partial "icons/ico-search" . }}</div>
             <input id="search-input" data-component-input placeholder="Search" class="bg-transparent outline-none w-full" />
         </label>
-    </form>
+    </div>
 
     <nav class="relative mt-10 w-full max-w-2xl min-h-8" data-component="tabs">
         <div data-component-nav="tabs" class="block w-fit m-auto">
             <ul class="flex justify-center gap-4 md:gap-6 text-gray-500 dark:text-gray-300">
                 <li>
                     <input type="radio" id="all" name="tab" value="all" class="hidden peer" checked />
-                    <label data-component-item="all" for="all" class="ease duration-300 cursor-pointer hover:text-gray-50 peer-checked:text-gray-50 dark:hover:text-light dark:peer-checked:text-light">All</label>
+                    <label data-component-item="all" for="all" class="ease duration-300 cursor-pointer hover:text-gray-50 text-gray-50 dark:hover:text-light dark:text-light">All</label>
                 </li>
                 {{- range .Site.Menus.main -}} 
                     {{- if eq .Params.list true -}}
                         <li class="min-w-fit">
-                            <input type="radio" id="{{ .Name }}" name="tab" value="{{ .Name }}" class="hidden peer" />
-                            <label data-component-item="{{ .Name }}" for="{{ .Name }}" class="ease duration-300 cursor-pointer hover:text-gray-50 peer-checked:text-gray-50 dark:hover:text-light dark:peer-checked:text-light">{{ .Identifier }}</label>
+                            <!-- <input type="radio" id="{{ .Name }}" name="tab" value="{{ .Name }}" class="hidden peer" /> -->
+                            <label data-component-item="{{ .Name }}" for="{{ .Name }}" class="ease duration-300 cursor-pointer hover:text-gray-50  dark:hover:text-light ">{{ .Identifier }}</label>
                                 </li>
                     {{- end -}}
                 {{- end -}} 

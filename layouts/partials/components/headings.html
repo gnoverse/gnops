@@ -7,7 +7,7 @@
   <div class="flex w-full justify-center font-bold items-center ">
     {{ $openTag | safeHTML }}
     <span class="inline-flex items-center text-600 md:text-700">
-      <span class="w-max">{{ strings.FirstUpper .title }}</span>
+      <span class="w-max dark:text-gray-800">{{ strings.FirstUpper .title }}</span>
     </span>
     {{ $closeTag | safeHTML }}
     {{- with .sectionLink -}}
