@@ -1,6 +1,6 @@
-# GNOPS
+## Overview
 
-GNOPS is a project designed to be a Community-run hub for the Gno DevOps family.
+gnops.io is a project designed to be a community-run hub for the Gno DevOps family.
 
 ## Contributing
 
@@ -10,7 +10,14 @@ To contribute to the project's content, please focus on the following directorie
 - **`english/`**: English language content files, classified per article kind (showcase, guides, effective-gno).
 - **`i18n/`**: Internationalization files for supporting multiple languages.
 
-When adding or modifying content, ensure that your contributions align with the project's/front-matter structure and standards.
+When adding or modifying content, ensure that your contributions align with the project's / front-matter structure and
+standards.
+
+### Sections
+
+- **Effective gnops** - best practices and good habits relating to Gno node orchestration
+- **Guides** - standard tutorials that cover how to go from A to B
+- **Showcases** - show and tell, tool spotlight, setup showcase
 
 ## Installation
 
@@ -66,17 +73,8 @@ When adding or modifying content, ensure that your contributions align with the 
 
 ## Folder Structure
 
-- **`content/`**: Contains site content files.
+- **`content/`**: Contains site content files (articles).
 - **`i18n/`**: Contains translations for internationalization.
 - **`assets/images/`**: Media files used on the site.
 - **`temp/`**: Output for built files (used by Hugo and Vite).
 - **`build/`**: Final build directory for production.
-
-## License
-
-TODO
-
-## Author
-
-Gnoverse Community.
-Feel free to contribute and enhance GNOPS for your projects! 🚀
