@@ -5,7 +5,7 @@
 {{ $ctx := . }} {{- $data := index .Site.Data .Site.Language.Lang -}}
 <main data-barba="container" data-barba-namespace="home" class=" min-h-screen">
 <div class="pb-10 w-full flex flex-col items-center">
-    <h1 class="mt-16 font-proxima inline-block font-bold text-900 text-green-200 dark:text-green-100 mb-10 m-auto">{{ .Title }}</h1>
+    <h1 class="mt-16 font-proxima inline-block font-bold text-900 dark:text-light mb-10 m-auto">{{ .Title }}</h1>
     {{- if isset .Params "subtitle" -}}
     <p class="pb-2 text-500 text-gray-700 font-light">
       {{ .Params.subtitle }} {{ if and .Params.cta .Params.ctalink }}
