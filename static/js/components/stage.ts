@@ -170,6 +170,8 @@ export class Stage extends BaseComponent {
     const customEvent = e as CustomEvent<{ message: any }>;
     const { animation, reduceMotion } = customEvent.detail.message;
 
+    gsap.killTweensOf([this.model, this.model.rotation, this.model.scale]);
+
     switch (animation) {
       case "show":
         this.updateModelState("cursor", () => this.animateModelAppear(reduceMotion));
@@ -231,29 +233,21 @@ export class Stage extends BaseComponent {
         x: 1,
         y: 1,
         z: 1,
-        duration: reduceMotion ? 0 : 1.6,
+        duration: reduceMotion ? 0 : 1.4,
         ease: "power2.inOut",
       }
     );
   }
 
   animateModelDisappear(reduceMotion = false) {
-    gsap.fromTo(
-      this.model.rotation,
-      { y: Math.PI * 8 },
-      {
-        y: Math.PI * 6,
-        duration: reduceMotion ? 0 : 1,
-        ease: "power2.inOut",
-      }
-    );
     gsap.to(this.model.scale, {
       x: 0,
       y: 0,
       z: 0,
-      duration: reduceMotion ? 0 : 1,
+      duration: reduceMotion ? 0 : 0.2,
       ease: "power2.inOut",
     });
+    gsap.set(this.model.rotation, { y: Math.PI * 6 });
   }
 
   animateModelSearching(reduceMotion = false) {
@@ -267,7 +261,7 @@ export class Stage extends BaseComponent {
       })
       .to(this.model.rotation, {
         y: Math.PI * 6 - -Math.PI / 8,
-        duration: reduceMotion ? 0 : 1,
+        duration: reduceMotion ? 0 : 0.8,
         ease: "power4.inOut",
         repeat: -1,
         yoyo: true,
