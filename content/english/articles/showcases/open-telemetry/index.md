@@ -1,8 +1,8 @@
 ---
-title: OpenTelemetry - stepping into Gnoland's observability tools
+title: OpenTelemetry - stepping into gno.land's observability tools
 publishDate: 2025-01-30T08:00:00-01:00
 translationKey: "open-telemetry"
-tags: ["Gnoland", "devops", "observability", "OpenTelemetry", "metrics", "otel"]
+tags: [ "gnoland", "devops", "observability", "OpenTelemetry", "metrics", "otel" ]
 level: Intermediate
 author: sw360cab
 summary: This showcase is about the gno.land approach to OpenTelemetry and to its own observability stack.
