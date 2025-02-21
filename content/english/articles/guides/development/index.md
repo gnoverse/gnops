@@ -1,8 +1,8 @@
 ---
-title: Run Gno Action On Your Repository
+title: Setting Up GitHub Actions CI Pipeline for Gno Projects
 publishDate: 2025-02-18T08:00:00-01:00
 translationKey: "development"
-tags: ["gnoland", "gno", "action", "docker"]
+tags: ["gnoland", "gno", "action", "docker", "ci"]
 level: Intermediate
 author: notJoon
 summary: This guide explains how to set up a CI environment for Gno projects using GitHub Actions and Docker.
