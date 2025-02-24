@@ -1,7 +1,7 @@
 ---
 title: Setting Up GitHub Actions CI Pipeline for Gno Projects
 publishDate: 2025-02-18T08:00:00-01:00
-translationKey: "development"
+translationKey: "github-gno-ci"
 tags: ["gnoland", "gno", "action", "docker", "ci"]
 level: Intermediate
 author: notJoon
