@@ -24,12 +24,12 @@ To install the `gnoland` and `gnogenesis` binaries, clone the Gno monorepo:
 git clone https://github.com/gnolang/gno.git
 ```
 
-After cloning the repo, go into the `gno.land/` folder, and use the existing
-Makefile to install the `gnoland` binary:
+After cloning the repo, go into the `gno` folder and use the Makefiles
+to install the `gnoland` and `gnogenesis` binaries:
 
 ```bash
-cd gno.land
-make install.gnoland && make -C contribs/gnogenesis install
+cd gno
+make -C gno.land install.gnoland && make -C contribs/gnogenesis install
 ```
 
 To verify that you've installed the binary properly and that you are able to use
@@ -43,6 +43,7 @@ If you do not wish to install the binary globally, you can build and run it
 with the following command from the `gno.land/` folder:
 
 ```bash
+cd gno.land
 make build.gnoland
 ```
 
