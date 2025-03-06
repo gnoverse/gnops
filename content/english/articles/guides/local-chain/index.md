@@ -51,8 +51,7 @@ And finally, run it with `./build gnoland`.
 
 ## Starting a local node (lazy init)
 
-You can start a Gno blockchain node with the default configuration by navigating to the `gno.land` sub-folder and
-running the following command:
+You can start a Gno blockchain node with the default configuration by running the following command:
 
 ```bash
 gnoland start --lazy
@@ -65,9 +64,10 @@ which is ready to accept transactions and interact with other Gno nodes.
 
 Starting a Gno blockchain node using just the `gnoland start --lazy` command implies a few things:
 
-- the default configuration will be used, and generated on disk in the `gnoland-data` directory
-- random secrets data will be generated (node private keys, networking keys...)
-- an entirely new `genesis.json` will be used, and generated on disk in the `../gnoland-data` directory. The genesis
+- a `gnoland-data` directory will be created in the current directory containing:
+  - the default configuration
+  - the randomly generated secrets data (node private keys, networking keys...)
+- an entirely new `genesis.json` will also be generated in the current directory. The genesis
   will have a single validator, whose public key is derived from the previously generated node secrets
 
 To view the command defaults, simply run the `help` command:
@@ -90,8 +90,7 @@ Let's break down the most important default settings:
 
 As mentioned, the working directory for the node is located in `data-dir`. To reset the chain, you need
 to delete this directory and `genesis.json`, then start the node up again. If you are using the default node
-configuration, you can run
-`make fclean` from the `gno.land` sub-folder to delete the `gnoland-data` working directory.
+configuration, you can delete the `gnoland-data` from the working directory.
 
 ## Starting a local node (manual configuration)
 
