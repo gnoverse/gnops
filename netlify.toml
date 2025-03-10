@@ -1,4 +1,2 @@
 [build.environment]
-HUGO_VERSION = "v0.139.3+extended+withdeploy"
-NODE_VERSION = "22"
-TZ = "America/Los_Angeles"
+HUGO_VERSION = "0.139.3"
