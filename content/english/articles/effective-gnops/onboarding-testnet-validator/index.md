@@ -22,7 +22,7 @@ To be added to the validator set, you must create a **Valoper** object and regis
 
 ### Information to Include in the `Valoper` object
 
-Ensure to follow the instruction inside the valopers realm. This is an example of details you should provide in your description:
+Be sure to follow the instructions inside the valopers realm. This is an example of the details you should provide in your description:
 
 1. **Validator Name** – Your unique identifier.
 2. **Networks You Are Currently Validating** – Include your total Assets Under Management (AuM).
@@ -31,7 +31,7 @@ Ensure to follow the instruction inside the valopers realm. This is an example o
 5. **Why You Are Interested in Validating on gno.land** – Your motivation and goals.
 6. **Contributions to gno.land** – Past contributions or plans for future contributions.
 
-_Note:_ You can update your `Valoper` object later using the `update` helper function.
+_Note:_ You can update your `Valoper` object later using the `Update` helper functions such as `UpdateDescription`.
 
 ## Step 2: Registering Your Validator
 
