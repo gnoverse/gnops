@@ -58,7 +58,7 @@ Replace `<moniker>`, `<description>`, `<validator_address>`, `<public_key_valida
 
 ## Step 3: Submitting the Proposal
 
-Once your `Valoper` object is ready, you, as the validator, must create a proposal to add yourself to the validator set. Use the following command:
+Once your `Valoper` object is ready, you, as the validator, can create a proposal to add yourself to the validator set. Use the following command:
 
 ```sh
 gnokey maketx call \
