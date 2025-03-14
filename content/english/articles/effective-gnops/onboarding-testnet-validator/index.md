@@ -1,11 +1,11 @@
 ---
 title: Onboarding a testnet validator
-publishDate: 2025-03-11T08:00:00-01:00
+publishDate: 2025-03-14T08:00:00-01:00
 translationKey: "bootnodes-persistent-peers"
 tags: ["validator", "valopers", "testnet", "onboarding"]
 level: Intermediate
-author: None
-summary: "This give a set of information on onboarding a validator node: how to provision the right server and connect it to the testnet"
+author: d4ryl00
+summary: "This give a set of information on onboarding a validator node: how to register as a valoper in the registry and how to submit a validator proposal"
 ---
 
 # Setting Up a Validator Node in gno.land
