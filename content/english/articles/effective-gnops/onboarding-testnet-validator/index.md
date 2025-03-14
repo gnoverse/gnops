@@ -14,7 +14,7 @@ summary: "This give a set of information on onboarding a validator node: how to 
 
 Validators on **gno.land** are expected to demonstrate their technical expertise and alignment with the project by making continuous and meaningful contributions. **gno.land** abstracts validator management into the `r/sys/vals` realm as a form of a smart contract for modularity.
 
-This guide walks you through the process of registering your validator node into the validator set with a smart-contract. It assumes that you already have an operational validator node running on the testnet. If not, follow [this guide](https://docs.gno.land/gno-infrastructure/validators/validators-running-a-validator) (especially the section "Connect to an Existing Gno Chain").
+This guide walks you through the process of registering your validator node into the validator set with a smart-contract. It assumes that you already have an operational validator node running on the testnet. If not, follow [this guide](https://gnops.io/articles/guides/remote-chain/).
 
 ## Step 1: Creating a `Valoper` object
 
