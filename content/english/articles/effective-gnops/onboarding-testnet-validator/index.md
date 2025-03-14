@@ -18,9 +18,9 @@ This guide walks you through the process of registering your validator node into
 
 ## Step 1: Creating a `Valoper` object
 
-To be added to the validator set, you must create a **Valoper** object and register it in the `r/gnoland/valopers` realm using the `Register` function. This structure allows you to demonstrate to **GovDAO members** why you should be accepted as a validator.
+To be added to the validator set, you must create a **Valoper** object and register it in the `r/gnoland/valopers` realm using the `Register` function. This object allows you to demonstrate to **GovDAO members** why you should be accepted as a validator.
 
-### Information to Include in the `Valoper` Structure
+### Information to Include in the `Valoper` object
 
 Ensure to follow the instruction inside the valopers realm. This is an example of details you should provide in your description:
 
@@ -31,11 +31,11 @@ Ensure to follow the instruction inside the valopers realm. This is an example o
 5. **Why You Are Interested in Validating on gno.land** – Your motivation and goals.
 6. **Contributions to gno.land** – Past contributions or plans for future contributions.
 
-_Note:_ You can update your `Valoper` structure later using the `Update...` helper functions.
+_Note:_ You can update your `Valoper` object later using the `update` helper function.
 
 ## Step 2: Registering Your Validator
 
-Once your `Valoper` structure is prepared, register it using `gnokey` with the following command:
+Once your `Valoper` object is prepared, register it using `gnokey` with the following command:
 
 ```sh
 gnokey maketx call \
@@ -56,11 +56,29 @@ gnokey maketx call \
 
 Replace `<moniker>`, `<description>`, `<validator_address>`, `<public_key_validator>`, and `<key-name>` with your actual values.
 
-## Step 3: GovDAO Proposal & Voting
+## Step 3: Submitting the Proposal
 
-After registering, a **GovDAO** member will create a proposal to add you to the validator set. Other members will then vote on your inclusion.
+Once your `Valoper` object is ready, you, as the validator, must create a proposal to add yourself to the validator set. Use the following command:
 
-Once the proposal is approved, you will officially become a validator in **gno.land**.
+```sh
+gnokey maketx call \
+  -pkgpath "gno.land/r/gnoland/valopers_proposal" \
+  -func "ProposeNewValidator" \
+  -gas-fee 1000000ugnot \
+  -gas-wanted 20000000 \
+  -send "100000000ugnot" \
+  -broadcast \
+  -chainid "dev" \
+  -args "<validator_address>" \
+  -remote "https://rpc.gno.land:443" \
+  <key-name>
+```
+
+Replace `<validator_address>` and `<key-name>` with your actual values.
+
+## Step 4: GovDAO Voting
+
+After submitting the proposal, **GovDAO members** will review and vote on your inclusion. If the proposal is approved, you will officially become a validator in **gno.land**.
 
 ## Conclusion
 
