@@ -5,7 +5,7 @@ translationKey: "bootnodes-persistent-peers"
 tags: ["validator", "valopers", "testnet", "onboarding"]
 level: Intermediate
 author: d4ryl00
-summary: "This give a set of information on onboarding a validator node: how to register as a valoper in the registry and how to submit a validator proposal"
+summary: "This give a set of information on onboarding a validator node: how to register as a validator operator (valoper) in the registry and how to submit a validator proposal"
 ---
 
 # Setting Up a Validator Node in gno.land
