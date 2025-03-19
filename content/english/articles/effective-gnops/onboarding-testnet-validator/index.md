@@ -1,5 +1,5 @@
 ---
-title: Onboarding a testnet validator
+title: Road to Validation: How to become a testnet validator
 publishDate: 2025-03-14T08:00:00-01:00
 translationKey: "bootnodes-persistent-peers"
 tags: ["validator", "valopers", "testnet", "onboarding"]
@@ -14,15 +14,15 @@ summary: "This give a set of information on onboarding a validator node: how to 
 
 Validators on **gno.land** are expected to demonstrate their technical expertise and alignment with the project by making continuous and meaningful contributions. **gno.land** abstracts validator management into the `r/sys/vals` realm as a form of a smart contract for modularity.
 
-This guide walks you through the process of registering your validator node into the validator set with a smart-contract. It assumes that you already have an operational validator node running on the testnet. If not, follow [this guide](https://gnops.io/articles/guides/remote-chain/).
+This guide walks you through the process of registering your validator node into the validator set with a smart-contract. It assumes that you already have an operational validator node running on the testnet, before submitting a proposal to formally validate the chain. If not, follow [this guide](https://gnops.io/articles/guides/remote-chain/).
 
-## Step 1: Creating a `Valoper` object
+## Step 1: Registering a Valoper Profile
 
-To be added to the validator set, you must create a **Valoper** object and register it in the `r/gnoland/valopers` realm using the `Register` function. This object allows you to demonstrate to **GovDAO members** why you should be accepted as a validator.
+To be considered to be added to the validator set, you must create a **Valoper** profile and register it in the `r/gnoland/valopers` realm using the `Register` function. This profile allows you to demonstrate to **GovDAO members** why you should be accepted as a validator.
 
-### Information to Include in the `Valoper` object
+### Information to include in the `valoper` proposal
 
-Be sure to follow the instructions inside the valopers realm. This is an example of the details you should provide in your description:
+Be sure to answer the following questions in the description. This is an example of the details you should provide in your description:
 
 1. **Validator Name** – Your unique identifier.
 2. **Networks You Are Currently Validating** – Include your total Assets Under Management (AuM).
@@ -31,11 +31,13 @@ Be sure to follow the instructions inside the valopers realm. This is an example
 5. **Why You Are Interested in Validating on gno.land** – Your motivation and goals.
 6. **Contributions to gno.land** – Past contributions or plans for future contributions.
 
-_Note:_ You can update your `Valoper` object later using the `Update` helper functions such as `UpdateDescription`.
+_Note:_ You can update your `Valoper` profile later using the `Update` helper functions such as `UpdateDescription`.
 
-## Step 2: Registering Your Validator
+The instructions might change. Please check the latest information.
 
-Once your `Valoper` object is prepared, register it using `gnokey` with the following command:
+## Step 2: Registering Your Validator Profile
+
+Once your `Valoper` profile is prepared, register it using `gnokey` with the following command:
 
 ```sh
 gnokey maketx call \
@@ -45,7 +47,7 @@ gnokey maketx call \
     -gas-wanted 30000000 \
     -send "20000000ugnot" \
     -broadcast \
-    -chainid "dev" \
+    -chainid "test6" \
     -args "<moniker>" \
     -args "<description>" \
     -args "<validator_address>" \
@@ -54,11 +56,13 @@ gnokey maketx call \
     <key-name>
 ```
 
-Replace `<moniker>`, `<description>`, `<validator_address>`, `<public_key_validator>`, and `<key-name>` with your actual values.
+Replace `<moniker>`, `<description>`, `<validator_address>`, `<public_key_validator>`, and `<key-name>` with your actual values. To prevent abuse, you have to send `20000000ugnot` to the realm to register your validator profile.
+
+The `chainid` and `remote` values might change. Please check the latest information.
 
 ## Step 3: Submitting the Proposal
 
-Once your `Valoper` object is ready, you, as the validator, can create a proposal to add yourself to the validator set. Use the following command:
+Once your `Valoper` profile is ready, anyone can submit a proposal to add you to the validator set. Use the following command:
 
 ```sh
 gnokey maketx call \
@@ -68,13 +72,15 @@ gnokey maketx call \
   -gas-wanted 20000000 \
   -send "100000000ugnot" \
   -broadcast \
-  -chainid "dev" \
+  -chainid "test6" \
   -args "<validator_address>" \
   -remote "https://rpc.gno.land:443" \
   <key-name>
 ```
 
-Replace `<validator_address>` and `<key-name>` with your actual values.
+Replace `<validator_address>` and `<key-name>` with your actual values. To prevent abuse, you have to send `100000000ugnot` to the realm to submit the proposal.
+
+The `chainid` and `remote` values might change. Please check the latest information.
 
 ## Step 4: GovDAO Voting
 
