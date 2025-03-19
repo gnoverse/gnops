@@ -1,5 +1,5 @@
 ---
-title: Road to Validation: How to become a testnet validator
+title: Road to Validation, how to become a testnet validator
 publishDate: 2025-03-14T08:00:00-01:00
 translationKey: "bootnodes-persistent-peers"
 tags: ["validator", "valopers", "testnet", "onboarding"]
