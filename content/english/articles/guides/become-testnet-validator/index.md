@@ -62,7 +62,9 @@ The `chainid` and `remote` values might change. Please check the latest informat
 
 ## Step 3: Submitting the Proposal
 
-Once your `Valoper` profile is ready, anyone can submit a proposal to add you to the validator set. Use the following command:
+Once your `Valoper` profile is ready, you need to notify GovDAO; only a GovDAO member can submit a proposal to add you to the validator set. The fastest way is to reach out is on [Discord](https://discord.gg/S8nKUqwkPn).
+
+If you are a GovDAO member, you can nominate yourself using the following command:
 
 ```sh
 gnokey maketx call \
