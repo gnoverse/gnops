@@ -62,7 +62,7 @@ gnokey maketx call \
     -args "<moniker>" \
     -args "<description>" \
     -args "<validator_address>" \
-    -args "<public_key_validator>" \
+    -args "<pub_key_bech32>" \
     -remote "https://rpc.test6.testnets.gno.land:443" \
     <key-name>
 ```
@@ -71,6 +71,23 @@ Replace `<moniker>`, `<description>`, `<validator_address>`, `<public_key_valida
 values.
 
 The `chainid` and `remote` values might change. Please check the latest information.
+
+To fetch the validator address and bech32 representation of the public key, you can run:
+
+```shell
+gnoland secrets get validator_key -data-dir gnoland-data
+```
+
+with `gnoland-data` being the validator's data dir.
+
+Example output:
+
+```shell
+{
+    "address": "g16vtw4cgtpxt5tljzc76xr4rcwwmgcqr63qr6yk",
+    "pub_key": "gpub1pggj7ard9eg82cjtv4u52epjx56nzwgjyg9zpj3xqx6w4nvy209e28trenv3relp04jt37p0rg2pn4hyy4k0uf2vgexegj"
+}
+```
 
 ## Step 3: Submitting the Proposal
 
