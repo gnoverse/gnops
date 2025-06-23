@@ -28,7 +28,7 @@ the [Faucet Hub](https://faucet.gno.land). Make sure to select the adequate netw
 ## Step 1: Registering a Valoper Profile
 
 To be considered to be added to the validator set, you must create a **Valoper** profile and register it in the
-`r/gnoland/valopers/v2` realm using the `Register` function. This profile allows you to demonstrate to **GovDAO members**
+`r/gnoland/valopers` realm using the `Register` function. This profile allows you to demonstrate to **GovDAO members**
 why you should be accepted as a validator.
 
 ### Information to include in the `valoper` proposal
@@ -53,11 +53,10 @@ Once your `Valoper` profile is prepared, register it using `gnokey` with the fol
 
 ```sh
 gnokey maketx call \
-    -pkgpath "gno.land/r/gnoland/valopers/v2" \
+    -pkgpath "gno.land/r/gnoland/valopers" \
     -func "Register" \
     -gas-fee 1000000ugnot \
     -gas-wanted 30000000 \
-    -send "20000000ugnot" \
     -broadcast \
     -chainid "test6" \
     -args "<moniker>" \
@@ -69,7 +68,7 @@ gnokey maketx call \
 ```
 
 Replace `<moniker>`, `<description>`, `<validator_address>`, `<public_key_validator>`, and `<key-name>` with your actual
-values. To prevent abuse, you have to send `20000000ugnot` to the realm to register your validator profile.
+values.
 
 The `chainid` and `remote` values might change. Please check the latest information.
 
@@ -78,24 +77,44 @@ The `chainid` and `remote` values might change. Please check the latest informat
 Once your `Valoper` profile is ready, you need to notify GovDAO; only a GovDAO member can submit a proposal to add you
 to the validator set. The fastest way is to reach out is on [Discord](https://discord.gg/gnoland).
 
-If you are a GovDAO member, you can nominate yourself using the following command:
+If you are a GovDAO member, you can nominate yourself by calling `maketx run` on the following script:
 
-```sh
-gnokey maketx call \
-  -pkgpath "gno.land/r/gnoland/valopers_proposal/v2" \
-  -func "ProposeNewValidator" \
-  -gas-fee 1000000ugnot \
-  -gas-wanted 20000000 \
-  -send "100000000ugnot" \
-  -broadcast \
-  -chainid "test6" \
-  -args "<validator_address>" \
-  -remote "https://rpc.test6.testnets.gno.land:443" \
-  <key-name>
+```go
+// proposal.gno
+package main
+
+import (
+	proposal "gno.land/r/gnoland/valopers_proposal"
+	"gno.land/r/gov/dao"
+
+	"std"
+)
+
+func main() {
+    address := std.Address("...") // <--- the valoper profile address
+
+	// Create a proposal to add a new validator to the valset
+	pr := proposal.NewValidatorProposalRequest(cross, address)
+
+	// Create the proposal
+	dao.MustCreateProposal(cross, pr)
+}
 ```
 
-Replace `<validator_address>` and `<key-name>` with your actual values. To prevent abuse, you have to send
-`100000000ugnot` to the realm to submit the proposal.
+Run the command using:
+
+```sh
+gnokey maketx run \
+  -gas-fee 100000ugnot \
+  -gas-wanted 100_000_000 \
+  -broadcast \
+  -chainid "test6" \
+  -remote "https://rpc.test6.testnets.gno.land:443" \
+  <key-name> \
+  ./proposal.gno
+```
+
+Replace `<key-name>` with your actual values.
 
 The `chainid` and `remote` values might change. Please check the latest information.
 
