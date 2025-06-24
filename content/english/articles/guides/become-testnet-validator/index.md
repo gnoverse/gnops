@@ -108,10 +108,10 @@ import (
 )
 
 func main() {
-    address := std.Address("...") // <--- the valoper profile address
+	addr := std.Address("...") // <--- the valoper profile address
 
 	// Create a proposal to add a new validator to the valset
-	pr := proposal.NewValidatorProposalRequest(cross, address)
+	pr := proposal.NewValidatorProposalRequest(cross, addr)
 
 	// Create the proposal
 	dao.MustCreateProposal(cross, pr)
