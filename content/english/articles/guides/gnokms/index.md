@@ -103,7 +103,7 @@ You will be prompted to enter a password to encrypt the key. This password will 
 Where:
 
 - `<key_name>` is the name of the key generated in [step 1](#1-generate-a-signing-key-using-gnokey-if-you-do-not-already-have-one).
-- <listen_address> is the address on which the server should listen (e.g., `tcp://127.0.0.1:26659` or `unix:///tmp/gnokms.sock`).
+- `<listen_address>` is the address on which the server should listen (e.g., `tcp://127.0.0.1:26659` or `unix:///tmp/gnokms.sock`).
 
 ```shell
 $ gnokms gnokey '<key_name>' -listener '<listen_address>'
