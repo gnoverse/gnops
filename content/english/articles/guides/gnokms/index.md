@@ -107,6 +107,7 @@ Where:
 
 ```shell
 $ gnokms gnokey '<key_name>' -listener '<listen_address>'
+Enter password to decrypt the key  # <- Enter the password you set in step 1
 2025-07-24T16:22:56.932+0200 INFO  Validator info:
 Genesis format:
 {
@@ -127,7 +128,7 @@ Bech32 format:
 
 ### 3. Set the `gnokms` server address in the `gnoland` validator config
 
-Where <gnokms_server_address> is the dial address derived from the <listener_address> in [step 2](#2-start-a-gnokms-server-with-the-gnokey-backend).
+Where `<gnokms_server_address>` is the dial address derived from the `<listener_address>` in [step 2](#2-start-a-gnokms-server-with-the-gnokey-backend).
 
 ```shell
 $ gnoland config set consensus.priv_validator.remote_signer.server_address '<gnokms_server_address>'
