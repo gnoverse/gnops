@@ -16,7 +16,7 @@ In this guide, we delve into `gnokms`, a straightforward Key Management System (
 
 For connectivity between the validator and the `gnokms` server, both TCP and Unix domain socket protocols are available. TCP connections are encrypted and can be secured with mutual authentication, utilizing Ed25519 keypairs alongside an authorized keys whitelist on both sides.
 
-**Important Note:** A `gnokms` server instance is designed to accept only one incoming connection from a `golang` validator, and a `golang` validator can connect to only one `gnokms` server at a time, establishing a strict one-to-one relationship.
+**Important Note:** A `gnokms` server instance is designed to accept only one incoming connection from a `gnoland` validator, and a `gnoland` validator can connect to only one `gnokms` server at a time, establishing a strict one-to-one relationship.
 
 ### Flowchart
 
