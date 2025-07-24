@@ -2,7 +2,7 @@
 title: Secure your validator signing keys using `gnokms`
 publishDate: 2025-07-24T08:00:00-01:00
 translationKey: 'gnokms'
-tags: ['gnoland', 'validator', gnokms", 'security']
+tags: ['gnoland', 'validator', 'gnokms', 'security']
 level: Intermediate
 author: aeddi
 summary: This guide explains how to securely manage the keys of a gnoland validator using gnokms.
@@ -10,9 +10,9 @@ summary: This guide explains how to securely manage the keys of a gnoland valida
 
 ## Overview
 
-In this guide, we delve into `gnokms`, a straightforward Key Management System (KMS) crafted to securely handle signing keys for `gnoland` validator nodes. Instead of storing keys as plain text on disk, validators can leverage a `gnokms` server running either in a separate process or on a distinct machine. This setup delegates the secure storage and remote signing responsibilities to `gnokms`, enhancing security.
+In this guide, we delve into `gnokms`, a straightforward Key Management System (KMS) crafted to securely handle signing keys for `gnoland` validator nodes. Instead of storing keys as plaintext on disk, validators can leverage a `gnokms` server running either in a separate process or on a distinct machine. This setup delegates the secure storage and remote signing responsibilities to `gnokms`, enhancing security.
 
-`gnokms` is designed to support multiple backends such as a local `gnokey` instance, a remote Hardware Security Module (HSM), or a cloud-based KMS service. However, as of the time of writing, only the `gnokey` backend is available. If you are interested in the progress of other backends can follow the development updates in this GitHub issue: [https://github.com/gnolang/gno/issues/3230](https://github.com/gnolang/gno/issues/3230).
+`gnokms` is designed to support multiple backends such as a local `gnokey` instance, a remote Hardware Security Module (HSM), or a cloud-based KMS service. However, as of the time of writing, only the `gnokey` backend is available. If you are interested in the progress of other backends, you can follow the development updates in this GitHub issue: [https://github.com/gnolang/gno/issues/3230](https://github.com/gnolang/gno/issues/3230).
 
 For connectivity between the validator and the `gnokms` server, both TCP and Unix domain socket options are available. TCP connections are secured with encryption and mutual authentication, utilizing Ed25519 keypairs alongside an authorized keys whitelist on both sides.
 
@@ -67,7 +67,7 @@ make -C contribs/gnogenesis install
 make -C contribs/gnokms install
 ```
 
-If you do not wish to install the binaries globally, you can build them by using the `build`
+If you do not wish to install the binaries globally, you can build them using the `build`
 commands instead of the `install` ones:
 
 ```bash
@@ -78,7 +78,7 @@ make -C contribs/gnokms build
 ```
 
 This will create the binaries in their respective `build` directories, from where you can
-run them, e.g. for `gnoland`:
+run them, for example, for `gnoland`:
 
 ```bash
 ./gno.land/build/gnoland -h
@@ -86,7 +86,7 @@ run them, e.g. for `gnoland`:
 
 ## Basic `gnoland` validator and `gnokms` server setup
 
-**Note:** The only supported backend for now is `gnokey`, so the following instructions will use it.
+**Note:** Currently, the only supported backend is `gnokey`, so the following instructions will use it.
 
 ### 1. Generate a signing key using `gnokey` if you do not already have one
 
@@ -98,7 +98,7 @@ You will be prompted to enter a password to encrypt the key. This password will 
 
 ### 2. Start a `gnokms` server with the `gnokey` backend
 
-Knowing that:
+Where:
 
 - `<key_name>` is the name of the key generated in step 1.
 - <listen_address> is the address on which the server should listen (e.g., `tcp://127.0.0.1:26659` or `unix:///tmp/gnokms.sock`).
@@ -125,7 +125,7 @@ Bech32 format:
 
 ### 3. Set the `gnokms` server address in the `gnoland` validator config
 
-<gnokms_server_address> is the dial address derived from the <listener_address> in step 2.
+Where <gnokms_server_address> is the dial address derived from the <listener_address> in step 2.
 
 ```shell
 $ gnoland config set consensus.priv_validator.remote_signer.server_address '<gnokms_server_address>'
@@ -163,9 +163,9 @@ If you wish to register your validator on a testnet, you can follow the instruct
 
 ## Mutual TCP Authentication
 
-If you use an Unix domain socket (UDS) for the connection between the `gnoland` validator and the `gnokms` server, you do not need to setup mutual authentication, as the UDS is inherently secure and only accessible to processes running on the same machine.
+If you use a Unix domain socket (UDS) for the connection between the `gnoland` validator and the `gnokms` server, you do not need to set up mutual authentication, as the UDS is inherently secure and only accessible to processes running on the same machine.
 
-But if you use a TCP connection, we strongly recommend setting up mutual authentication to ensure no impersonation of both the `gnokms` server and the `gnoland` validator can occur.
+But if you use a TCP connection, we strongly recommend setting up mutual authentication to ensure that both the `gnokms` server and the `gnoland` validator cannot be impersonated.
 
 ### 1. Generate a keypair on the `gnokms` server
 
