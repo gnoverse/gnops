@@ -100,7 +100,7 @@ You will be prompted to enter a password to encrypt the key. This password will 
 
 Where:
 
-- `<key_name>` is the name of the key generated in step 1.
+- `<key_name>` is the name of the key generated in [step 1](#1-generate-a-signing-key-using-gnokey-if-you-do-not-already-have-one).
 - <listen_address> is the address on which the server should listen (e.g., `tcp://127.0.0.1:26659` or `unix:///tmp/gnokms.sock`).
 
 ```shell
@@ -125,7 +125,7 @@ Bech32 format:
 
 ### 3. Set the `gnokms` server address in the `gnoland` validator config
 
-Where <gnokms_server_address> is the dial address derived from the <listener_address> in step 2.
+Where <gnokms_server_address> is the dial address derived from the <listener_address> in [step 2](#2-start-a-gnokms-server-with-the-gnokey-backend).
 
 ```shell
 $ gnoland config set consensus.priv_validator.remote_signer.server_address '<gnokms_server_address>'
@@ -142,7 +142,7 @@ You should see logs from both the `gnokms` server and the `gnoland` validator no
 
 ## Genesis configuration
 
-If you are testing `gnokms` locally or setting up a new chain, you will need to include the validator information in the genesis file. To do so, you will need the validator info provided by the `gnokms` server in step 2.
+If you are testing `gnokms` locally or setting up a new chain, you will need to include the validator information in the genesis file. To do so, you will need the validator info provided by the `gnokms` server in [step 2](#2-start-a-gnokms-server-with-the-gnokey-backend).
 
 We recommend using the `gnogenesis` command to add the bech32 validator information to the genesis file.
 
@@ -159,7 +159,7 @@ But if for any reason, you need to manually edit a genesis file to include these
 
 ## Registering as a testnet validator
 
-If you wish to register your validator on a testnet, you can follow the instructions in [this dedicated guide](https://gnops.io/articles/guides/become-testnet-validator/). Just make sure to use the bech32 info provided by the `gnokms` server in step 2 instead of the one provided by the `gnoland secrets get validator_key` command.
+If you wish to register your validator on a testnet, you can follow the instructions in [this dedicated guide](https://gnops.io/articles/guides/become-testnet-validator/). Just make sure to use the bech32 info provided by the `gnokms` server in [step 2](#2-start-a-gnokms-server-with-the-gnokey-backend) instead of the one provided by the `gnoland secrets get validator_key` command.
 
 ## Mutual TCP Authentication
 
