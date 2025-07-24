@@ -12,9 +12,9 @@ summary: This guide explains how to securely manage the keys of a gnoland valida
 
 In this guide, we delve into `gnokms`, a straightforward Key Management System (KMS) crafted to securely handle signing keys for `gnoland` validator nodes. Instead of storing keys as plaintext on disk, validators can leverage a `gnokms` server running either in a separate process or on a distinct machine. This setup delegates the secure storage and remote signing responsibilities to `gnokms`, enhancing security.
 
-`gnokms` is designed to support multiple backends such as a local `gnokey` instance, a remote Hardware Security Module (HSM), or a cloud-based KMS service. However, as of the time of writing, only the `gnokey` backend is available. If you are interested in the progress of other backends, you can follow the development updates in this GitHub issue: [https://github.com/gnolang/gno/issues/3230](https://github.com/gnolang/gno/issues/3230).
+`gnokms` is designed to support multiple backends such as a local `gnokey` instance, a remote Hardware Security Module (HSM), or a cloud-based KMS service. However, as of the time of writing, only the `gnokey` backend is available. If you are interested in the progress of other backends, you can follow the development updates in this dedicated [GitHub issue](https://github.com/gnolang/gno/issues/3230).
 
-For connectivity between the validator and the `gnokms` server, both TCP and Unix domain socket options are available. TCP connections are secured with encryption and mutual authentication, utilizing Ed25519 keypairs alongside an authorized keys whitelist on both sides.
+For connectivity between the validator and the `gnokms` server, both TCP and Unix domain socket protocols are available. TCP connections are encrypted and can be secured with mutual authentication, utilizing Ed25519 keypairs alongside an authorized keys whitelist on both sides.
 
 ### Flowchart
 
