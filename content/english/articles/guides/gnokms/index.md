@@ -1,5 +1,5 @@
 ---
-title: Secure your validator signing keys using `gnokms`
+title: Secure your Validator Signing Keys using gnokms
 publishDate: 2025-07-24T08:00:00-01:00
 translationKey: 'gnokms'
 tags: ['gnoland', 'validator', 'gnokms', 'security']
