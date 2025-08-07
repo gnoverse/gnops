@@ -54,7 +54,7 @@ And finally, run it with `./build gnoland`.
 You can start a Gno blockchain node with the default configuration by running the following command:
 
 ```bash
-gnoland start --lazy
+gnoland start --lazy -skip-genesis-sig-verification
 ```
 
 The command will trigger a chain initialization process (if you haven't run the node before), and start the Gno node,
