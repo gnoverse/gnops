@@ -28,7 +28,7 @@ the [Faucet Hub](https://faucet.gno.land). Make sure to select the adequate netw
 ## Step 1: Registering a Valoper Profile
 
 To be considered to be added to the validator set, you must create a **Valoper** profile and register it in the
-`r/gnoland/valopers` realm using the `Register` function. This profile allows you to demonstrate to **GovDAO members**
+`r/gnops/valopers` realm using the `Register` function. This profile allows you to demonstrate to **GovDAO members**
 why you should be accepted as a validator.
 
 ### Information to include in the `valoper` proposal
@@ -53,7 +53,7 @@ Once your `Valoper` profile is prepared, register it using `gnokey` with the fol
 
 ```sh
 gnokey maketx call \
-    -pkgpath "gno.land/r/gnoland/valopers" \
+    -pkgpath "gno.land/r/gnops/valopers" \
     -func "Register" \
     -gas-fee 1000000ugnot \
     -gas-wanted 30000000 \
@@ -101,7 +101,7 @@ If you are a GovDAO member, you can nominate yourself by calling `maketx run` on
 package main
 
 import (
-	proposal "gno.land/r/gnoland/valopers_proposal"
+    proposal "gno.land/r/gnops/valopers/proposal"
 	"gno.land/r/gov/dao"
 
 	"std"
@@ -126,7 +126,7 @@ gnokey maketx run \
   -gas-wanted 100_000_000 \
   -broadcast \
   -chainid "test6" \
-  -remote "https://rpc.test6.testnets.gno.land:443" \
+  -remote "https://rpc.test9.testnets.gno.land:443" \
   <key-name> \
   ./proposal.gno
 ```
