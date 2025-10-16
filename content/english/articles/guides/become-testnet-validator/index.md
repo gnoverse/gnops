@@ -101,7 +101,7 @@ If you are a GovDAO member, you can nominate yourself by calling `maketx run` on
 package main
 
 import (
-	proposal "gno.land/r/gnoland/valopers_proposal"
+    proposal "gno.land/r/gnops/valopers/proposal"
 	"gno.land/r/gov/dao"
 
 	"std"
