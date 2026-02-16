@@ -2,10 +2,10 @@
 title: "Road to Validation: How to become a testnet validator"
 publishDate: 2025-03-14T08:00:00-01:00
 translationKey: "bootnodes-persistent-peers"
-tags: [ "validator", "valopers", "testnet", "onboarding" ]
+tags: ["validator", "valopers", "testnet", "onboarding"]
 level: Intermediate
 author: d4ryl00
-summary: "This give a set of information on onboarding a validator node: how to register as a validator operator (valoper) in the registry and how to submit a validator proposal"
+summary: "This gives a set of information on onboarding a validator node: how to register as a validator operator (valoper) in the registry and how to submit a validator proposal"
 ---
 
 # Setting Up a Validator Node in gno.land
@@ -25,7 +25,7 @@ a proposal to formally validate the chain. If not, follow [this guide](https://g
 In order to register a valoper profile on a testnet, you need to acquire testnet funds through
 the [Faucet Hub](https://faucet.gno.land). Make sure to select the adequate network.
 
-## Step 1: Registering a Valoper Profile
+## Step 1: Preparing a Valoper Profile
 
 To be considered to be added to the validator set, you must create a **Valoper** profile and register it in the
 `r/gnops/valopers` realm using the `Register` function. This profile allows you to demonstrate to **GovDAO members**
@@ -47,7 +47,7 @@ _Note:_ You can update your `Valoper` profile later using the `Update` helper fu
 
 The instructions might change. Please check the latest information.
 
-## Step 2: Registering Your Validator Profile
+## Step 2: Registering Your Valoper Profile
 
 Once your `Valoper` profile is prepared, register it using `gnokey` with the following command:
 
@@ -55,20 +55,27 @@ Once your `Valoper` profile is prepared, register it using `gnokey` with the fol
 gnokey maketx call \
     -pkgpath "gno.land/r/gnops/valopers" \
     -func "Register" \
-    -gas-fee 1000000ugnot \
-    -gas-wanted 30000000 \
+    -gas-fee 20000ugnot \
+    -gas-wanted 20_000_000 \
     -broadcast \
-    -chainid "test6" \
+    -chainid "test11" \
     -args "<moniker>" \
     -args "<description>" \
+    -args "<server_type>" \
     -args "<validator_address>" \
     -args "<pub_key_bech32>" \
-    -remote "https://rpc.test6.testnets.gno.land:443" \
+    -remote "https://rpc.test11.testnets.gno.land:443" \
     <key-name>
 ```
 
-Replace `<moniker>`, `<description>`, `<validator_address>`, `<public_key_validator>`, and `<key-name>` with your actual
-values.
+Replace `<moniker>`, `<description>`, `<server_type>`, `<validator_address>`, `<pub_key_bech32>`, and `<key-name>` with
+your actual values.
+
+`<server_type>` must be one of:
+
+- `cloud`
+- `on-prem`
+- `data-center`
 
 The `chainid` and `remote` values might change. Please check the latest information.
 
@@ -92,7 +99,7 @@ Example output:
 ## Step 3: Submitting the Proposal
 
 Once your `Valoper` profile is ready, you need to notify GovDAO; only a GovDAO member can submit a proposal to add you
-to the validator set. The fastest way is to reach out is on [Discord](https://discord.gg/gnoland).
+to the validator set. The fastest way is to reach out on [Discord](https://discord.gg/gnoland).
 
 If you are a GovDAO member, you can nominate yourself by calling `maketx run` on the following script:
 
@@ -101,14 +108,12 @@ If you are a GovDAO member, you can nominate yourself by calling `maketx run` on
 package main
 
 import (
-    proposal "gno.land/r/gnops/valopers/proposal"
+	proposal "gno.land/r/gnops/valopers/proposal"
 	"gno.land/r/gov/dao"
-
-	"std"
 )
 
 func main() {
-	addr := std.Address("...") // <--- the valoper profile address
+	addr := address("...") // <--- the valoper profile address
 
 	// Create a proposal to add a new validator to the valset
 	pr := proposal.NewValidatorProposalRequest(cross, addr)
@@ -122,11 +127,11 @@ Run the command using:
 
 ```sh
 gnokey maketx run \
-  -gas-fee 100000ugnot \
-  -gas-wanted 100_000_000 \
+  -gas-fee 31000ugnot \
+  -gas-wanted 30_000_000 \
   -broadcast \
-  -chainid "test6" \
-  -remote "https://rpc.test9.testnets.gno.land:443" \
+  -chainid "test11" \
+  -remote "https://rpc.test11.testnets.gno.land:443" \
   <key-name> \
   ./proposal.gno
 ```
@@ -139,6 +144,37 @@ The `chainid` and `remote` values might change. Please check the latest informat
 
 After submitting the proposal, **GovDAO members** will review and vote on your inclusion. If the proposal is approved,
 you will officially become a validator in **gno.land**.
+
+If you are a GovDAO member and want to cast a vote from `gnokey`, you can run:
+
+```go
+// vote_proposal.gno
+package main
+
+import (
+	"gno.land/r/gov/dao"
+)
+
+func main() {
+	dao.VoteOnProposal(cross, dao.VoteRequest{
+		Option:     dao.YesVote,
+		ProposalID: dao.ProposalID(0), // replace with your proposal ID
+	})
+}
+```
+
+```sh
+gnokey maketx run \
+  -gas-fee 18000ugnot \
+  -gas-wanted 18_000_000 \
+  -broadcast \
+  -chainid "test11" \
+  -remote "https://rpc.test11.testnets.gno.land:443" \
+  <key-name> \
+  ./vote_proposal.gno
+```
+
+Replace proposal ID and `<key-name>` with your actual values.
 
 ## Conclusion
 
