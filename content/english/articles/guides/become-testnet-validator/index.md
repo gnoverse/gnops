@@ -58,18 +58,18 @@ gnokey maketx call \
     -gas-fee 20000ugnot \
     -gas-wanted 20_000_000 \
     -broadcast \
-    -chainid "test11" \
+    -chainid "test-13" \
     -args "<moniker>" \
     -args "<description>" \
     -args "<server_type>" \
-    -args "<validator_address>" \
-    -args "<pub_key_bech32>" \
-    -remote "https://rpc.test11.testnets.gno.land:443" \
+    -args "<operator_address>" \
+    -args "<consensus_pub_key>" \
+    -remote "https://rpc.test13.testnets.gno.land:443" \
     <key-name>
 ```
 
-Replace `<moniker>`, `<description>`, `<server_type>`, `<validator_address>`, `<pub_key_bech32>`, and `<key-name>` with
-your actual values.
+Replace `<moniker>`, `<description>`, `<server_type>`, `<operator_address>`, `<consensus_pub_key>`, and `<key-name>`
+with your actual values.
 
 `<server_type>` must be one of:
 
@@ -77,9 +77,32 @@ your actual values.
 - `on-prem`
 - `data-center`
 
+The last two arguments are distinct and must not be confused:
+
+- **`<operator_address>`** is your **operator** account address (`g1...`): the stable identity and profile key. It must
+  match the address of the `<key-name>` you broadcast with — the realm enforces that the caller equals the operator
+  address.
+- **`<consensus_pub_key>`** is your validator node's **consensus signing public key** (`gpub1...`). The realm derives the
+  signing address from it, so you only supply the public key, not the address.
+
 The `chainid` and `remote` values might change. Please check the latest information.
 
-To fetch the validator address and bech32 representation of the public key, you can run:
+To fetch your operator address, list your local keys with `gnokey`:
+
+```shell
+gnokey list
+```
+
+Example output:
+
+```shell
+0. test1 (local) - addr: g1jg8mtutu9khhfwc4nxmuhcpftf0pajdhfvsqf5 pub: gpub1pgfj7ard9eg82cjtv4u4xetrwqer2dntxyfzxz3pq0skzdkmzu0r9h6gny6eg8c9dc303xrrudee6z4he4y7cs5rnjwmyf40yaj, path: <nil>
+```
+
+The `addr` value (`g1jg8mtutu9khhfwc4nxmuhcpftf0pajdhfvsqf5`) is your `<operator_address>`, and `test1` is the matching
+`<key-name>` you broadcast with.
+
+To fetch your validator node's consensus public key, you can run:
 
 ```shell
 gnoland secrets get validator_key -data-dir gnoland-data
@@ -95,6 +118,9 @@ Example output:
     "pub_key": "gpub1pggj7ard9eg82cjtv4u52epjx56nzwgjyg9zpj3xqx6w4nvy209e28trenv3relp04jt37p0rg2pn4hyy4k0uf2vgexegj"
 }
 ```
+
+Use the `pub_key` value above as `<consensus_pub_key>`. The `address` shown here is the node's signing address — it is
+**not** the operator address and should not be used as `<operator_address>`.
 
 ## Step 3: Submitting the Proposal
 
@@ -113,7 +139,7 @@ import (
 )
 
 func main() {
-	addr := address("...") // <--- the valoper profile address
+	addr := address("...") // <--- the operator address (valoper profile key)
 
 	// Create a proposal to add a new validator to the valset
 	pr := proposal.NewValidatorProposalRequest(cross, addr)
@@ -130,8 +156,8 @@ gnokey maketx run \
   -gas-fee 31000ugnot \
   -gas-wanted 30_000_000 \
   -broadcast \
-  -chainid "test11" \
-  -remote "https://rpc.test11.testnets.gno.land:443" \
+  -chainid "test-13" \
+  -remote "https://rpc.test13.testnets.gno.land:443" \
   <key-name> \
   ./proposal.gno
 ```
@@ -168,8 +194,8 @@ gnokey maketx run \
   -gas-fee 18000ugnot \
   -gas-wanted 18_000_000 \
   -broadcast \
-  -chainid "test11" \
-  -remote "https://rpc.test11.testnets.gno.land:443" \
+  -chainid "test-13" \
+  -remote "https://rpc.test13.testnets.gno.land:443" \
   <key-name> \
   ./vote_proposal.gno
 ```
