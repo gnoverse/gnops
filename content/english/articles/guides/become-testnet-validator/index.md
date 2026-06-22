@@ -138,14 +138,14 @@ import (
 	"gno.land/r/gov/dao"
 )
 
-func main() {
+func main(cur realm) {
 	addr := address("...") // <--- the operator address (valoper profile key)
 
 	// Create a proposal to add a new validator to the valset
-	pr := proposal.NewValidatorProposalRequest(cross, addr)
+	pr := proposal.NewValidatorProposalRequest(cross(cur), addr)
 
 	// Create the proposal
-	dao.MustCreateProposal(cross, pr)
+	dao.MustCreateProposal(cross(cur), pr)
 }
 ```
 
@@ -180,8 +180,8 @@ import (
 	"gno.land/r/gov/dao"
 )
 
-func main() {
-	dao.VoteOnProposal(cross, dao.VoteRequest{
+func main(cur realm) {
+	dao.VoteOnProposal(cross(cur), dao.VoteRequest{
 		Option:     dao.YesVote,
 		ProposalID: dao.ProposalID(0), // replace with your proposal ID
 	})
