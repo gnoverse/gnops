@@ -36,12 +36,15 @@ why you should be accepted as a validator.
 Be sure to answer the following questions in the description. This is an example of the details you should provide in
 your description:
 
-1. **Validator Name** – Your unique identifier.
+1. **Validator Name** – The name of your validator.
 2. **Networks You Are Currently Validating** – Include your total Assets Under Management (AuM).
-3. **Links to Your Digital Presence** – Website, social media, etc.
+3. **Links to Your Digital Presence** – Website, social media, etc. Please include your Discord handle so you can be
+   added to our main comms channel, the gno.land valoper Discord channel.
 4. **Contact Details** – How others can reach you.
 5. **Why You Are Interested in Validating on gno.land** – Your motivation and goals.
 6. **Contributions to gno.land** – Past contributions or plans for future contributions.
+7. **Your Node Architecture** – For example, do you run sentry nodes to shield your validator?
+8. **Backup Strategy** – How do you handle backups of your keys and node data?
 
 _Note:_ You can update your `Valoper` profile later using the `Update` helper functions such as `UpdateDescription`.
 
