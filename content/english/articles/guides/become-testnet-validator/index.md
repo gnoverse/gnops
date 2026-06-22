@@ -43,8 +43,6 @@ your description:
 4. **Contact Details** – How others can reach you.
 5. **Why You Are Interested in Validating on gno.land** – Your motivation and goals.
 6. **Contributions to gno.land** – Past contributions or plans for future contributions.
-7. **Your Node Architecture** – For example, do you run sentry nodes to shield your validator?
-8. **Backup Strategy** – How do you handle backups of your keys and node data?
 
 _Note:_ You can update your `Valoper` profile later using the `Update` helper functions such as `UpdateDescription`.
 
