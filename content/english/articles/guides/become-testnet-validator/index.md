@@ -181,10 +181,8 @@ import (
 )
 
 func main(cur realm) {
-	dao.VoteOnProposal(cross(cur), dao.VoteRequest{
-		Option:     dao.YesVote,
-		ProposalID: dao.ProposalID(0), // replace with your proposal ID
-	})
+	// Replace 0 with your proposal ID
+	dao.VoteOnProposal(cross(cur), dao.NewVoteRequest(dao.YesVote, dao.ProposalID(0)))
 }
 ```
 
