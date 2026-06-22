@@ -13,8 +13,8 @@ summary: "This gives a set of information on onboarding a validator node: how to
 ## Overview
 
 Validators on **gno.land** are expected to demonstrate their technical expertise and alignment with the project by
-making continuous and meaningful contributions. **gno.land** abstracts validator management into the `r/sys/vals` realm
-as a form of a smart contract for modularity.
+making continuous and meaningful contributions. **gno.land** abstracts validator management into the
+`r/sys/validators/v3` realm as a form of a smart contract for modularity.
 
 This guide walks you through the process of registering your validator node into the validator set with a
 smart-contract. It assumes that you already have an operational validator node running on the testnet, before submitting
@@ -55,9 +55,8 @@ Once your `Valoper` profile is prepared, register it using `gnokey` with the fol
 gnokey maketx call \
     -pkgpath "gno.land/r/gnops/valopers" \
     -func "Register" \
-    -gas-fee 20000ugnot \
-    -gas-wanted 20_000_000 \
-    -broadcast \
+    -gas-fee 1000000ugnot \
+    -gas-wanted 50_000_000 \
     -chainid "test-13" \
     -args "<moniker>" \
     -args "<description>" \
@@ -155,7 +154,6 @@ Run the command using:
 gnokey maketx run \
   -gas-fee 31000ugnot \
   -gas-wanted 30_000_000 \
-  -broadcast \
   -chainid "test-13" \
   -remote "https://rpc.test13.testnets.gno.land:443" \
   <key-name> \
@@ -193,7 +191,6 @@ func main() {
 gnokey maketx run \
   -gas-fee 18000ugnot \
   -gas-wanted 18_000_000 \
-  -broadcast \
   -chainid "test-13" \
   -remote "https://rpc.test13.testnets.gno.land:443" \
   <key-name> \
