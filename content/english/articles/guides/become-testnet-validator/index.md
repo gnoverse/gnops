@@ -124,10 +124,10 @@ Use the `pub_key` value above as `<consensus_pub_key>`. The `address` shown here
 
 ## Step 3: Submitting the Proposal
 
-Once your `Valoper` profile is ready, you need to notify GovDAO; only a GovDAO member can submit a proposal to add you
-to the validator set. The fastest way is to reach out on [Discord](https://discord.gg/gnoland).
+> **This step is for GovDAO members only.** Only a GovDAO member can submit a proposal to add a validator to the
+> validator set.
 
-If you are a GovDAO member, you can nominate yourself by calling `maketx run` on the following script:
+Once your `Valoper` profile is ready, a GovDAO member can nominate it by calling `maketx run` on the following script:
 
 ```go
 // proposal.gno
