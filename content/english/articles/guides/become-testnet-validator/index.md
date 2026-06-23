@@ -1,6 +1,6 @@
 ---
 title: "Road to Validation: How to become a testnet validator"
-publishDate: 2025-03-14T08:00:00-01:00
+publishDate: 2026-06-23T08:00:00-01:00
 translationKey: "bootnodes-persistent-peers"
 tags: ["validator", "valopers", "testnet", "onboarding"]
 level: Intermediate
@@ -13,8 +13,8 @@ summary: "This gives a set of information on onboarding a validator node: how to
 ## Overview
 
 Validators on **gno.land** are expected to demonstrate their technical expertise and alignment with the project by
-making continuous and meaningful contributions. **gno.land** abstracts validator management into the `r/sys/vals` realm
-as a form of a smart contract for modularity.
+making continuous and meaningful contributions. **gno.land** abstracts validator management into the
+`r/sys/validators/v3` realm as a form of a smart contract for modularity.
 
 This guide walks you through the process of registering your validator node into the validator set with a
 smart-contract. It assumes that you already have an operational validator node running on the testnet, before submitting
@@ -36,9 +36,10 @@ why you should be accepted as a validator.
 Be sure to answer the following questions in the description. This is an example of the details you should provide in
 your description:
 
-1. **Validator Name** – Your unique identifier.
+1. **Validator Name** – The name of your validator.
 2. **Networks You Are Currently Validating** – Include your total Assets Under Management (AuM).
-3. **Links to Your Digital Presence** – Website, social media, etc.
+3. **Links to Your Digital Presence** – Website, social media, etc. Please include your Discord handle so you can be
+   added to our main comms channel, the gno.land valoper Discord channel.
 4. **Contact Details** – How others can reach you.
 5. **Why You Are Interested in Validating on gno.land** – Your motivation and goals.
 6. **Contributions to gno.land** – Past contributions or plans for future contributions.
@@ -55,21 +56,20 @@ Once your `Valoper` profile is prepared, register it using `gnokey` with the fol
 gnokey maketx call \
     -pkgpath "gno.land/r/gnops/valopers" \
     -func "Register" \
-    -gas-fee 20000ugnot \
-    -gas-wanted 20_000_000 \
-    -broadcast \
-    -chainid "test11" \
+    -gas-fee 1000000ugnot \
+    -gas-wanted 50_000_000 \
+    -chainid "test-13" \
     -args "<moniker>" \
     -args "<description>" \
     -args "<server_type>" \
-    -args "<validator_address>" \
-    -args "<pub_key_bech32>" \
-    -remote "https://rpc.test11.testnets.gno.land:443" \
+    -args "<operator_address>" \
+    -args "<consensus_pub_key>" \
+    -remote "https://rpc.test13.testnets.gno.land:443" \
     <key-name>
 ```
 
-Replace `<moniker>`, `<description>`, `<server_type>`, `<validator_address>`, `<pub_key_bech32>`, and `<key-name>` with
-your actual values.
+Replace `<moniker>`, `<description>`, `<server_type>`, `<operator_address>`, `<consensus_pub_key>`, and `<key-name>`
+with your actual values.
 
 `<server_type>` must be one of:
 
@@ -77,9 +77,32 @@ your actual values.
 - `on-prem`
 - `data-center`
 
+The last two arguments are distinct and must not be confused:
+
+- **`<operator_address>`** is your **operator** account address (`g1...`): the stable identity and profile key. It must
+  match the address of the `<key-name>` you broadcast with — the realm enforces that the caller equals the operator
+  address.
+- **`<consensus_pub_key>`** is your validator node's **consensus signing public key** (`gpub1...`). The realm derives the
+  signing address from it, so you only supply the public key, not the address.
+
 The `chainid` and `remote` values might change. Please check the latest information.
 
-To fetch the validator address and bech32 representation of the public key, you can run:
+To fetch your operator address, list your local keys with `gnokey`:
+
+```shell
+gnokey list
+```
+
+Example output:
+
+```shell
+0. test1 (local) - addr: g1jg8mtutu9khhfwc4nxmuhcpftf0pajdhfvsqf5 pub: gpub1pgfj7ard9eg82cjtv4u4xetrwqer2dntxyfzxz3pq0skzdkmzu0r9h6gny6eg8c9dc303xrrudee6z4he4y7cs5rnjwmyf40yaj, path: <nil>
+```
+
+The `addr` value (`g1jg8mtutu9khhfwc4nxmuhcpftf0pajdhfvsqf5`) is your `<operator_address>`, and `test1` is the matching
+`<key-name>` you broadcast with.
+
+To fetch your validator node's consensus public key, you can run:
 
 ```shell
 gnoland secrets get validator_key -data-dir gnoland-data
@@ -96,12 +119,15 @@ Example output:
 }
 ```
 
+Use the `pub_key` value above as `<consensus_pub_key>`. The `address` shown here is the node's signing address — it is
+**not** the operator address and should not be used as `<operator_address>`.
+
 ## Step 3: Submitting the Proposal
 
-Once your `Valoper` profile is ready, you need to notify GovDAO; only a GovDAO member can submit a proposal to add you
-to the validator set. The fastest way is to reach out on [Discord](https://discord.gg/gnoland).
+> **This step is for GovDAO members only.** Only a GovDAO member can submit a proposal to add a validator to the
+> validator set.
 
-If you are a GovDAO member, you can nominate yourself by calling `maketx run` on the following script:
+Once your `Valoper` profile is ready, a GovDAO member can nominate it by calling `maketx run` on the following script:
 
 ```go
 // proposal.gno
@@ -112,14 +138,14 @@ import (
 	"gno.land/r/gov/dao"
 )
 
-func main() {
-	addr := address("...") // <--- the valoper profile address
+func main(cur realm) {
+	addr := address("...") // <--- the operator address (valoper profile key)
 
 	// Create a proposal to add a new validator to the valset
-	pr := proposal.NewValidatorProposalRequest(cross, addr)
+	pr := proposal.NewValidatorProposalRequest(cross(cur), addr)
 
 	// Create the proposal
-	dao.MustCreateProposal(cross, pr)
+	dao.MustCreateProposal(cross(cur), pr)
 }
 ```
 
@@ -129,9 +155,8 @@ Run the command using:
 gnokey maketx run \
   -gas-fee 31000ugnot \
   -gas-wanted 30_000_000 \
-  -broadcast \
-  -chainid "test11" \
-  -remote "https://rpc.test11.testnets.gno.land:443" \
+  -chainid "test-13" \
+  -remote "https://rpc.test13.testnets.gno.land:443" \
   <key-name> \
   ./proposal.gno
 ```
@@ -155,11 +180,9 @@ import (
 	"gno.land/r/gov/dao"
 )
 
-func main() {
-	dao.VoteOnProposal(cross, dao.VoteRequest{
-		Option:     dao.YesVote,
-		ProposalID: dao.ProposalID(0), // replace with your proposal ID
-	})
+func main(cur realm) {
+	// Replace 0 with your proposal ID
+	dao.VoteOnProposal(cross(cur), dao.NewVoteRequest(dao.YesVote, dao.ProposalID(0)))
 }
 ```
 
@@ -167,9 +190,8 @@ func main() {
 gnokey maketx run \
   -gas-fee 18000ugnot \
   -gas-wanted 18_000_000 \
-  -broadcast \
-  -chainid "test11" \
-  -remote "https://rpc.test11.testnets.gno.land:443" \
+  -chainid "test-13" \
+  -remote "https://rpc.test13.testnets.gno.land:443" \
   <key-name> \
   ./vote_proposal.gno
 ```
